@@ -1,0 +1,37 @@
+---
+title: "Activity 1 McConville Paper Summary - SO"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Summary of McConville, K.S., Moisen, G.G., and T.S. Frescino. (In Review)
+  a. Statistical Elements
+    
+    
+    i. Summary: Write a one or two sentence summary of the objective of the study.
+        
+        
+    ii. Data: Describe the data used.
+        
+        
+    iii. Analysis: Briefly summarize the statistical analysis and main outcomes.
+        
+        
+    iv. Conclusions: Write a short summary of the conclusions drawn from the data.
+        
+        
+  b. Argument
+    
+    
+    i. Placement: How do they place their results in the rest of the literature?
+        
+        
+    ii. Generalization: Are there limitations or difficulties in generalizing to the real world?
+    
+        
+    iii. Impact: How does the study advance knowledge in the field?
+        
+        

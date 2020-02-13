@@ -1,0 +1,98 @@
+---
+title: "MATH 392 Problem Set 1"
+author: "Sam D. Olson"
+output: pdf_document
+---
+
+
+```{r, include=FALSE}
+require(tidyverse) # load package
+options(digits=4) # print 4 decimal places only
+set.seed(1999) # set seed for reproducibility
+```
+
+### Exercises from the Book
+
+### 7.1
+
+$X_1, X_2,...$, the patients outcomes in the imipramine group, and the hypothetically observable parameter $P$, the proportion of patients who avoid relapse out of the treatment group. 
+
+For R.V. $X_1, X_2, ...$, the $X_i$'s are i.i.d. Bernoulli with parameter $p$, where $p=P$.
+
+### 7.2
+
+1: The conditional distribution of $P$ given observations, where $p$ is the proportion of patients avoiding relapse.
+
+2: MSE for trying to predict $P$ before and after observations.
+
+### 7.3 
+
+$Z_1, Z_2, ...$ where $Z_k$ denotes the time until the $k$th particle strikes the target. Another R.V. is the observable arrival times, $Y_1, Y_2,...$.
+
+The $Z_k$'s are a Poisson process with rate $\beta$ conditional on $\beta$, the hypothetically observable parameter rate of the Poisson process after a certain amount of time. The obserable arrival times are defined by $Y_1=Z_1$ and $Y_k=Z_k-Z_{k+1}$ for $k\geq2$.
+
+### 7.4
+
+R.V. for observed heights of men $X_1, X_2,...$ and hypothetically observable mean parameter $\mu$ with sample mean $\bar{X_n}$. Note: the example specified a sample of $n=36$ men.
+
+The $X_i$'s are normal random variables with mean $\mu$ and variance 9 (conditional on $\mu$).
+
+### Practice with LaTeX
+
+Please transcribe the mathematics found below into LaTeX using the snippets of LaTeX available in the Slack thread. If you see errors or inconsistencies in my hand-written notes, please correct them.  We'll start class on Friday by discussing the link between the code shown in the slides and the analytical approach below.
+
+```{r latex-a, echo=FALSE, out.width = '50%', fig.align="center"}
+knitr::include_graphics("../slides/figs/latex-a.jpeg")
+```
+
+```{r latex-b, echo=FALSE, out.width = '50%', fig.align="center"}
+knitr::include_graphics("../slides/figs/latex-b.jpeg")
+```
+
+Divide population into $J=2$ strata $(S_1, S_2)$
+
+$N_1+N_2=N$
+
+$\sigma^2_1 = \frac {1}{N_1} \sum\limits_{i\in{S_1}} ({x_{i}}-\mu_1)^2$
+
+$\sigma^2_2 = \frac {1}{N_2} \sum\limits_{i\in{S_2}} ({x_{i}}-\mu_2)^2$
+
+$\mu_1 = \frac {1}{N_1} \sum\limits_{i\in{S_1}} {x_{i}}$
+
+$\mu_2 = \frac {1}{N_2} \sum\limits_{i\in{S_2}} {x_{i}}$
+
+# Edits below
+
+$\mu=$
+
+$\mu=$
+
+$\sigma^2=$
+
+$\sigma^2=$
+
+# Completed below, partially
+
+Draw $n \cdot \frac{N_1}{N}=n_1$ from $S_1$ and $n \cdot \frac{N_2}{N}=n_2$ from $S_2$.
+
+Estimate $\mu$ w/ $\bar{X}=\frac{1}{n} \sum\limits_{j=1}^{2}\sum\limits_{i=1}^{nj}{x_{j,i}}$
+
+$\mathbb{E}(\bar{x}) = \frac{1}{n} \sum\limits_{j=1}^{2}\sum\limits_{i=1}^{nj}{x_{j,i}}$
+
+$= \frac{1}{n}n\mu=\mu$
+
+$V(\bar{x})= \frac{1}{n^2} V(\sum\limits_{j=1}^{2}\sum\limits_{i=1}^{nj}{x_{j,i}})$
+
+$V(\bar{x})= \frac{1}{n^2} \sum\limits_{j=1}^{2}\sum\limits_{i=1}^{nj}V({x_{j,i}})$
+
+# Edit below
+
+$V(\bar{x})= \frac{1}{n^2} \sum\limits_{j=1}^{2}\sum\limits_{i=1}^{nj}V({x_{j,i}})$
+
+$V(\bar{x})= \frac{1}{n^2} \sum\limits_{j=1}^{2}\sum\limits_{i=1}^{nj}V({x_{j,i}})$
+
+\newpage
+
+### Practice with R
+
+Adapt the code from the slides to produce a single ggplot with two density curves on it: one with the density of 5000 $\bar{x}$s estimated through SRS and 5000 $\bar{x}$s estimated through stratified sampling. All of the code to make this plot can be copied from the slides but I'd like you to make one important change: create a scenario that has *three* strata. It's up to you to pick the parameter values that define that population. Include in your pdf both the single plot and all of the code necessary to create it.

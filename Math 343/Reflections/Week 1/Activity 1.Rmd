@@ -1,0 +1,30 @@
+---
+title: "Reading Articles"
+author: "Insert Name"
+date: "Week 1"
+output: github_document
+---
+
+* Document(s) related to understanding your problem and to reading related articles are due in your repo before next Thursday's lab.
+
+# All members
+
+0. Orient yourself in your project repo and determine where and how you want to store the work you do this week.
+1. Go through your project prompt more slowly and start a list of the central terms/ideas, especially ones you don't know.
+2. Discuss these ideas as a group.  
+3. Each team member should read one of the articles mentioned in the prompt and practicing "reading to write" concepts from 1.4 of the text.
+    a. Statistical Elements
+        i. Summary: Write a one or two sentence summary of the objective of the study.
+        ii. Data: Describe the data used.
+        iii. Analysis: Briefly summarize the statistical analysis and main outcomes.
+        iv. Conclusions: Write a short summary of the conclusions drawn from the data.
+    b. Argument
+        i. Placement: How do they place their results in the rest of the literature?
+        ii. Generalization: Are there limitations or difficulties in generalizing to the real world?
+        iii. Impact: How does the study advance knowledge in the field?
+4. Discuss your summaries as a group.
+
+# Team Leader
+
+a. Contact the stakeholder, your team members, and me to organize a time to meet to discuss the project.  
+b. Create To Do's for the week in the Project tab on your group repo.

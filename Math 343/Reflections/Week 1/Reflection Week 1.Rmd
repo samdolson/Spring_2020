@@ -1,0 +1,42 @@
+---
+title: "Reading Reflection Template Week 1"
+author: "Sam D. Olson"
+date: "1/30/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Your reading reflection document should be about 1-2 pages.  I have provided a few potential questions you can use to frame your reflections but you are not required to answer all (or even any) of these questions.  Your reflections should do more than just summarize the readings.  The primary goal is to reflect on how what you learned in the readings will impact you as a researcher.  (Delete this paragraph and any of the following questions that you don't tackle before turning in your reflections.)
+
+### Overall Thoughts
+
+
+
+### CWD Reading
+
+Focus: Reading Science Articles
+Comment: Foundational to writing for a broader audience
+
+Three Steps:
+1. Identify the elements of the data analysis
+2. Examine the argument
+3. Map the organization of the document
+
+
+
+1. Summarize two or three key points.
+1. What ideas from the readings do you think you will utilize most in your project?
+1. Are there parts of the readings where you disagree with the authors?  If so, how and why?
+1. What parts of the readings are unclear?  What is confusing about these parts?
+1. For the topic discussed, are there important ideas that are missing from the author's argument?
+
+### Wilson et al 
+
+1. Summarize two or three key points.
+1. What ideas from the readings do you think you will utilize most in your project?
+1. Are there parts of the readings where you disagree with the authors?  If so, how and why?
+1. What parts of the readings are unclear?  What is confusing about these parts?
+1. For the topic discussed, are there important ideas that are missing from the author's argument?
