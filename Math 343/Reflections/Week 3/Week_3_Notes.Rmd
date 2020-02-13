@@ -1,0 +1,105 @@
+---
+title: "Reflection Week 2 - Notes"
+author: "Sam D. Olson"
+output:
+  pdf_document: default
+  html_document:
+    highlight: pygments
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Your reading reflection document should be about 1-2 pages.  I have provided a few potential questions you can use to frame your reflections but you are not required to answer all (or even any) of these questions.  Your reflections should do more than just summarize the readings.  The primary goal is to reflect on how what you learned in the readings will impact you as a researcher.  (Delete this paragraph and any of the following questions that you don't tackle before turning in your reflections.)
+
+### Potential questions to answer
+
+1. Summarize two or three key points.
+1. What ideas from the readings do you think you will utilize most in your project?
+1. Are there parts of the readings where you disagree with the authors?  If so, how and why?
+1. What parts of the readings are unclear?  What is confusing about these parts?
+1. For the topic discussed, are there important ideas that are missing from the author's argument?
+
+## General Thoughts
+
+*: Motivates re-reading articles, specifically Rintoul and
+McConville, for the purpose of detailing and outlining references
+of interest. This will help me better understand where the field is
+currently.
+
+*: "Statistics as a science, not a recipe" $\sim$ "A Literature
+Review as a process, not a checklist."
+
+*: In preparing a Literature Review, it isn't just looking at the 'Introduction' of a related work, it's also reviewing their 'Conclusion' to get perspective on what others envision next steps to be (and whether those next steps align with the researcher's intended study).
+
+*: May special attention to methodology, as it impacts how/what our Research Question is, as well as how we hope to address it.
+
+*: Note the intended audience of the output, e.g. thesis, report, assignment, etc., as it impacts the amount and type of detail to include in the
+Literature Review.
+
+### Notes from Online Reading
+
+#### What is the purpose of a literature review?
+
+*: To summarize, evaluate, and compare articles or studies that are
+relevant and important to your topic 
+
+*: To highlight key ﬁndings
+
+*: To identify inconsistencies, gaps, and contradictions in the
+literature
+
+*: To provide an analysis of the methodologies and approaches of
+other researchers
+
+*: To provide clues as to where future research is heading or 
+recommend areas on which to focus
+
+*: To ensure you do not duplicate work that has already been done
+
+#### What are the parts of a literature Review?
+
+*: Introduction
+  Purpose: To explain the focus and establish the importance of the
+  subject
+
+*: Body
+  Purpose: To summarize and evaluate the current state of knowledge
+  in the ﬁeld
+
+  To note major themes or topics, the most important trends, and
+  any ﬁndings about which researchers agree or disagree
+
+*: Conclusion
+  Purpose: To summarize the evidence presented and show its
+  significance
+
+  Rather than restating your thesis or purpose statement, explain
+  what your review tells you about the current state of the field
+
+
+### Notes from Video
+
+*: Helps to understand topic and develop perspective on the
+issue/topic. 
+
+*: Q---What does the literature review show us?
+
+*: Identify 'major works' and additional studies
+responding/building on the 'major works'
+
+*: Research is like building on a preexisting narrative. The
+literature review is to identify loose ends related to what you're
+hoping to do.
+
+*: Literature reviews can be selective or comprehensive, a stand
+alone work or part of a larger work (two dimensions not mutually
+exclusive).
+
+![Literature Review](Lit_Review_Process.jpg "Literature Review Process")
+
+### Notes from Book
+
+*: Examples---selected notes moved to 'General Thoughts' Section.

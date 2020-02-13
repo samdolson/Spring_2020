@@ -1,0 +1,41 @@
+---
+title: "Reflection Week 3 - Literature Review"
+author: "Sam D. Olson"
+output:
+  pdf_document: default
+  html_document:
+    highlight: pygments
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Reflections
+
+![Literature Review](Lit_Review_Process.jpg "Literature Review Process")
+
+From the assigned video and readings on Literature Reviews, the above image was most impactful to me. The image frames the Literature Review as a
+process, specifically an ongoing process. Given this perspective, the image connects to a point reflected in a quote from last week's readings---
+*"Statistics is a science, not a recipe"*. Similarly: *"A Literature Review is a process, not a checklist"*. 
+
+I use the term *"checklist"* in the above quote to emphasize what a Literature Review *is not*, which is to say: A Literature Review isn't done once
+you've reached $X$ number of citations. It isn't done when, for the forests project, one has compiled an exhaustive list of all forestry research
+exploring estimators. Instead, the Literature Review is "done"---and even then only tentatively---when it outlines a list of *relevant literature*
+and is able to lead a reader to understand the history of what has been done and what one hopes to accomplish in their research.   
+
+The importance of the *"process"* is illustrated by the black dotted lines in the image. These lines represent the cyclical nature of research (which
+includes the creation of a Literature Review). Though one may interpret the lines as a sort of *"back-tracking"*, I feel such an interpretation is
+flawed, and presupposes progress has a positive linear relationship with time, which it is not (always) the case. I would instead argue that
+*"back-tracking"* through the process of creating a Literature Review is actually a *"refining"* of one's understanding of the field of research that
+has been done, in addition to what is to come (hopefully from the research one hopes to conduct).
+
+All this is to say, *"going back to the drawing board"* is an important part of the research process, and is reflected in aspects such as question
+formulation as well as the Literature Review. 
+
+Additionally, I would be remiss not to point out my appreciation for the video and readings. They have further motivated me to take another look at
+topics and articles already read with a new focus. Driven by this focus, I hope to put special attention to sections of forestry research---the
+'Introduction', 'Methodology', and 'Conclusion' sections---to get a more holistic sense of the field of research I hope the team will contribute to.
+At the expense of sounding trite or repetitive: I'm excited to continue the research process and see what new information I may uncover as I continue
+building my knowledge of work that has been (and has yet to be) done.
