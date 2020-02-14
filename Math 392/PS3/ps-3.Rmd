@@ -16,8 +16,8 @@ library(here)
 
 ### Time Taken
 Total Time on Exercises from the Book: X hours
-Solving Exercises from the Book: 4 hours
-LaTeX writeup of Exercises from the Book: 2 hours (at 9:11am)
+Solving Exercises from the Book: 4  1/2 hours
+LaTeX writeup of Exercises from the Book: 3 1/2 hours
 
 ### Additional Notes
 * This Problem Set does not contain the Case Study. It will be turned in on Monday, 2/17/2020.
@@ -242,7 +242,7 @@ And
 
 Alternatively, and with greater difficulty, we can take the likelihood function using the Binomial distribution, written:
 
-$$f_n\left(\bar{x} \mid p \right) = {n \choose k} p ^ {x} \lex( 1 - p \right) ^ {n - x}$$
+$$f_n\left(\bar{x} \mid p \right) = {n \choose x} p ^ {x} \left( 1 - p \right) ^ {n - x}$$
 
 Where $n$ denotes the total number of butterflies and $x$ denotes the number of butterflies with the special type of marking on their wings. 
 
@@ -250,7 +250,7 @@ Let $L\left( p \right) = log \left( f_n\left(\bar{x} \mid p \right) \right)$
 
 Taking the derivative with respect to $p$ gives us: 
 
-$$\frac{\partial {L\left( p \right)}}{\partial p} = \frac{ \partial \left({log {n \choose x} + x log(p) + (n-x)log(1-p)} \right) } {\partial p} = \frac{x}{p} - \frac{n-x}{1-p}$$
+$$\frac{\partial {L\left( p \right)}}{\partial p} = \frac{ \partial \left({log {n \choose x} + x log(p) + (n-x)log(1-p)}\right) } {\partial p} = \frac{x}{p} - \frac{n-x}{1-p}$$
 
 Setting this equation equal to zero, we then solve for $p$:
 
@@ -261,5 +261,12 @@ Solving for $p$ gives us:
 $p = \frac{x}{n}$, which confirms our above use of the sample proportion for the M.L.E. of p. 
 
 **7.6**: 23
+
+Note, the mean is the first moment and the variance is the second moment. Their respective relations are given as follows: 
+
+(1): 1st Moment, $X_i = \frac{\alpha}{\alpha+\beta}$
+(2): 2nd Moment, $X_i^{2}= \frac{\alpha \left(\alpha + 1 \right)} {\left(\alpha + \beta \right) \left( \alpha + \beta +1 \right)}$
+
+We set these, respectively, equal to the sample moments $m_1$ and $m_2$, and then use relations (1) and (2) to solve for $\alpha$ and $\beta$. 
 
 
