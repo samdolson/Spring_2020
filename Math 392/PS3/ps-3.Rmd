@@ -19,8 +19,9 @@ Total Time on Exercises from the Book: X hours
 Solving Exercises from the Book: 4 hours
 LaTeX writeup of Exercises from the Book: 2 hours (at 9:11am)
 
-### Additional Note
-This Problem Set does not contain the Case Study. It will be turned in on Monday, 2/17/2020.
+### Additional Notes
+* This Problem Set does not contain the Case Study. It will be turned in on Monday, 2/17/2020.
+* Answers to All 8 problems are included.
 
 ## Exercises from the book
 
@@ -187,11 +188,47 @@ Intuitively, and similar to other applications of the M.L.E., this results says 
 
 **7.6**: 3
 
+Let $m$ denote the median of the Exponential distribution. 
 
+Note the median of the Exponential distribution may be  derived from the following equation:
+
+$\int\limits_{0}^{m}{\beta e ^{-\beta x} dx = \frac {1} {2}}$
+
+Evaluating this integral gives us:
+
+$\frac{1}{2} = 1 - e^ {-\beta m} \rightarrow 1 = 2 - e^ {-\beta m}$
+
+Solving for m, we take the log of the above equation, giving us:
+
+$0 = log(2) - \beta m \rightarrow \beta m =log(2) \rightarrow m = \frac{log(2)}{\beta}$
+
+Thus, for $\hat{\beta}$, the sample median, $\hat{m}= \frac{log(2)}{\hat{\beta}}$
+
+**All praise the glorious tables at the back of the book** For our purposes, note the mean of the Exponential distribution, $\mu = \frac{1}{\beta}$. 
+
+Solving for $\beta$, we then have $\beta = \frac{1}{\mu}$
+
+For the sample mean, $\bar{x}_n$, note: $\hat{\beta} = \frac{1}{\bar{x}_n}$
+
+Thus, for the sample median, we have:
+
+$\hat{m} = \frac{log(2)}{\frac{1}{\bar{x}_n}} = \bar{x}_n log(2)$ 
 
 **7.6**: 12
 
+Note from the prior exercise, the parameter $\hat{\beta} = \frac {1} {\bar{x}_n}$
 
+Additionally, we may once again **praise the glorious tables at the back of the book** and note the mean of the Exponential distribution is given by: $\mu = \frac {1} {\beta}$
+
+Via application of the Law of Large Numbers, we may then write:
+
+$\displaystyle \lim_{n\to \infty} Pr\left( \mid \bar{x}_n - \frac{1}{\beta}\mid \right) = 1 \equiv \bar{x}_n \overset{p}{\rightarrow} \frac{1}{\beta} = \mu$
+
+And
+
+$\displaystyle \lim_{n\to \infty} Pr\left( \mid \bar{\beta} - {\beta}\mid \right) = 1 \equiv \bar{\beta} \overset{p}{\rightarrow} {\beta}$
+
+It then follows that the sequence of M.L.E.s of $\beta$, $\hat{\beta}$, is a consistent sequence of M.L.E.s of $\beta$
 
 **7.6**: 14
 
