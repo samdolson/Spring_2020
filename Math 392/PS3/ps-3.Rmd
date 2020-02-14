@@ -232,7 +232,33 @@ It then follows that the sequence of M.L.E.s of $\beta$, $\hat{\beta}$, is a con
 
 **7.6**: 14
 
+The M.L.E., $\hat{p}$, is the proportion of butterflies in the sample with the special type of marking on their wings. Of note, this holds regardless of the sampling plan, as noted in the section *Sampling Plans* (pp.439-441) of the book. Therefore, using this method, we have:
 
+(A): $\hat{p} = \frac {5} {43}$
+
+And
+
+(B): $\hat{p} = \frac {3} {58}$ 
+
+Alternatively, and with greater difficulty, we can take the likelihood function using the Binomial distribution, written:
+
+$$f_n\left(\bar{x} \mid p \right) = {n \choose k} p ^ {x} \lex( 1 - p \right) ^ {n - x}$$
+
+Where $n$ denotes the total number of butterflies and $x$ denotes the number of butterflies with the special type of marking on their wings. 
+
+Let $L\left( p \right) = log \left( f_n\left(\bar{x} \mid p \right) \right)$
+
+Taking the derivative with respect to $p$ gives us: 
+
+$$\frac{\partial {L\left( p \right)}}{\partial p} = \frac{ \partial \left({log {n \choose x} + x log(p) + (n-x)log(1-p)} \right) } {\partial p} = \frac{x}{p} - \frac{n-x}{1-p}$$
+
+Setting this equation equal to zero, we then solve for $p$:
+
+$\frac{n-x}{1-p} = \frac{x}{p} \rightarrow p{\frac{n-x}{1-p}} = x \rightarrow \frac{1}{p} = \frac{n - x + x} {x} = \frac {n}{x}$
+
+Solving for $p$ gives us: 
+
+$p = \frac{x}{n}$, which confirms our above use of the sample proportion for the M.L.E. of p. 
 
 **7.6**: 23
 
