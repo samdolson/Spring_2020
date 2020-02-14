@@ -15,9 +15,9 @@ library(here)
 ## Note on PS3
 
 ### Time Taken
-Total Time on Exercises from the Book: X hours
-Solving Exercises from the Book: 4  1/2 hours
-LaTeX writeup of Exercises from the Book: 3 1/2 hours
+Total Time on Exercises from the Book: 9 1/2 hours
+Solving Exercises from the Book: 5  hours
+LaTeX writeup of Exercises from the Book: 4 1/2 hours
 
 ### Additional Notes
 * This Problem Set does not contain the Case Study. It will be turned in on Monday, 2/17/2020.
