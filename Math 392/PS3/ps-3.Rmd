@@ -242,7 +242,7 @@ And
 
 Alternatively, and with greater difficulty, we can take the likelihood function using the Binomial distribution, written:
 
-$$f_n\left(\bar{x} \mid p \right) = {n \choose x} p ^ {x} \left( 1 - p \right) ^ {n - x}$$
+$$f_n\left(\bar{x} \mid p \right) = {\binom {n} {x}} p ^ {x} \left( 1 - p \right) ^ {n - x}$$
 
 Where $n$ denotes the total number of butterflies and $x$ denotes the number of butterflies with the special type of marking on their wings. 
 
@@ -250,7 +250,7 @@ Let $L\left( p \right) = log \left( f_n\left(\bar{x} \mid p \right) \right)$
 
 Taking the derivative with respect to $p$ gives us: 
 
-$$\frac{\partial {L\left( p \right)}}{\partial p} = \frac{ \partial \left({log {n \choose x} + x log(p) + (n-x)log(1-p)}\right) } {\partial p} = \frac{x}{p} - \frac{n-x}{1-p}$$
+$$\frac{\partial {L\left( p \right)}}{\partial p} = \frac{ \partial \left({log {\binom{n} {x}} + x log(p) + (n-x)log(1-p)}\right) } {\partial p} = \frac{x}{p} - \frac{n-x}{1-p}$$
 
 Setting this equation equal to zero, we then solve for $p$:
 
@@ -267,6 +267,68 @@ Note, the mean is the first moment and the variance is the second moment. Their 
 (1): 1st Moment, $X_i = \frac{\alpha}{\alpha+\beta}$
 (2): 2nd Moment, $X_i^{2}= \frac{\alpha \left(\alpha + 1 \right)} {\left(\alpha + \beta \right) \left( \alpha + \beta +1 \right)}$
 
-We set these, respectively, equal to the sample moments $m_1$ and $m_2$, and then use relations (1) and (2) to solve for $\alpha$ and $\beta$. 
+We set these, $X_i$ and $X_i^{2}$ respectively, equal to the sample moments $m_1$ and $m_2$, and then use relations (1) and (2) to solve for $\alpha$ and $\beta$. 
 
+Using equation (1), we have:
 
+$\left(\alpha + \beta \right) m_1 = \alpha \rightarrow \beta m_1 = \alpha - \alpha m_1 \rightarrow \beta = \frac {\alpha}{m_1} - \alpha$
+
+Substituting this into equation (2), and solving for $\alpha$ we have:
+
+$\alpha \beta = {\left(\alpha + \beta \right) ^ {2}  \left( \alpha + \beta +1 \right)} m_2$
+
+It then follows:
+
+$$\begin {aligned} 
+  \frac {{\alpha}^{2}} {m_1} - {\alpha^ {2}} = 
+  \left( \alpha + \frac {\alpha} {m_1} - \alpha \right)^{2} \left( \alpha + \frac {\alpha} {m_1} - \alpha +1\right) m_2 \\ 
+  & = \left( \frac{\alpha}{m_1} \right) ^{2} \left( \frac{\alpha} {m_1} +1 \right) m_2
+  \end {aligned}$$
+
+$\alpha ^ {2} \left( \frac {1} {m_1} -1\right) = \alpha ^ {2} \left( \frac{1} {m_1^{2}} \right) \left( \frac {\alpha}{m_1} +1\right) m_2$
+
+$\rightarrow \frac {1} {m_1} -1 = \frac {1} {m_1^{2}} \left(\frac{\alpha}{m_1} \right) \left( \frac{\alpha}{m_1} + 1\right) m_2$
+
+$\rightarrow \left( \frac {1} {m_1} - 1 \right) \left( \frac{ m_1^{2}}{m_2}\right) = \frac{\alpha}{m_1} +1$
+
+$\rightarrow \left( \frac{m_1 \left( 1 - m_1 \right)}{m_2} \right) = \frac {\alpha} {m_1} +1$
+
+Thus
+
+$\alpha = m_1 \left( \frac{m_1 \left( 1 - m_1 \right)}{m_2}\right) - 1$
+
+Using this simplification of $\alpha$, we may now express $\beta$ as follows:
+
+$$ \begin {aligned} 
+   \beta = \frac{\alpha}{m_1} - \alpha \\
+    & = \alpha \left(\frac{1-m_1}{m_1}\right) \\
+    & = \left( \frac{\alpha}{m_1} - \alpha \right) m_1 \left( \left( \frac{m_1 \left( 1 - m_1 \right)}{m_2}\right) - 1\right) \\
+    & = \left( 1 - m_1 \right) \left( \frac{m_1 \left( 1 - m_1 \right)}{m_2}\right) - 1 
+\end {aligned}$$
+
+(A): We thus have: 
+
+$\hat{\alpha} = m_1 \left( \frac{m_1 \left( 1 - m_1 \right)}{m_2}\right) - 1$
+
+And
+
+$\hat{\beta} = \left( 1 - m_1 \right) \left( \frac{m_1 \left( 1 - m_1 \right)}{m_2}\right) -1$
+
+Where our method of moments estimator for $\theta$, $\hat{\theta} = \left( \hat{\alpha}, \hat{\beta} \right)$. 
+
+The likelihood function for the Beta distribution is: 
+
+$f_n \left( \alpha, \beta, \mid \bar{x} \right) = \prod \limits_{i=1}^{n} \frac {\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} x_i^{\alpha -1} \left( 1 - x_i \right) ^ {\beta -1}$
+
+Which we may rewrite as:
+
+$f_n \left( \alpha, \beta \mid \bar{x} \right) =  \frac {\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \prod \limits_{i=1}^{n}x_i^{\alpha -1} \prod \limits_{i=1}^{n}\left( 1 - x_i \right) ^ {\beta -1}$
+
+Letting $L \left( \alpha , \beta \mid \bar{x} \right) = log \left(f_n \left( \alpha, \beta, \mid \bar{x} \right) \right)$, we thus have: 
+
+$L \left( \alpha , \beta \mid \bar{x} \right) = n log (\Gamma(\alpha + \beta)) - n log (\Gamma(\alpha) - n log(\Gamma(\beta) + (\alpha -1) \sum\limits_{i=1}^{n} {log(x_i)} + (\beta -1) \sum \limits_{i=1}^{n} log(1-x_i)$
+
+We would then need to derive with respect to $\alpha$ and with respect to $\beta$. However, and I will freely admit this is a bit *hand-wavey*, we may instead note that the M.L.E. of $\theta$ involves the products $\prod \limits_{i=1}^{n}x_i$
+and $\prod \limits_{i=1}^{n} \left( 1 - x_i \right)$. By comparison, the method of moments estimator for $\theta$ noted in (A) involves the *sum* of these values (noting the definition of the method of moments estimator). As such, we may note that the method of moments estimator for $\theta$ and the M.L.E. of $\theta$ are not equal. 
+
+As a very fun side note, there is no closed--form solution to the system of equations noted above (for the derivatives of the Log-likelihood function with respect to $\alpha$ and $\beta$). This is also grounds for proof that the method of moments estimator and the M.L.E. are not equal as it would (hopefully) simplify to the equations noted as the estimators in (A) if the two were equal. 
