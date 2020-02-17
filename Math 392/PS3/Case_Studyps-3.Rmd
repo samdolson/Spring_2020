@@ -273,13 +273,9 @@ $\beta_{new} = \beta_{old} + n$
 
 Using the above form, we then compute this estimate for each county, given in the below table. 
 
-```{r, eval = TRUE, echo=TRUE}
-aba <- sum(countypop$mle)
-abab <- sum(countypop$pop_2015)
-alpha2 <- alpha + aba
-beta2 <- beta + abab
-```
+Note, $n=1$ for each county, so $\beta_{new} = .7144 + 1 = 1.7144$. 
 
+Similarly, $\alpha_{new} = 17.87 + MLE_{i}$, where $MLE_{i}$ is the MLE of county i.   
 
 ```{r results = "asis", eval = TRUE, echo=TRUE}
 set.seed(847)
@@ -288,7 +284,7 @@ data(countypop)
 
 countypop <- countypop %>%
   mutate(true_rate = rgamma(n(), alpha, beta), n_cases = rpois(n(), x*pop_2015), 
-         mle = x * pop_2015, bayes = pop_2015*alpha2/beta2) 
+         mle = x * pop_2015, bayes = rgamma(n(), alpha+mle, beta+1)) 
 
 library(xtable)
 print(xtable(slice(countypop, 1:10)), comment = FALSE)
@@ -313,11 +309,11 @@ The MLE estimates compared to population (log normalized) is given on the left-h
 
 ### Plot 2: Bayes
 
-The Bayes estimates compared to population (log normalized) is given on the right-hand side. The Bayes plot appears to have a non-linear (quadratic or polynomial) fit to the data, though much smoother than the MLE plot. 
+Similar to the MLE, the Bayes estimates compared to population (log normalized) is given on the right-hand side. The Bayes plot appears to have a non-linear (quadratic or polynomial) fit to the data as well. 
 
 ### Comparison of Both Plots
 
-Both the MLE and Bayes estimates appear to have a non-linear (quadratic or polynomial) relationship to population (log normalized). However, the Bayes estimates create a smoother plot, particularly near the right-tail (population values 5 [$10^5$] and greater). Taken together, these estimates appear to indicate areas of the United States tend with high population ($10^5$ and greater) tend to have increasing estimates of having the cancer. 
+Both the MLE and Bayes estimates appear to have a non-linear (quadratic or polynomial) relationship to population (log normalized). Taken together, these estimates appear to indicate areas of the United States tend with high population ($10^5$ and greater) tend to have increasing estimates of having the cancer. 
 
 **Exercise 7**: Remake the US map two ways: one plotting the MLE and the other with the Bayes Estimator. What do you think is the cause of the dominant spatial pattern in the former? What about for the latter?
 
@@ -387,7 +383,7 @@ It appears the cause of the dominant spatial pattern is a result of where popula
 
 Similar to the MLE spatial plot, the dominant trend of the Bayes plot is a clustering around highly populated (and urban) areas. 
 
-Given the prompt motivating this commentary, I have a lingering fear the Bayes estimate was constructed inappropriately. However, if we interprete the Bayes estimate as given in this case study, it appears very similar (but not exactly one-to-one) to the MLE.  
+Given the prompt motivating this commentary, I have a lingering fear the Bayes estimate was constructed inappropriately. However, if we interprete the Bayes estimate as given in this case study, it is similar (but not the same as) to the MLE.  
 
 ### Comparison of Both Plots
 
