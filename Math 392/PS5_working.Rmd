@@ -1,5 +1,5 @@
 ---
-title: "MATH 392 Problem Set 4"
+title: "MATH 392 Problem Set 5"
 author: "Sam D. Olson"
 output: 
   pdf_document
@@ -26,11 +26,11 @@ Random Sample $X_1, ..., X_n$ taken from the Uniform distribution on the interva
 
 $\forall {\theta}$, how large must a random sample be taken in order that:
 
-$Pr\left(\mid max\left(X_1, ..., X_n\right) - \theta \mid \leq 0.1 \theta \right) \geq 0.95$
+$PR\left(\mid max\left(X_1, ..., X_n\right) - \theta \mid \leq 0.1 \theta \right) \geq 0.95$
 
-Let $U = max(X_1, ..., X_n)$
+Let $\hat{X} = max(X_1, ..., X_n)$
 
-Note the c.d.f. of $U=max(X_1, ..., X_n)$ is
+Note the c.d.f. of $\hat{X}=max(X_1, ..., X_n)$ is
 
 $$\begin{aligned}
 f\left( u \right)  = \begin{Bmatrix} 
@@ -170,7 +170,7 @@ qchisq(.5, df=4)
 
 (4): $\tilde{x}_{m=4} = qchisq(.5, df=4) = 3.36$
 
-Using the above information, we then make the following plots. Note, though the location of the titles change, red denotes the mode, blue denotes the mean, and green denotes the median.
+Using the above information, we then make the following plots. Note, red denotes the mode, green denotes the median, and blue denotes the mean. Full disclosure: I couldn't find a consistent working (and aesthetically pleasing) way to display labels on the below vertical lines. Very open to your thoughts. 
 
 ``` {r, eval=TRUE, echo=TRUE}
 eq = function(x){dchisq(x, df = 1)}
@@ -179,9 +179,6 @@ ggplot(data.frame(x=c(-1, 10)), aes(x=x)) +
   geom_vline(colour="red", xintercept=0) + 
   geom_vline(colour="blue",xintercept=1) + 
   geom_vline(colour="green", xintercept=0.45)+
-  geom_text(x=-.4, y=0.2, label="mode") +
-  geom_text(x=1.35, y=0, label="mean") +
-  geom_text(x=.95, y=0.2, label="median") +
   labs(title="Chi-Squared with 1 df.") +
   theme_minimal()
 ```
@@ -193,9 +190,7 @@ ggplot(data.frame(x=c(-1, 10)), aes(x=x)) +
   geom_vline(colour="red",xintercept=0) + 
   geom_vline(colour="blue", xintercept=2) + 
   geom_vline(colour="green", xintercept=1.39) +
-  geom_text(x=0.4, y=0, label="mode") +
-  geom_text(x=2.5, y=0, label="mean") +
-  geom_text(x=0.8, y=0.05, label="median") +
+  geom_text(x=0, y=0, label="test") +
   labs(title="Chi-Squared with 2 df.") +
   theme_minimal()
 ```
@@ -207,23 +202,17 @@ ggplot(data.frame(x=c(-1, 10)), aes(x=x)) +
   geom_vline(colour="red",xintercept=1) + 
   geom_vline(colour="blue", xintercept=3) + 
   geom_vline(colour="green",xintercept=2.37) +
-  geom_text(x=0.5, y=0, label="mode") +
-  geom_text(x=3.4, y=0, label="mean") +
-  geom_text(x=1.8, y=0, label="median") +
   labs(title="Chi-Squared with 3 df.") +
   theme_minimal()
 ```
 
 ``` {r, eval=TRUE}
 eq = function(x){dchisq(x, df = 4)}
-ggplot(data.frame(x=c(-2, 10), y=c(-1, .2)), aes(x=x)) + 
+ggplot(data.frame(x=c(-1, 10)), aes(x=x)) + 
   stat_function(fun=eq) + 
   geom_vline(color="red",xintercept=2) +
   geom_vline(color="blue",xintercept=4) +
   geom_vline(color="green",xintercept=3.36)+
-  geom_text(x=1.5, y=0, label="mode") +
-  geom_text(x=2.9, y=0, label="mean") +
-  geom_text(x=4.5, y=0, label="median") +
   labs(title="Chi-Squared with 4 df.") +
   theme_minimal()
 ```
@@ -291,3 +280,142 @@ Therefore, we create a variable $U$ using a product (a division in this case) of
 $U= \frac{Y}{\left(\frac{Z}{3}\right)^\frac{1}{2}} = \frac{\left(X_1+X_2\right)}{\sqrt 2 \left(\frac{\left(X_3^2 + X_4^2 + X_5^2\right)}{3}\right)^\frac{1}{2}}$ has the t distribution with 3 degrees of freedom. 
 
 Thus, we may choose a constant $c=\sqrt\frac{3}{2}$, noting $\frac{1}{\frac { \sqrt 2} {\sqrt 3}}= \frac{\sqrt 3 }{\sqrt 2}$, then the given condition will be satisfied. 
+
+\newpage
+
+## Case Study: German Tank Problem
+
+Let's pick up the example that we began in class but make the simplifying assumption that we're studying a process where our sample is drawn from the continuous distribution, $X_1, X_2, \ldots, X_n \sim \textrm{Unif}(0, \theta)$, but we're still interested in estimating $\theta$. The MLE and Method of Moments estimators are the same:
+
+$$\begin{aligned}
+\hat{\theta}_{MLE} &= \textrm{max}(X_1, X_2, \ldots, X_n) = X_{max} \\
+\hat{\theta}_{MOM} &= 2 \bar{X} \\
+\end{aligned}$$
+
+1. Calculate the Bias What happens in the asymptote?
+
+For $\theta_{MLE}$ we have:
+
+Note, the sampling distribution to $\theta_{MLE}$  is given by:
+
+$$\begin{aligned}
+f_{\theta_{MLE}} \left( x \right) =\begin{Bmatrix} 
+n \frac{x^{n-1}}{\theta^n} \ for\ 0 \leq x \leq \theta \\
+0 \ \ otherwise
+\end{Bmatrix}
+\end{aligned}$$
+
+Thus, we may evaluate $E_{\theta_{MLE}} (X) = \int \limits_{0}^{\theta} x f_{\theta_{MLE}} dx = \int \limits_{0}^{\theta} x n \frac{x^{n-1}}{\theta^n} dx = \frac{n x ^{n+1}}{(n+1)\theta^n} \Big|_0^\theta = \frac{n}{n+1} \theta$
+
+Thus, we have:
+
+$Bias_{\theta_{MLE}}= E_{\theta_{MLE}} \left( \hat\theta\right) - \theta = \frac{n}{n+1}\theta - \theta = - \frac{1}{n+1}\theta$
+
+For $\theta_{MOM}$ we have:
+
+$E_{\theta_{MOM}}(X) =  \int \limits_{0}^{\theta} x \frac{1}{\theta} dx = \frac{x^2}{2\theta} \Big|_0^\theta  = \frac{\theta}{2}$
+
+$Bias_{\theta_{MOM}}= E_{\theta_{MOM}} \left( \hat\theta\right) - \theta = \frac{2 \theta} {2} - \theta = \theta - \theta = 0$
+
+### Commentary
+
+The above results indicate the MLE estimate is biased (but unbiased asymptotically as n increases) and the MOM estimate is unbiased.
+
+### Note
+
+The pdf of $X_{max}$ is $nF^{n - 1}(x)f(x).
+
+2. Calculate the Variance What happens in the asymptote?
+
+For $\theta_{MLE}$ we have:
+
+$E_{\theta_{MLE}} (X^2) = \int \limits_{0}^{\theta} x^2 f_{\theta_{MLE}} dx = \int \limits_{0}^{\theta} x^2 n \frac{x^{n-1}}{\theta^n} dx = \frac{n x ^{n+2}}{(n+2)\theta^n} \Big|_0^\theta = \frac{n}{n+2} \theta^2$
+
+$Var_{\theta_{MLE}}= E_{\theta_{MLE}} \left( {\hat\theta} ^ {2} \right) - \left(E_{\theta_{MLE}} \left( {\hat\theta}\right)\right) ^ {2}$
+
+$=\frac{n}{n+2}\theta^2 - \left( \frac{n}{n+1} \theta \right)^2 = \frac{n}{ \left( n+1 \right) \left(n+2 \right)} \theta^2$
+
+For $\theta_{MOM}$ we have:
+
+$E_{\theta_{MOM}}(X^2) =  \int \limits_{0}^{\theta} x^2 \frac{1}{\theta} dx = \frac{x^3}{3\theta} \Big|_0^\theta  = \frac{\theta}{3}$
+
+Thus, we have:
+
+$Var_{\theta_{MOM}}= E_{\theta_{MOM}} \left( {\hat\theta} ^ {2} \right) - \left(E_{\theta_{MOM}} \left( {\hat\theta}\right)\right) ^ {2}$
+
+$= \frac {\theta^2}{3} - \left( \frac{\theta}{2}\right)^2 = \frac{\theta^2}{3} - \frac{\theta^2}{4} = \frac{\theta^2}{12}$
+
+Thus:
+
+$V_\theta \left( \hat{\theta}_n \right) = \frac{4}{n^2} n V_\theta \left( X\right) = \frac{4}{n^2} n \frac{\theta^2}{12} = \frac{\theta^2} {3n}$
+
+### Commentary
+
+Asymptotically, both variances converge to 0 (as n increases).
+
+3. Simulate and do ggridges plot to show convergence/consistency
+
+``` {r, echo=TRUE, eval=TRUE}
+library(ggridges)
+set.seed(42)
+
+# Calculate and simulate means
+
+mle_mean <- rep(NA, 5000)
+mom_mean <- rep(NA, 5000)
+
+for (i in 1:500) {
+  x <- sample(1:100, 1, replace=T)
+  mle_mean[i] <- max(x)
+  mom_mean[i] <- 2*mean(x)
+}
+
+# Calculate Variance
+
+mle_var <- rep(NA, 5000)
+mom_var <- rep(NA, 5000)
+
+x_count <- (1:5000)
+
+for (i in 1:5000) {
+  mle_var[i] <- ((as.numeric(mle_mean[i]))^2) * as.numeric(x_count[i]) / ((as.numeric(x_count[i]) + 1) * (as.numeric(x_count[i]) + 2))
+  mom_var[i] <- (as.numeric(mom_mean[i])^2) / (as.numeric(x_count[i]) *3)
+}
+
+moms <- rep(NA, 5000)
+mles <- rep(NA, 5000)
+
+# Naming convention for grouping later
+
+for (i in 1:5000) {
+moms[i] <- "mom"
+mles[i] <- "mle"
+}
+
+# Coerce into one dataframe for ggridges
+
+mom_est <- data.frame(cbind(x_count, moms, mom_mean, mom_var))
+mle_est <- data.frame(cbind(x_count, mles, mle_mean, mle_var))
+
+mom_est <- mom_est %>% 
+  rename(
+    estimate_mean = mom_mean,
+    estimate_var = mom_var,
+    type = moms
+    )
+
+mle_est <- mle_est %>% 
+  rename(
+    estimate_mean = mle_mean,
+    estimate_var = mle_var,
+    type= mles
+    )
+
+total <- rbind(mle_est, mom_est)
+
+ggplot(total, aes(x = estimate_mean, y = type)) + geom_density_ridges()
+
+ggplot(total, aes(x = estimate_var, y = type)) + geom_density_ridges()
+
+
+```

@@ -1,0 +1,55 @@
+---
+title: "Reflection Week 5 - Notes"
+author: "Sam D. Olson"
+output:
+  pdf_document: default
+  html_document:
+    highlight: pygments
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Your reading reflection document should be about 1-2 pages.  I have provided a few potential questions you can use to frame your reflections but you are not required to answer all (or even any) of these questions.  Your reflections should do more than just summarize the readings.  The primary goal is to reflect on how what you learned in the readings will impact you as a researcher.  (Delete this paragraph and any of the following questions that you don't tackle before turning in your reflections.)
+
+### Potential questions to answer
+
+1. Summarize two or three key points.
+1. What ideas from the readings do you think you will utilize most in your project?
+1. Are there parts of the readings where you disagree with the authors?  If so, how and why?
+1. What parts of the readings are unclear?  What is confusing about these parts?
+1. For the topic discussed, are there important ideas that are missing from the author's argument?
+
+## General Thoughts
+
+*: Making a less "black box" method, akin to the issue for 'Vote at Home' project. Related to forests, should we have an especially predictive, but not easily explained model?
+
+*: Taking the above point, are we looking to validate theory, or are we intending to maximize the predictive power of the models? 
+
+*: Netflix example---I believe the 'best' model wasn't actually incorporated (see Art of Statistics book)
+
+*: The Shmueli (2010) article, particularly its concluding seciton, details the differences of data science and statistics, bearing in mind the analogies and examples noted in Day 1 of Math 241: Data Science. 
+
+*: From the 'book'---Generative art is an interesting facet of data viz, as it incorporates guidelines noted in this chapter though also with its own guidelines. This may, and I posit is, related to its purpose being for purely visual (aethetic) pleasure.
+
+*: All readings were appreciated! 
+
+### Notes from Readings
+*: Explanatory models ~ Theoretical models
+
+*: “Using complex predictors may be unpleasant, but the soundest path is to go for predictive accuracy first, then try to understand why”
+
+*: "Multicollinearity is not a problem unless either
+(i) the individual regression coefficients are of interest, or (ii) attempts are made to isolate the contribution of one explanatory variable to Y, without the influence of the other explanatory variables. Multicollinearity will not affect the ability of the model to predict."
+
+*: In contrast to explanatory power, statistical significance plays a minor or no role in assessing predictive performance. In fact, it is sometimes the case that removing inputs with small coefficients, even if they are statistically significant, results in improved prediction accuracy
+
+*: I have polarized explaining and predicting in this article in an effort to highlight their fundamental differences. However, rather than considering them as extremes on some continuum, I consider them as two dimensions
+
+*: In terms of model evaluation and scientific reporting, researchers should report both the explanatory and predictive qualities of their models
+
+*: “Typically the more complex we make the model, the lower the bias but the higher the variance.”
+
+*: As a discipline, we must acknowledge the difference between explanatory, predictive and descriptive modeling, and integrate it into statistics education of statisticians and nonstatisticians, as early as possible but most importantly in “research methods” courses. $\rightarrow$ Good job, Kelly! Bully for you!
