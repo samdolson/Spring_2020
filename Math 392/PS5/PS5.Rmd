@@ -1,0 +1,152 @@
+---
+title: "MATH 392 Problem Set 5"
+author: "Sam D. Olson"
+output: 
+  pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(here)
+```
+
+
+## Exercise from the book
+
+**8.5 # 4**
+
+(Q): Suppose that $X_1, ..., X_n$ form a random sample from the normal distribution with unkown mean $\mu$ and unknown variance $\sigma^2$. How large a random sample must be taken in order that there will be a confidence interval for $\mu$ with confidence coefficient 0.95 and length less than $0.01 \sigma$? 
+
+(A): 
+
+Note: $\frac{\sqrt{n} \left( \bar{X}_n - \mu \right)} {\sigma}$ has a standard normal distribution. 
+
+It then follows:
+
+$Pr \left( -1.96 < \frac{\sqrt{n} \left( \bar{X}_n - \mu \right)} {\sigma} < 1.96 \right) = 0.95$
+
+We isolate the $\mu$ in the above relation, giving us: 
+
+$Pr \left( \bar{X}_n  -1.96 \frac{\sigma}{\sqrt{n}} < \mu  < \bar{X}_n + 1.96 \frac{\sigma}{\sqrt{n}}  \right) = 0.95$
+
+THus, we now have the confidence interval: $\left( \bar{X}_n  -1.96 \frac{\sigma}{\sqrt{n}} ,  \bar{X}_n + 1.96 \frac{\sigma}{\sqrt{n}}  \right)$
+
+As the above interval included $\bar{X}_n$ on both ends of the interval (taking it as a constant for our following observation), we may then note the length of this interval is $1.96 \frac{\sigma}{\sqrt{n}} \cdot  2 = 3.92 \frac{\sigma}{\sqrt{n}}$
+
+If we want a length less than $0.01 \sigma$, then we have: 
+
+$3.92 \frac{\sigma}{\sqrt{n}} < 0.01 \sigma  \rightarrow \frac{3.92}{\sqrt{n}} < 0.01$
+
+Thus we have, for n positive (given the context of the problem):
+
+$3.92 < \sqrt{n} \cdot 0.01 \rightarrow 392 < \sqrt{n} \rightarrow 392^2 < n$
+
+Taking note of the strict inequality (and the fact $392^2 = 153,664$), we need an n sample of size *at least* 153,665 to satisfy the stated condition. 
+
+\newpage
+
+## Case Study: German Tank Problem
+
+Let's pick up the example that we began in class but make the simplifying assumption that we're studying a process where our sample is drawn from the continuous distribution, $X_1, X_2, \ldots, X_n \sim \textrm{Unif}(0, \theta)$, but we're still interested in estimating $\theta$. The MLE and Method of Moments estimators are the same:
+
+$$\begin{aligned}
+\hat{\theta}_{MLE} &= \textrm{max}(X_1, X_2, \ldots, X_n) = X_{max} \\
+\hat{\theta}_{MOM} &= 2 \bar{X} \\
+\end{aligned}$$
+
+1. Calculate the bias of each estimator. If either one is biased, propose an additional estimator that corrects that bias (in the spirit of how $s^2$ is the bias-corrected version of $\hat{\sigma}^2$) . What happens to the bias of these estimators as sample size grows? Plot the relationship between sample size and bias for each estimator (two lines on one plot).
+
+(A): 
+
+For $\theta_{MLE}$ we have:
+
+Note, the sampling distribution to $\theta_{MLE}$  is given by:
+
+$$\begin{aligned}
+f_{\theta_{MLE}} \left( x \right) =\begin{Bmatrix} 
+n \frac{x^{n-1}}{\theta^n} \ for\ 0 \leq x \leq \theta \\
+0 \ \ otherwise
+\end{Bmatrix}
+\end{aligned}$$
+
+Thus, we may evaluate $E_{\theta_{MLE}} (X) = \int \limits_{0}^{\theta} x f_{\theta_{MLE}} dx = \int \limits_{0}^{\theta} x n \frac{x^{n-1}}{\theta^n} dx = \frac{n x ^{n+1}}{(n+1)\theta^n} \Big|_0^\theta = \frac{n}{n+1} \theta$
+
+Thus, we have:
+
+$Bias_{\theta_{MLE}}= E_{\theta_{MLE}} \left( \hat\theta\right) - \theta = \frac{n}{n+1}\theta - \theta = - \frac{1}{n+1}\theta$
+
+(B):
+
+For $\theta_{MOM}$ we have:
+
+$E_{\theta_{MOM}}(X) =  \int \limits_{0}^{\theta} x \frac{1}{\theta} dx = \frac{x^2}{2\theta} \Big|_0^\theta  = \frac{\theta}{2}$
+
+$Bias_{\theta_{MOM}}= E_{\theta_{MOM}} \left( \hat\theta\right) - \theta = \frac{2 \theta} {2} - \theta = \theta - \theta = 0$
+
+### Commentary
+
+The above results indicate the MLE estimate is biased (but unbiased asymptotically as n increases) and the MOM estimate is unbiased.
+
+2. Calculate the variance of each estimator (including any new bias-corrected ones). What happens as sample size grows? Create an analogous plot to the one above.
+
+### Note
+
+The pdf of $X_{max}$ is $nF^{n - 1}(x)f(x).
+
+2. Calculate the Variance What happens in the asymptote?
+
+(A): 
+
+For $\theta_{MLE}$ we have:
+
+$E_{\theta_{MLE}} (X^2) = \int \limits_{0}^{\theta} x^2 f_{\theta_{MLE}} dx = \int \limits_{0}^{\theta} x^2 n \frac{x^{n-1}}{\theta^n} dx = \frac{n x ^{n+2}}{(n+2)\theta^n} \Big|_0^\theta = \frac{n}{n+2} \theta^2$
+
+$Var_{\theta_{MLE}}= E_{\theta_{MLE}} \left( {\hat\theta} ^ {2} \right) - \left(E_{\theta_{MLE}} \left( {\hat\theta}\right)\right) ^ {2}$
+
+$=\frac{n}{n+2}\theta^2 - \left( \frac{n}{n+1} \theta \right)^2 = \frac{n}{ \left( n+1 \right) \left(n+2 \right)} \theta^2$
+
+(B): 
+
+For $\theta_{MOM}$ we have:
+
+$E_{\theta_{MOM}}(X^2) =  \int \limits_{0}^{\theta} x^2 \frac{1}{\theta} dx = \frac{x^3}{3\theta} \Big|_0^\theta  = \frac{\theta}{3}$
+
+Thus, we have:
+
+$Var_{\theta_{MOM}}= E_{\theta_{MOM}} \left( {\hat\theta} ^ {2} \right) - \left(E_{\theta_{MOM}} \left( {\hat\theta}\right)\right) ^ {2}$
+
+$= \frac {\theta^2}{3} - \left( \frac{\theta}{2}\right)^2 = \frac{\theta^2}{3} - \frac{\theta^2}{4} = \frac{\theta^2}{12}$
+
+Thus:
+
+$V_\theta \left( \hat{\theta}_n \right) = \frac{4}{n^2} n V_\theta \left( X\right) = \frac{4}{n^2} n \frac{\theta^2}{12} = \frac{\theta^2} {3n}$
+
+3. Combine the notions of bias and variance into a third plot that shows how the Mean Squared Error changes as a function of sample size. Based on this plot, which estimator would you use and why?
+
+Note, the formula for the M.S.E. is given as follows:
+
+$M.S.E. \left( \hat{\theta} \right) = Var (\hat{\theta}) + Bias(\hat{\theta})^2$
+
+Thus, using the above relations we have: 
+
+(A): 
+
+$M.S.E. \left( \theta_{MLE} \right) = Var (\theta_{MLE}) + Bias(\theta_{MLE})^2 = \frac{n}{ \left( n+1 \right) \left(n+2 \right)} \theta^2 + \left( - \frac{1}{n+1}\theta \right)^2 = \frac{n \theta^2}{ \left( n+1 \right) \left(n+2 \right)} + \frac{\theta^2}{ \left( n+1\right) ^2} = \frac{2 \theta^2 } {(n+1)(n+2)}$
+
+(B): 
+
+Similarly, for the MOM we have:
+
+$M.S.E. \left( \theta_{MOM} \right) = Var (\theta_{MOM}) + Bias(\theta_{MOM})^2 = \frac{\theta^2} {3n} + 0^2 = \frac{\theta^2} {3n}$
+
+4. Using the method that we saw in class based on Markov's Inequality, assess whether each of these estimators is consistent.
+
+5. What is the sampling distribution of each statistic? For the MOM, consider both the Irwin-Hall distribution and a sensible approximation based on the Central Limit Theorem.
+
+6. Create a plot of the sampling distribution of each estimator using $n = 10$. Construct the empirical distribution via simulation and overlay the appropriate exact or approximate analytical form (each plot should be a curve overlayed on a histogram. See slides.)
+
+7. Form two different 95% confidence intervals for $\theta$ by using pivotal statistics inspired by each estimator.
+
