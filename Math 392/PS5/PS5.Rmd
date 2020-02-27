@@ -8,6 +8,7 @@ output:
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, eval = FALSE, fig.align = "center", 
                       message = FALSE, warning = FALSE)
+library(ggplot2)
 library(tidyverse)
 library(knitr)
 library(here)
@@ -102,9 +103,31 @@ $Bias_{\theta_{adj}}= E_\theta \left( \theta_{adj} \right) - \theta = \frac{n+1}
 
 Thus, we note $\theta_{adj}$ is the bias adjusted MLE estimator.  
 
-### Plot & Commentary
+### Plot
+
+```{r echo=TRUE, eval=TRUE, fig.height=3}
+theta <- 250
+n <- (1:5000)
+
+mle_bias <- rep(NA, 5000) 
+mom_bias <- rep(NA, 5000)
+for (i in 1:5000){ 
+  mle_bias[i] <- (1 / (n[i] + 1)) * theta  
+  mom_bias <- 0
+}
+df <- data.frame(n,mle_bias,mom_bias)
+
+ggplot(df, aes(n)) +                  
+  geom_line(aes(y=mle_bias), colour="red") +  
+  geom_line(aes(y=mom_bias), colour="green") +
+  geom_text(x=200, y=20, label="MLE") +
+  geom_text(x=2000, y=5, label="MOM, MLE adjusted") + 
+  ggtitle("Bias of MLE, MOM, and adjusted MLE Estimators") +
+  labs(y="Bias", x = "n (observations)")
+```
 
 The above results indicate the MLE estimate is biased (but unbiased asymptotically as n increases) and the MOM estimate is unbiased.
+
 
 ***2.*** Calculate the variance of each estimator (including any new bias-corrected ones). What happens as sample size grows? Create an analogous plot to the one above.
 
@@ -147,6 +170,35 @@ $Var_\theta \left(\theta_{adj} \right) = \left( \frac{n+1}{n} \right)^2 \cdot \f
 
 ### Plot & Commentary
 
+```{r echo=TRUE, eval=TRUE, fig.heigh=3}
+theta <- 250
+n <- (1:50)
+
+mle_var <- rep(NA, 50) 
+mom_var <- rep(NA, 50)
+mle_adj_var <- rep(NA, 50)
+for (i in 1:50){ 
+  mle_var[i] <- ((theta ^ 2) * (n[i]) )/ (((n[i] + 1) ^ 2) * (n[i] + 2))
+  mom_var[i] <- (theta ^ 2) / (3 * n[i])
+  mle_adj_var[i] <- (theta ^ 2) / ((n[i] * (n[i] +2)))
+}
+
+df <- data.frame(n,mle_var,mom_var, mle_adj_var)
+
+ggplot(df, aes(n)) +                  
+  geom_line(aes(y=mle_var), colour="red") +  
+  geom_line(aes(y=mom_var), colour="green") +
+  geom_line(aes(y=mle_adj_var), colour="blue") +
+  geom_text(x=2.5, y=1000, label="MLE") +
+  geom_text(x=5, y=20000, label="MOM") +
+  geom_text(x=10, y=5000, label="MLE adj.") +
+  ggtitle("Variance of MLE, MOM, and adjusted MLE Estimators") +
+  labs(y="variance", x = "n (observations)")
+```
+
+As the sample size grows, the variance of all three estimators converge to 0, though the mle estimator converges fastest (relatively), followed by the adjusted mle estimator. 
+
+
 ***3.*** Combine the notions of bias and variance into a third plot that shows how the Mean Squared Error changes as a function of sample size. Based on this plot, which estimator would you use and why?
 
 Note, the formula for the M.S.E. is given as follows:
@@ -176,11 +228,35 @@ $M.S.E. \left( \theta_{adj} \right) = Var (\theta_{adj}) + Bias(\theta_{adj})^2 
 
 ### Plot & Commentary
 
-$\theta_{MLE} = \frac{2 \theta^2 } {(n+1)(n+2)}$
+```{r echo=TRUE, eval=TRUE, fig.heigh=3}
+theta <- 250
+n <- (1:50)
 
-$\theta_{MOM} = \frac{\theta^2} {3n}$
+mle_mse <- rep(NA, 50) 
+mom_mse <- rep(NA, 50)
+mle_adj_mse <- rep(NA, 50)
+for (i in 1:50){ 
+  mle_mse[i] <- ((theta ^ 2) * 2 )/ ((n[i] + 1) * (n[i] + 2))
+  mom_mse[i] <- (theta ^ 2) / (3 * n[i])
+  mle_adj_mse[i] <- (theta ^ 2) / ((n[i] * (n[i] +2)))
+}
 
-$\theta_{adj} = \frac{1}{n \left( n+2 \right)} \theta^2$
+df <- data.frame(n,mle_mse,mom_mse, mle_adj_mse)
+
+ggplot(df, aes(n)) +                  
+  geom_line(aes(y=mle_mse), colour="red") +  
+  geom_line(aes(y=mom_mse), colour="green") +
+  geom_line(aes(y=mle_adj_mse), colour="blue") +
+  geom_text(x=3.5, y=500, label="MLE adj.") +
+  geom_text(x=20, y=2500, label="MOM") +
+  geom_text(x=8, y=3000, label="MLE") + 
+  ggtitle("MSE of MLE, MOM, and adjusted MLE Estimators") +
+  labs(y="MSE", x = "n (observations)")
+```
+
+Note, as shown in the above plot, the adjusted MLE estimate converges 'fastest' to 0. Thus, we would anticipate that for a smaller number of observations, the adjusted MLE will produce estimates with lower MSE than the unadjusted MLE and the MOM estimators. 
+
+Though, if I'm being cheeky, for $n=1$, both the adjusted MLE and the MOM have the same MSE. (In that instance...flip a coin? Or in all seriousness, get one more observation and use the adjusted MLE.)
 
 
 ***4.*** Using the method that we saw in class based on Markov's Inequality, assess whether each of these estimators is consistent.
@@ -189,7 +265,7 @@ We can demonstrate consistency for each estimator by showing the following two r
 
 (1): $\lim_{n \rightarrow \infty} Var\left( \hat{\theta}_n \right) = 0$
 
-(2): $\lim_{n \rightarrow \infty} Bias \left( \hat{\theta}_n \right) = 0 $
+(2): $\lim_{n \rightarrow \infty} Bias \left( \hat{\theta}_n \right) = 0$
 
 Thus, if both (1) and (2) hold for an estimator $\hat{\theta}_n$, we may take advantage of Markov's Inequality, noting that for any constant c ($c>0$):
 
