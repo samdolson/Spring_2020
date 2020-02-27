@@ -16,7 +16,7 @@ library(here)
 
 ## Exercise from the book
 
-**8.5 # 4**
+**8.5 #4**
 
 (Q): Suppose that $X_1, ..., X_n$ form a random sample from the normal distribution with unkown mean $\mu$ and unknown variance $\sigma^2$. How large a random sample must be taken in order that there will be a confidence interval for $\mu$ with confidence coefficient 0.95 and length less than $0.01 \sigma$? 
 
@@ -57,9 +57,10 @@ $$\begin{aligned}
 \hat{\theta}_{MOM} &= 2 \bar{X} \\
 \end{aligned}$$
 
-1. Calculate the bias of each estimator. If either one is biased, propose an additional estimator that corrects that bias (in the spirit of how $s^2$ is the bias-corrected version of $\hat{\sigma}^2$) . What happens to the bias of these estimators as sample size grows? Plot the relationship between sample size and bias for each estimator (two lines on one plot).
+***1.*** Calculate the bias of each estimator. If either one is biased, propose an additional estimator that corrects that bias (in the spirit of how $s^2$ is the bias-corrected version of $\hat{\sigma}^2$) . What happens to the bias of these estimators as sample size grows? Plot the relationship between sample size and bias for each estimator (two lines on one plot).
 
-(A): 
+
+**(A):** 
 
 For $\theta_{MLE}$ we have:
 
@@ -78,7 +79,8 @@ Thus, we have:
 
 $Bias_{\theta_{MLE}}= E_{\theta_{MLE}} \left( \hat\theta\right) - \theta = \frac{n}{n+1}\theta - \theta = - \frac{1}{n+1}\theta$
 
-(B):
+
+**(B):**
 
 For $\theta_{MOM}$ we have:
 
@@ -86,19 +88,27 @@ $E_{\theta_{MOM}}(X) =  \int \limits_{0}^{\theta} x \frac{1}{\theta} dx = \frac{
 
 $Bias_{\theta_{MOM}}= E_{\theta_{MOM}} \left( \hat\theta\right) - \theta = \frac{2 \theta} {2} - \theta = \theta - \theta = 0$
 
-### Commentary
+**(C):** Unbiased MLE estimator
+
+Let $\theta_{adj}$ be the adjusted MLE estimator. We aim to show $\theta_{MLE}$ is bias adjusted. 
+
+Define $\theta_{adj}$ as follows:
+
+$\theta_{adj} = \frac{n+1}{n} max(X_1, ..., X_n) = \frac{n+1}{n} X_{max}$
+
+Note, and referring back to the Bias formulation in (A): 
+
+$Bias_{\theta_{adj}}= E_\theta \left( \theta_{adj} \right) - \theta = \frac{n+1}{n} \frac{n}{n+1} \theta - \theta = \theta - \theta = 0$
+
+Thus, we note $\theta_{adj}$ is the bias adjusted MLE estimator.  
+
+### Plot & Commentary
 
 The above results indicate the MLE estimate is biased (but unbiased asymptotically as n increases) and the MOM estimate is unbiased.
 
-2. Calculate the variance of each estimator (including any new bias-corrected ones). What happens as sample size grows? Create an analogous plot to the one above.
+***2.*** Calculate the variance of each estimator (including any new bias-corrected ones). What happens as sample size grows? Create an analogous plot to the one above.
 
-### Note
-
-The pdf of $X_{max}$ is $nF^{n - 1}(x)f(x).
-
-2. Calculate the Variance What happens in the asymptote?
-
-(A): 
+**(A):** 
 
 For $\theta_{MLE}$ we have:
 
@@ -106,9 +116,10 @@ $E_{\theta_{MLE}} (X^2) = \int \limits_{0}^{\theta} x^2 f_{\theta_{MLE}} dx = \i
 
 $Var_{\theta_{MLE}}= E_{\theta_{MLE}} \left( {\hat\theta} ^ {2} \right) - \left(E_{\theta_{MLE}} \left( {\hat\theta}\right)\right) ^ {2}$
 
-$=\frac{n}{n+2}\theta^2 - \left( \frac{n}{n+1} \theta \right)^2 = \frac{n}{ \left( n+1 \right) \left(n+2 \right)} \theta^2$
+$=\frac{n}{n+2}\theta^2 - \left( \frac{n}{n+1} \theta \right)^2 = \frac{n}{ \left( n+1 \right) ^ 2 \left(n+2 \right)} \theta^2$
 
-(B): 
+
+**(B):**
 
 For $\theta_{MOM}$ we have:
 
@@ -124,7 +135,19 @@ Thus:
 
 $V_\theta \left( \hat{\theta}_n \right) = \frac{4}{n^2} n V_\theta \left( X\right) = \frac{4}{n^2} n \frac{\theta^2}{12} = \frac{\theta^2} {3n}$
 
-3. Combine the notions of bias and variance into a third plot that shows how the Mean Squared Error changes as a function of sample size. Based on this plot, which estimator would you use and why?
+**(C):**
+
+For $\theta_{adj}$ we have:
+
+$Var_\theta \left(\theta_{adj} \right) = Var_\theta \left(\frac{n+1}{n} \theta_{MLE} \right) = \left( \frac{n+1}{n} \right)^2 Var_\theta (\theta_{MLE})$
+
+As we again solved the variance of the initial MLE estimator above, we have:
+
+$Var_\theta \left(\theta_{adj} \right) = \left( \frac{n+1}{n} \right)^2 \cdot \frac{n}{ \left( n+1 \right) ^2 \left(n+2 \right)} \theta^2  = \frac{1}{n \left( n+2 \right)} \theta^2$
+
+### Plot & Commentary
+
+***3.*** Combine the notions of bias and variance into a third plot that shows how the Mean Squared Error changes as a function of sample size. Based on this plot, which estimator would you use and why?
 
 Note, the formula for the M.S.E. is given as follows:
 
@@ -132,21 +155,101 @@ $M.S.E. \left( \hat{\theta} \right) = Var (\hat{\theta}) + Bias(\hat{\theta})^2$
 
 Thus, using the above relations we have: 
 
-(A): 
+
+**(A):** 
 
 $M.S.E. \left( \theta_{MLE} \right) = Var (\theta_{MLE}) + Bias(\theta_{MLE})^2 = \frac{n}{ \left( n+1 \right) \left(n+2 \right)} \theta^2 + \left( - \frac{1}{n+1}\theta \right)^2 = \frac{n \theta^2}{ \left( n+1 \right) \left(n+2 \right)} + \frac{\theta^2}{ \left( n+1\right) ^2} = \frac{2 \theta^2 } {(n+1)(n+2)}$
 
-(B): 
+
+**(B):** 
 
 Similarly, for the MOM we have:
 
 $M.S.E. \left( \theta_{MOM} \right) = Var (\theta_{MOM}) + Bias(\theta_{MOM})^2 = \frac{\theta^2} {3n} + 0^2 = \frac{\theta^2} {3n}$
 
-4. Using the method that we saw in class based on Markov's Inequality, assess whether each of these estimators is consistent.
 
-5. What is the sampling distribution of each statistic? For the MOM, consider both the Irwin-Hall distribution and a sensible approximation based on the Central Limit Theorem.
+**(C):** 
 
-6. Create a plot of the sampling distribution of each estimator using $n = 10$. Construct the empirical distribution via simulation and overlay the appropriate exact or approximate analytical form (each plot should be a curve overlayed on a histogram. See slides.)
+For the adjusted MLE estimator, we first note it has no bias, like the MOM estimator in (B). Thus, it follows:
 
-7. Form two different 95% confidence intervals for $\theta$ by using pivotal statistics inspired by each estimator.
+$M.S.E. \left( \theta_{adj} \right) = Var (\theta_{adj}) + Bias(\theta_{adj})^2 = \frac{1}{n \left( n+2 \right)} \theta^2 + 0^2 = \frac{1}{n \left( n+2 \right)} \theta^2$
+
+### Plot & Commentary
+
+$\theta_{MLE} = \frac{2 \theta^2 } {(n+1)(n+2)}$
+
+$\theta_{MOM} = \frac{\theta^2} {3n}$
+
+$\theta_{adj} = \frac{1}{n \left( n+2 \right)} \theta^2$
+
+
+***4.*** Using the method that we saw in class based on Markov's Inequality, assess whether each of these estimators is consistent.
+
+We can demonstrate consistency for each estimator by showing the following two relations:
+
+(1): $\lim_{n \rightarrow \infty} Var\left( \hat{\theta}_n \right) = 0$
+
+(2): $\lim_{n \rightarrow \infty} Bias \left( \hat{\theta}_n \right) = 0 $
+
+Thus, if both (1) and (2) hold for an estimator $\hat{\theta}_n$, we may take advantage of Markov's Inequality, noting that for any constant c ($c>0$):
+
+$\lim_{n \rightarrow \infty} Pr \left( \mid \hat{\theta}_n - \theta \mid > c \right) = 0$ and we say $\hat{\theta}_n$ is a consistent estimator. 
+
+**(A):**
+
+$Bias_{\theta_{MLE}}= E_{\theta_{MLE}} \left( \hat\theta\right) - \theta = \frac{n}{n+1}\theta - \theta = - \frac{1}{n+1}\theta$
+
+Note, as $n \rightarrow \infty$, $Bias_{\theta_{MLE}} \rightarrow 0$. Thus, we say ${\theta_{MLE}}$ is assymptotically unbiased. We have thus satisfied condition (1). 
+
+For condition (2), we note the variance of $\theta_{MLE}$:
+
+$V_\theta \left( \hat{\theta}_{MLE} \right) = \frac{n}{ \left( n+1 \right) ^ 2 \left(n+2 \right)} \theta^2$
+
+Taking the limit as $n \rightarrow \infty$ shows $Var_{\theta_{MLE}} \rightarrow 0$ as well. Thus we have satisfied condition (2). 
+
+As conditions (1) and (2) are satisfied, we thus note, for any constant c ($c>0$):
+
+$\lim_{n \rightarrow \infty} Pr \left( \mid \hat{\theta}_{MLE} - \theta \mid > c \right) = 0$ and we say $\hat{\theta}_{MLE}$ is a consistent estimator. 
+
+**(B):**
+
+Note, for the estimator $\theta_{MOM}$, the estimator is unbiased, thus we satisfy condition (1). 
+
+For condition (2) we note the variance of $\theta_{MOM}$:
+
+$V_\theta \left( \hat{\theta}_{MOM} \right) = \frac{\theta^2} {3n}$
+
+For $n \rightarrow \infty$, $Var \left( \hat{\theta}_{MOM} \right) \rightarrow 0$. 
+
+As conditions (1) and (2) are satisfied, we may then note, for any constant c ($c>0$):
+
+$\lim_{n \rightarrow \infty} Pr \left( \mid \hat{\theta}_{MOM} - \theta \mid > c \right) = 0$ and we say $\hat{\theta}_{MOM}$ is a consistent estimator. 
+
+**(C):**
+
+Note, for the estimator $\theta_{adj}$, the estimator is unbiased, thus we satisfy condition (1).
+
+Thus, to satisfy condition (2) we note the variance of $\theta_{adj}$: 
+
+$Var_\theta \left(\theta_{adj} \right) = \frac{1}{n \left( n+2 \right)} \theta^2$
+
+We then note, as $n \rightarrow \infty$, $Var_\theta \left(\theta_{adj} \right) \rightarrow 0$. Thus we have satisfied condition (2). 
+
+As conditions (1) and (2) have been satisfied, then we can say, for any constant c ($c>0$):
+
+$\lim_{n \rightarrow \infty} Pr \left( \mid \hat{\theta}_{adj} - \theta \mid > c \right) = 0$ and we say $\hat{\theta}_n$ is a consistent estimator. 
+
+***5.*** What is the sampling distribution of each statistic? For the MOM, consider both the Irwin-Hall distribution and a sensible approximation based on the Central Limit Theorem.
+
+approximation via CLT $\rightarrow$ convergence to the standard Normal Distribution (bear in mind $\theta$)
+
+
+
+***6.*** Create a plot of the sampling distribution of each estimator using $n = 10$. Construct the empirical distribution via simulation and overlay the appropriate exact or approximate analytical form (each plot should be a curve overlayed on a histogram. See slides.)
+
+
+
+***7.*** Form two different 95% confidence intervals for $\theta$ by using pivotal statistics inspired by each estimator.
+
+
 
