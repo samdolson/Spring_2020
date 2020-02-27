@@ -398,9 +398,26 @@ Thus, for $0 < u < \theta$ the pdf of $\hat{\theta}_{adj}}{2 \theta}$ is $\frac{
 
 ***6.*** Create a plot of the sampling distribution of each estimator using $n = 10$. Construct the empirical distribution via simulation and overlay the appropriate exact or approximate analytical form (each plot should be a curve overlayed on a histogram. See slides.)
 
+```{r echo=TRUE, fig.heigh=3}
 
+```
 
 ***7.*** Form two different 95% confidence intervals for $\theta$ by using pivotal statistics inspired by each estimator.
+
+(1):
+
+Idea of pivotal
+
+Note due to similarity of construction, our pivotal statistic for $\hat{\theta}_{MLE}$ and $\hat{\theta}_{adj}$ are the same. 
+
+$\frac{max(X_i)}{\theta}$
+
+(2):
+
+Idea of pivotal
+$\frac{n \hat{\theta}_{MOM}}{2\theta}$
+
+(C):
 
 
 
