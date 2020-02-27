@@ -14,6 +14,8 @@ library(knitr)
 library(here)
 ```
 
+## Time Spent
+8 hours
 
 ## Exercise from the book
 
@@ -317,8 +319,81 @@ $\lim_{n \rightarrow \infty} Pr \left( \mid \hat{\theta}_{adj} - \theta \mid > c
 
 ***5.*** What is the sampling distribution of each statistic? For the MOM, consider both the Irwin-Hall distribution and a sensible approximation based on the Central Limit Theorem.
 
-approximation via CLT $\rightarrow$ convergence to the standard Normal Distribution (bear in mind $\theta$)
+(A): 
 
+Note, the cdf of $\hat{\theta}_{MLE}$ is given as follows:
+
+$$\begin{aligned}
+f\left( u \right)  = \begin{Bmatrix} 
+0 \ for\ u \leq \theta \\
+\left(\frac{u}{\theta}\right)^n \ for\ 0 < u < \theta \\
+1 \ for\ u \geq \theta
+\end{Bmatrix}
+\end{aligned}$$
+
+Thus, to determine the pdf of $\hat{\theta}_{MLE}}{2 \theta}$, we derive the above equation with respect to u. Thus gives us:
+
+$\frac{\partial \left( \left( \frac{u}{\theta} \right) ^n \right)} {\partial u} = \frac{n u^{n-1}}{\theta ^ n}$
+
+Thus, for $0 < u < \theta$ the pdf of $\hat{\theta}_{MLE}}{2 \theta}$ is $\frac{n u^{n-1}}{\theta ^ n}$
+
+(B):
+
+To determine the sampling distribution of $\hat{\theta}_{MOM}$, first note the following:
+
+For $i = 1, 2, ...$
+
+$X_i \sim Unif(0, \theta)$
+
+$Y_i \sim Unif(0, 1)$
+
+$U = \sum \limits_{i=1}^{n} {Y_i} \sim IrwinHall(n)$
+
+The follows holds between X and Y:
+
+$\frac{1}{\theta} X \equiv Y \sim Unif(0,1)$
+
+It then follows that:
+
+$\sum \limits_{i=1}^{n} {Y_i} = \frac{1}{\theta} \sum \limits_{i=1}^{n} {X_i} \sim IrwinHall(n)$
+
+Note:
+
+$\hat{\theta}_{MOM} = 2 \bar{X} = 2 \frac{1}{n} \sum \limits_{i=1}^{n} {X_i}$
+
+Thus:
+
+$\frac{\hat{\theta}_{MOM}}{\theta} = \frac{2}{\theta n} \sum \limits_{i=1}^{n} {X_i} = \frac{2}{\theta n}U \sim \frac{2}{n}IrwinHall(n)$
+
+It then follows, removing the denominator from the above relation, that:
+
+$\hat{\theta}_{MOM} \sim \frac{2 \theta}{n} IrwinHall(n)$
+
+Or, put differently:
+
+$\frac{n \hat{\theta}_{MOM}}{2 \theta} \sim IrwinHall(n)$
+
+### Approximation
+
+Via application of the CLT, we may note that the IrwinHall(n) distribution converges to the standard normal as $n \rightarrow \infty$. Thus, bearing in mind the above relations, we may say that as $n \rightarrow \infty$, $\frac{n \hat{\theta}_{MOM}}{2 \theta} \sim N(0, 1)$, or phrase the relation alternatively in terms of $\hat{\theta}_{MOM}$
+
+(C):
+
+Similar to part (A), note the cdf of $\hat{\theta}_{adj}$ is given as follows:
+
+$$\begin{aligned}
+f\left( u \right)  = \begin{Bmatrix} 
+0 \ for\ u \leq \theta \\
+\frac{n+1}{n} \left(\frac{u}{\theta}\right)^n \ for\ 0 < u < \theta \\
+1 \ for\ u \geq \theta
+\end{Bmatrix}
+\end{aligned}$$
+
+Thus, to determine the pdf of $\hat{\theta}_{MLE}}{2 \theta}$, we derive the above equation with respect to u. Thus gives us:
+
+$\frac{\partial \left( \frac{n+1}{n} \left( \frac{u}{\theta} \right) ^n \right)} {\partial u} = \frac{ \left(n +1\right) u^{n-1}}{\theta ^ n}$
+
+Thus, for $0 < u < \theta$ the pdf of $\hat{\theta}_{adj}}{2 \theta}$ is $\frac{ \left(n +1\right) u^{n-1}}{\theta ^ n}$
 
 
 ***6.*** Create a plot of the sampling distribution of each estimator using $n = 10$. Construct the empirical distribution via simulation and overlay the appropriate exact or approximate analytical form (each plot should be a curve overlayed on a histogram. See slides.)
