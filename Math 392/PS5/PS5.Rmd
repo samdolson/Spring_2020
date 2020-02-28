@@ -15,7 +15,8 @@ library(here)
 ```
 
 ## Time Spent
-8 hours
+
+$11 \frac{1}{2}$ hours
 
 ## Exercise from the book
 
@@ -505,27 +506,81 @@ ggplot(data.frame(mle_adj_bars), x=c(0, 250), aes(mle_adj_bars)) +
 
 (1):
 
-Let our pivotal statistic be:
+Let our pivotal statistic for $\hat{\theta}_{MLE}$ be:
 
-$\eta = \frac{max(X_i)}{\theta}$
+$\eta = \frac{max(X_i)}{\theta} = \frac{\hat{\theta}_{MLE}} {\theta}$
 
-Thus, for $\alpha = 0.05$, we have:
+We need to verify this is a pivotal statistic. To do so, we first note:
+
+$\hat{\theta}_{MLE} \in (0,1)$
+
+Then, taking advantage of the prior cdf of $\hat{\theta}_{MLE}$, we may say: 
+
+$Pr(\frac{max(X_i)}{\theta} \leq c) = Pr({max(X_i)} \leq \theta c)$
+
+Taking advantage of the independent of $X_1, ..., X_n$, we may then note: 
+
+$Pr(\frac{max(X_i)}{\theta} \leq c) = \prod \limits_{i=1}^{n} Pr (X_i \leq \theta c) = \prod \limits_{i=1}^{n} \frac{\theta c}{\theta} = \prod \limits_{i=1}^{n} c$
+
+It then follows that: 
+
+$Pr(\frac{max(X_i)}{\theta} \leq c) = c^n$ for $c \in (0,1)$
+
+Note, the pcd doesn't depend on the parameter $\theta$, and thus we've verified our statistic $\eta = \frac{max(X_i)}{\theta} = \frac{\hat{\theta}_{MLE}} {\theta}$ is a pivotal statistic. 
+
+Then, we construct the 95% confidence interval. 
+
+To do so, note $\alpha = 0.05$, giving us:
 
 $Pr( q_1 < \frac{max(X_i)}{\theta} < q_2) = 0.95$
 
-Note, we then have the pdf: 
+### Work in progress
 
-Which then gives us the cdf of the pivotal statistic: 
+We derive the cdf above with respect to n to get our pdf of the pivotal statistic:
 
-$\frac{n(\theta t)^{n-1} }{\theta ^n} \cdot \theta = nt^{n-1}$
+$\frac{\partial {x^n}}{\partial n} = n x^{n-1}$
 
-$\rightarrow \left( max(X_i), (1-\alpha)^{\frac{1}{n}} \right)$
+Thus we may start to evaluate the confidence interval:
 
-$= \left( max(X_i), \frac{max(X_i)} {0.95 ^ {\frac{1}{n}} }\right)$
+$Pr( q_1 < \frac{max(X_i)}{\theta} < q_2) = 0.95$
 
-Idea of pivotal
+To evaluate this, we note, for $q_1 = 0.025 = \frac{\alpha}{2}$ and $q_2 = 0.975 = 1 - \frac{\alpha}{2}$: 
 
-Note, as the pivotal statistic does not include the parameter n, we may construct the same pivotal statistic to use for the construction of a 95% confidence interval for $\hat{\theta}_{adj}$. We may also extend this observation to say: our pivotal statistic and confidence interval for the estimators $\hat{\theta}_{MLE}$ and $\hat{\theta}_{adj}$ are the same. 
+$Pr(q_1 < \frac{max(X_i)}{\theta}) = 0.025$
+
+$\int \limits_{0} ^{q_1} {nx^{n-1}} = 0.025$
+
+Solving for $q_1$ gives us:
+
+$q_1 = \sqrt{0.025}$ as ($q_1 ^ n = 0.025$)
+
+and
+
+$Pr (\frac{max(X_i)}{\theta} < q_2) = 0.975$
+
+$\int \limits_{0} ^{q_2} {nx^{n-1}} = 0.975$
+
+Solving for $q_2$ gives us:
+
+$q_2 = \sqrt{0.975}$ as ($q_2 ^ n = 0.025$)
+
+Which then gives us:
+
+$Pr( \sqrt{0.025} < \frac{max(X_i)}{\theta} < \sqrt{0.975}) = 0.95$
+
+Isolating ${max(X_i)}$ gives us:
+
+$Pr( \theta \sqrt{0.025} < {max(X_i)} < \theta \sqrt{0.975}) = 0.95$
+
+Substituting our estimator then gives us: 
+
+$Pr( \theta \sqrt{0.025} < \hat{\theta}_{MLE} < \theta \sqrt{0.975}) = 0.95$
+
+Giving us the 95% confidence interval of
+
+$\left( \theta \sqrt{0.025}, \theta \sqrt{0.975} \right)$
+
+Note, as the pivotal statistic does not include the parameter n, we may construct the same pivotal statistic to use for the construction of a 95% confidence interval for $\hat{\theta}_{adj}$. We may also extend this observation to say: Our pivotal statistics and confidence intervals for the estimators $\hat{\theta}_{MLE}$ and $\hat{\theta}_{adj}$ are the same. 
 
 (2):
 
@@ -569,5 +624,5 @@ $Pr({2 \theta ^2}  \cdot q_1 < \hat{\theta}_{MOM}< {2 \theta ^2}  \cdot q_2) = 0
 
 Thus, we have the confidence interval as: 
 
-$\left( {2 \theta ^2} q_1, {2 \theta ^2} q_2 \right)$, where $q_1$ and $q_2$ are the quantiles (0.025 and 0.975) of the $\chi^2$ distribution with n degrees of freedom. 
+$\left( {2 \theta ^2} q_1, {2 \theta ^2} q_2 \right)$, where $q_1$ and $q_2$ are the quantiles (0.025 and 0.975 resp.) of the $\chi^2$ distribution with n degrees of freedom. 
 
