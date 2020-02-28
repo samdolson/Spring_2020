@@ -101,7 +101,7 @@ $\theta_{adj} = \frac{n+1}{n} max(X_1, ..., X_n) = \frac{n+1}{n} X_{max}$
 
 Note, and referring back to the Bias formulation in (A): 
 
-$Bias_{\theta_{adj}}= E_\theta \left( \theta_{adj} \right) - \theta = \frac{n+1}{n} \frac{n}{n+1} \theta - \theta = \theta - \theta = 0$
+$Bias_{\theta_{adj}} = E_\theta \left( \theta_{adj} \right) - \theta = \frac{n+1}{n} \frac{n}{n+1} \theta - \theta = \theta - \theta = 0$
 
 Thus, we note $\theta_{adj}$ is the bias adjusted MLE estimator.  
 
@@ -331,11 +331,11 @@ f\left( u \right)  = \begin{Bmatrix}
 \end{Bmatrix}
 \end{aligned}$$
 
-Thus, to determine the pdf of $\hat{\theta}_{MLE}}{2 \theta}$, we derive the above equation with respect to u. Thus gives us:
+Thus, to determine the pdf of $\hat{\theta}_{MLE}$, we derive the above equation with respect to u. Thus gives us:
 
 $\frac{\partial \left( \left( \frac{u}{\theta} \right) ^n \right)} {\partial u} = \frac{n u^{n-1}}{\theta ^ n}$
 
-Thus, for $0 < u < \theta$ the pdf of $\hat{\theta}_{MLE}}{2 \theta}$ is $\frac{n u^{n-1}}{\theta ^ n}$
+Thus, for $0 < u < \theta$ the pdf of $\hat{\theta}_{MLE}$ is $\frac{n u^{n-1}}{\theta ^ n}$
 
 (B):
 
@@ -389,17 +389,130 @@ f\left( u \right)  = \begin{Bmatrix}
 \end{Bmatrix}
 \end{aligned}$$
 
-Thus, to determine the pdf of $\hat{\theta}_{MLE}}{2 \theta}$, we derive the above equation with respect to u. Thus gives us:
+Thus, to determine the pdf of $\hat\theta_{adj}$, we derive the above equation with respect to u. Thus gives us:
 
 $\frac{\partial \left( \frac{n+1}{n} \left( \frac{u}{\theta} \right) ^n \right)} {\partial u} = \frac{ \left(n +1\right) u^{n-1}}{\theta ^ n}$
 
-Thus, for $0 < u < \theta$ the pdf of $\hat{\theta}_{adj}}{2 \theta}$ is $\frac{ \left(n +1\right) u^{n-1}}{\theta ^ n}$
+Thus, for $0 < u < \theta$ the pdf of $\hat{\theta}_{adj}$ is $\frac{ \left(n +1\right) u^{n-1}}{\theta ^ n}$
 
 
 ***6.*** Create a plot of the sampling distribution of each estimator using $n = 10$. Construct the empirical distribution via simulation and overlay the appropriate exact or approximate analytical form (each plot should be a curve overlayed on a histogram. See slides.)
 
 ```{r echo=TRUE, fig.heigh=3}
+mu <- 4
+sigma <- 1.5
+n <- 5
+x <- rnorm(n = n, mean = mu, sd = sigma)
 
+xbars <- rep(NA, 500)
+for (i in 1:500) {
+  x <- rnorm(n = n, mean = mu, sd = sigma)
+  xbars[i] <- mean(x)
+}
+
+ggplot(data.frame(xbars), aes(xbars)) +
+  geom_histogram(aes(y=..density..),
+                 fill = "steelblue", color = "black") +
+  theme_bw()  +
+  theme(panel.border = element_blank(),
+        axis.line.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank()) +
+  ylab("") +
+  stat_function(fun = dnorm, 
+                   args = list(mean = mu, sd = sigma/sqrt(n)),
+                   lwd = 1.5) +
+  ylim(0, .7) +
+  xlim(2, 6) + 
+  ggtitle("Distribution of Example")
+```
+
+```{r echo=TRUE, eval=TRUE, fig.height=3}
+set.seed(84)
+theta <- 250
+n <- 10
+x <- (0:250)
+
+mle_bars <- rep(NA, 10)
+for (i in 1:10) {
+  x <- rdunif(n, theta, a = 0)
+  mle_bars[i] <- max(x)
+}
+
+eq = function(x){((n +1)* (x^(n-1))) / (theta ^ n)}
+
+ggplot(data.frame(mle_bars), x=c(0, 250), aes(mle_bars)) +
+  geom_histogram(aes(y=..density..),
+                 fill = "steelblue", color = "black") +
+  theme_bw()  +
+  theme(panel.border = element_blank(),
+        axis.line.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank()) +
+  ylab("Density") +
+  stat_function(fun = eq, lwd = 1.5) +
+  ylim(0, .05) +
+  xlim(0, 250) +
+  ggtitle("Distribution of MLE Estimator")
+```
+
+```{r echo=TRUE, eval=TRUE, fig.height=3}
+set.seed(84)
+theta <- 250
+n <- 10
+x <- (0:250)
+
+mom_bars <- rep(NA, 10)
+for (i in 1:10) {
+  x <- rdunif(n, theta, a = 0)
+  mom_bars[i] <- 2 * mean (x)
+}
+
+ggplot(data.frame(mom_bars), x=c(0, 250), aes(mle_bars)) +
+  geom_histogram(aes(y=..density..),
+                 fill = "steelblue", color = "black") +
+  theme_bw()  +
+  theme(panel.border = element_blank(),
+        axis.line.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank()) +
+  ylab("Density") +
+  stat_function(fun = dnorm, 
+                   args = list(mean = theta /2, sd = sqrt((theta ^ 2) /12)),
+                   lwd = 1.5)+
+  ylim(0, .05) +
+  xlim(0, 250) +
+  ggtitle("Distribution of MOM Estimator w/Normal")
+```
+
+```{r echo=TRUE, eval=TRUE, fig.height=3}
+set.seed(84)
+theta <- 250
+n <- 10
+x <- (0:250)
+
+mle_adj_bars <- rep(NA, 10)
+for (i in 1:10) {
+  x <- rdunif(n, theta, a = 0)
+  mle_adj_bars[i] <- ((n+1) / n ) * max(x)
+}
+
+eq = function(x){(n * (x^(n-1))) / (theta ^ n)}
+
+
+ggplot(data.frame(mle_adj_bars), x=c(0, 250), aes(mle_adj_bars)) +
+  geom_histogram(aes(y=..density..),
+                 fill = "steelblue", color = "black") +
+  theme_bw()  +
+  theme(panel.border = element_blank(),
+        axis.line.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank()) +
+  ylab("Density") +
+  stat_function(fun = eq, lwd = 1.5) +
+  ylim(0, .05) +
+  xlim(0, 250) +
+  ggtitle("Distribution of adjusted MLE Estimator")
 ```
 
 ***7.*** Form two different 95% confidence intervals for $\theta$ by using pivotal statistics inspired by each estimator.
