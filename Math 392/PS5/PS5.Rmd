@@ -377,6 +377,10 @@ $\frac{n \hat{\theta}_{MOM}}{2 \theta} \sim IrwinHall(n)$
 
 Via application of the CLT, we may note that the IrwinHall(n) distribution converges to the standard normal as $n \rightarrow \infty$. Thus, bearing in mind the above relations, we may say that as $n \rightarrow \infty$, $\frac{n \hat{\theta}_{MOM}}{2 \theta} \sim N(0, 1)$, or phrase the relation alternatively in terms of $\hat{\theta}_{MOM}$
 
+To that end, we note that the distribution of $\hat{\theta}_{MOM}$ converges to the normal distribution with mean $E_{\hat{\theta}_{MOM}} (X) = \theta$ and variance $Var(\hat{\theta}_{MOM}) = \frac{\theta^2} {3n}$ (noting our prior work in parts 1 and 2 (B), resp.). 
+
+Thus, we may say, as $n \rightarrow \infty$, $\hat{\theta}_{MOM} \sim N\left( \theta, \frac{\theta^2} {3n}\right)$, which we will use for the plot below. 
+
 (C):
 
 Similar to part (A), note the cdf of $\hat{\theta}_{adj}$ is given as follows:
@@ -398,35 +402,7 @@ Thus, for $0 < u < \theta$ the pdf of $\hat{\theta}_{adj}$ is $\frac{ \left(n +1
 
 ***6.*** Create a plot of the sampling distribution of each estimator using $n = 10$. Construct the empirical distribution via simulation and overlay the appropriate exact or approximate analytical form (each plot should be a curve overlayed on a histogram. See slides.)
 
-```{r echo=TRUE, fig.heigh=3}
-mu <- 4
-sigma <- 1.5
-n <- 5
-x <- rnorm(n = n, mean = mu, sd = sigma)
-
-xbars <- rep(NA, 500)
-for (i in 1:500) {
-  x <- rnorm(n = n, mean = mu, sd = sigma)
-  xbars[i] <- mean(x)
-}
-
-ggplot(data.frame(xbars), aes(xbars)) +
-  geom_histogram(aes(y=..density..),
-                 fill = "steelblue", color = "black") +
-  theme_bw()  +
-  theme(panel.border = element_blank(),
-        axis.line.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        axis.text.y = element_blank()) +
-  ylab("") +
-  stat_function(fun = dnorm, 
-                   args = list(mean = mu, sd = sigma/sqrt(n)),
-                   lwd = 1.5) +
-  ylim(0, .7) +
-  xlim(2, 6) + 
-  ggtitle("Distribution of Example")
-```
-
+(A):
 ```{r echo=TRUE, eval=TRUE, fig.height=3}
 set.seed(84)
 theta <- 250
@@ -456,6 +432,8 @@ ggplot(data.frame(mle_bars), x=c(0, 250), aes(mle_bars)) +
   ggtitle("Distribution of MLE Estimator")
 ```
 
+
+(B):
 ```{r echo=TRUE, eval=TRUE, fig.height=3}
 set.seed(84)
 theta <- 250
@@ -489,8 +467,10 @@ ggplot(data.frame(mom_bars), x=c(0, 250), aes(mle_bars)) +
 
 ### Commentary
 
-In particular, the above graph illustrates that the MOM estimator understimates the value of $\theta$. 
+In particular, comparing the curvature in the above graph to the other estimators provides more information supporting the use of an MLE estimator, as even asymptotically, the MOM estimator will tend to understimate the value of $\theta$ more so than the MLE estimators. 
 
+
+(C):
 ```{r echo=TRUE, eval=TRUE, fig.height=3}
 set.seed(84)
 theta <- 250
