@@ -468,6 +468,8 @@ for (i in 1:10) {
   mom_bars[i] <- 2 * mean (x)
 }
 
+### Use prior problems to substitute mean and variance with mean and variance of the MOM estimator
+
 ggplot(data.frame(mom_bars), x=c(0, 250), aes(mle_bars)) +
   geom_histogram(aes(y=..density..),
                  fill = "steelblue", color = "black") +
@@ -478,12 +480,16 @@ ggplot(data.frame(mom_bars), x=c(0, 250), aes(mle_bars)) +
         axis.text.y = element_blank()) +
   ylab("Density") +
   stat_function(fun = dnorm, 
-                   args = list(mean = theta /2, sd = sqrt((theta ^ 2) /12)),
+                   args = list(mean = theta, sd = sqrt(theta ^2 / (3 * n))),
                    lwd = 1.5)+
   ylim(0, .05) +
   xlim(0, 250) +
   ggtitle("Distribution of MOM Estimator w/Normal")
 ```
+
+### Commentary
+
+In particular, the above graph illustrates that the MOM estimator understimates the value of $\theta$. 
 
 ```{r echo=TRUE, eval=TRUE, fig.height=3}
 set.seed(84)
