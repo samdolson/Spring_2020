@@ -377,7 +377,7 @@ $\frac{n \hat{\theta}_{MOM}}{2 \theta} \sim IrwinHall(n)$
 
 Via application of the CLT, we may note that the IrwinHall(n) distribution converges to the standard normal as $n \rightarrow \infty$. Thus, bearing in mind the above relations, we may say that as $n \rightarrow \infty$, $\frac{n \hat{\theta}_{MOM}}{2 \theta} \sim N(0, 1)$, or phrase the relation alternatively in terms of $\hat{\theta}_{MOM}$
 
-To that end, we note that the distribution of $\hat{\theta}_{MOM}$ converges to the normal distribution with mean $E_{\hat{\theta}_{MOM}} (X) = \theta$ and variance $Var(\hat{\theta}_{MOM}) = \frac{\theta^2} {3n}$ (noting our prior work in parts 1 and 2 (B), resp.). 
+To that end, we note that the distribution of $\hat{\theta}_{MOM}$ converges to the normal distribution with mean $E({\hat{\theta}_{MOM}}) = \theta$ and variance $Var(\hat{\theta}_{MOM}) = \frac{\theta^2} {3n}$ (noting our prior work in parts 1 and 2 (B), resp.). 
 
 Thus, we may say, as $n \rightarrow \infty$, $\hat{\theta}_{MOM} \sim N\left( \theta, \frac{\theta^2} {3n}\right)$, which we will use for the plot below. 
 
