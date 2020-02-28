@@ -549,13 +549,15 @@ Note:
 
 $\frac{1}{\theta} \sum \limits_{i=1}^{n} {X_i} \sim IrwinHall(n)$
 
-Thus, by also including the factor $\frac{1}{\theta}$ into the above relation, it holds that:
+### The Jish
 
-[False] $\frac{\hat{\theta}_{MOM}}{2 \theta ^2} \sim IrwinHall(n)$
+The statistic $\frac{\hat{\theta}_{MOM}}{2 \theta ^2}$ is composed of the product of two statistics whose distribution is given by the Irwin Hall distribution (Irwin Hall(n)). Taking advantage of the Central Limit Theorem, each of the Irwin Hall distributions converge to the Standard normal. Thus, the product of these two distributions is the $\chi ^2$ distribution with n degrees of freedom. 
 
-[Maybe True] $\frac{\hat{\theta}_{MOM}}{2 \theta ^2} \sim \chi^2_{n}$
+Thus, by also including the factor $\frac{1}{\theta}$ into the relation noted prior, it holds that:
 
-We then note, the statistic $\frac{\hat{\theta}_{MOM}}{2 \theta ^2}$ does not depend on the parameters of its distribution. 
+$\frac{\hat{\theta}_{MOM}}{2 \theta ^2} \sim \chi^2_{n}$
+
+We then note, the statistic $\frac{\hat{\theta}_{MOM}}{2 \theta ^2}$ does not depend on the parameters of its distribution, namely n. 
 
 Constructing the 95% confidence interval using the above information gives us:
 
@@ -567,5 +569,5 @@ $Pr({2 \theta ^2}  \cdot q_1 < \hat{\theta}_{MOM}< {2 \theta ^2}  \cdot q_2) = 0
 
 Thus, we have the confidence interval as: 
 
-$\left( {2 \theta ^2} q_1, {2 \theta ^2} q_2 \right)$
+$\left( {2 \theta ^2} q_1, {2 \theta ^2} q_2 \right)$, where $q_1$ and $q_2$ are the quantiles (0.025 and 0.975) of the $\chi^2$ distribution with n degrees of freedom. 
 
