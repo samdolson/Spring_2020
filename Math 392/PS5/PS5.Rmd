@@ -505,18 +505,67 @@ ggplot(data.frame(mle_adj_bars), x=c(0, 250), aes(mle_adj_bars)) +
 
 (1):
 
+Let our pivotal statistic be:
+
+$\eta = \frac{max(X_i)}{\theta}$
+
+Thus, for $\alpha = 0.05$, we have:
+
+$Pr( q_1 < \frac{max(X_i)}{\theta} < q_2) = 0.95$
+
+Note, we then have the pdf: 
+
+Which then gives us the cdf of the pivotal statistic: 
+
+$\frac{n(\theta t)^{n-1} }{\theta ^n} \cdot \theta = nt^{n-1}$
+
+$\rightarrow \left( max(X_i), (1-\alpha)^{\frac{1}{n}} \right)$
+
+$= \left( max(X_i), \frac{max(X_i)} {0.95 ^ {\frac{1}{n}} }\right)$
+
 Idea of pivotal
 
-Note due to similarity of construction, our pivotal statistic for $\hat{\theta}_{MLE}$ and $\hat{\theta}_{adj}$ are the same. 
-
-$\frac{max(X_i)}{\theta}$
+Note, as the pivotal statistic does not include the parameter n, we may construct the same pivotal statistic to use for the construction of a 95% confidence interval for $\hat{\theta}_{adj}$. We may also extend this observation to say: our pivotal statistic and confidence interval for the estimators $\hat{\theta}_{MLE}$ and $\hat{\theta}_{adj}$ are the same. 
 
 (2):
 
-Idea of pivotal
-$\frac{n \hat{\theta}_{MOM}}{2\theta}$
+For $\hat{\theta}_{MOM}$, we need to construct a different pivotal statistic. 
 
-(C):
+To that end, note: 
 
+$\frac{n \hat{\theta}_{MOM}}{2 \theta} \sim IrwinHall(n)$
 
+However, we want a pivotal statistic that does not include the parameter n. 
+
+Thus, note: 
+
+$\bar{X} = \frac{1}{n} \sum \limits_{i=1}^{n} {X_i}$
+
+Inserting this into the above relation gives us:
+
+$\frac{n \hat{\theta}_{MOM} \frac{1}{n} \sum \limits_{i=1}^{n} {X_i}}{2 \theta} = \frac{\hat{\theta}_{MOM} \sum \limits_{i=1}^{n} {X_i}}{2 \theta}$
+
+Note: 
+
+$\frac{1}{\theta} \sum \limits_{i=1}^{n} {X_i} \sim IrwinHall(n)$
+
+Thus, by also including the factor $\frac{1}{\theta}$ into the above relation, it holds that:
+
+[False] $\frac{\hat{\theta}_{MOM}}{2 \theta ^2} \sim IrwinHall(n)$
+
+[Maybe True] $\frac{\hat{\theta}_{MOM}}{2 \theta ^2} \sim \chi^2_{n}$
+
+We then note, the statistic $\frac{\hat{\theta}_{MOM}}{2 \theta ^2}$ does not depend on the parameters of its distribution. 
+
+Constructing the 95% confidence interval using the above information gives us:
+
+$Pr(q_1 < \frac{\hat{\theta}_{MOM}}{2 \theta ^2} < q_2) = 1 - \alpha = 0.95$
+
+Isolating $\hat{\theta}_{MOM}$ gives us the relation:
+
+$Pr({2 \theta ^2}  \cdot q_1 < \hat{\theta}_{MOM}< {2 \theta ^2}  \cdot q_2) = 0.95$
+
+Thus, we have the confidence interval as: 
+
+$\left( {2 \theta ^2} q_1, {2 \theta ^2} q_2 \right)$
 
