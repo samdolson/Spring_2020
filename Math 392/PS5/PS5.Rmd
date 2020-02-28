@@ -549,7 +549,7 @@ Note:
 
 $\frac{1}{\theta} \sum \limits_{i=1}^{n} {X_i} \sim IrwinHall(n)$
 
-### The Jish
+### The Jist
 
 The statistic $\frac{\hat{\theta}_{MOM}}{2 \theta ^2}$ is composed of the product of two statistics whose distribution is given by the Irwin Hall distribution (Irwin Hall(n)). Taking advantage of the Central Limit Theorem, each of the Irwin Hall distributions converge to the Standard normal. Thus, the product of these two distributions is the $\chi ^2$ distribution with n degrees of freedom. 
 
