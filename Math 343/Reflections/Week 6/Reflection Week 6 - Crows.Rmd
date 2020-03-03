@@ -1,0 +1,65 @@
+---
+title: "Presentation Feedback - Crows"
+author: "Sam D. Olson"
+date: "2/29/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Note on Structure
+
+For ease of reading and synthesizing feedback on the Crow Project presentation, feedback is grouped by question and condensed to bullet points. 
+
+### Feedback
+
+1. What did you like most about the presentation?
+
+**A.** Really good visuals in the presentation (and generally regarding the presentation itself)! I especially like the spatial map on slide 3! 
+
+**B.** It's clear you've done quite a bit of work and have a great sense of what to do next---kudos! 
+
+2. What were the key takeaways?
+
+**A.** Discussion of things the team learned when exploring the data. 
+
+**B.** Working on visualizations to understand change in crow counts (by location) over time. 
+
+**C.** Population of crows do not appear to be decreasing.
+
+3. How easy was it to figure out the key takeaways?  How could they have been made clearer?
+
+**A.** I had difficulty understand the key takeaways, but I'm not sure this is at the fault of the presenters (mic volume was low). 
+
+**B.** Could mention key takeaways on the initial slide, verbally or on the slide itself, then refer back to the takeaway (or a part of the takeaway) when covering it in-depth later during the presentation. 
+
+4. Did the presentation flow well (i.e. have smooth transitions between points)?  Provide a concrete example of a place in the presentation where a transition could be made smoother and how you would make it smoother.
+
+**A.** Generally, the presentation flowed well, i.e. no hiccups or major stoppage. However, there was an opportunity for transitions to acknowledge and built upon the previous speaker. 
+
+**B.** Positive: at 9:15, Isidore had a great transition during questions, acknowledging the feedback from the audience and redirecting it to a question. 
+
+**C.** Improvement: At the end of discussing Slide 4 *'Other visualizations...'*, Isidore mentions looking into the relationship between number of crows and temperature. Transitioning to the next slide *'Future Work'*, David could have transitioned by saying something like *'In addition to looking at crow count and temperature, we're going to look into...'* 
+
+5. Suggest two ways the presenters could better tailor their presentation to their audience.
+
+**A.** After discussing an observation, it may help to get a sense of how it landed with the audience, e.g. when you mention that the crow population is not declining, seeing if that's a surprise to the audience---whether they agree or have a different perspective. 
+
+**B.** Regarding the first question Sarah asks, it may help to have multiple copies of the map printed so each audience---and team---member, can discuss the Master Key.
+
+6. Did the presenters make good eye contact, keep a good pace, and use their voice and hands effectively?  If not, where could there be improvements?
+
+**A.** Good eye contact and good physical placement (in front of the audience, but not obstructing the presentation slides)
+
+**B.** Around ~5:10, David is staring down at the ground and shifting around. This could detract from audience engagement. 
+
+**C.** Be mindful of filler words, e.g. *'umms and ahhs'* (but generally great job on delivery and communication!)
+
+7. Were the slides clear and informative?  Do they support the main points of the presentation?  How could they be improved?
+
+**A.** Very clear and informative, plus not too many (only 7 slides!)
+
+**B.** For slides with multiple observations/questions, it may help to number or letter bullet points for ease of referencing, e.g. *'As point 1 shows'*, which could help with presenting in addition to referring back to in the event of questions, e.g. *'On slide 2, observation 1 a., we note'*. 
+
