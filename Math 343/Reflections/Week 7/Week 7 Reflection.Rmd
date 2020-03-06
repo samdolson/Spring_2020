@@ -1,0 +1,29 @@
+---
+title: "Reflection Week 7 - Reflection"
+author: "Sam D. Olson"
+output:
+  pdf_document: default
+  html_document:
+    highlight: pygments
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Reflection
+
+### Ratios and Their Shortcoming
+
+The ending section of the reading **'Ratios Compare Groups'** stuck with me. Though the section provides a concise explanation of the use of rations, namely in comparing rates of different groups, it omitted an important consideration: Thinking about the impact of an audience. 
+
+I wish to provide the missing details I feel should be included, primarily through a summary of the *'Bacon Sandwich Example'* discussed in David Spiegelhalter's *'The Art of Statistics'*. To summarize the example: The World Health Organization's International Agency for Research in Cancer announced that processed meat, e.g. bacon, was a 'Group I carcinogen', noting that eating 50g of processed meat a day, the equivalent of one bacon sandwich, was associated with an 18% increased risk of bowel cancer. What a shocking statistic! 
+
+Though the statistic sounds worrying, and led to an outpour of articles both rallying and criticizing this classification, the phrasing of risk doesn't provide information about the actual rate of someone getting bowel cancer. Said differently, the headline statistic---18% increase in risk---is an *Odds Ratio*. What this corresponds to is a *1% increase in the actual incidence rate*. Understandably, when phrased as a 1% increase, the impact is seemingly negligible. This is yet another example of the importance of understanding the impact phrasing has on interpretation. 
+
+### Additional Thoughts---The Personal Impact of the Reading
+
+I struggle to succinctly describe the impact of the reading. When I reflect on the topics and examples detailed in CwD, I think back to the work our group has done. I think about how the codebook can be modified to make it easier for us to reference, and how it (as well as nearly every aspect of our project) will evolve as its contents are transcribed into our eventual report and presentation. This train of thought spirals towards ideas, assessments, and explorations of our research---past, present, and future. 
+
+In writing this, I've come to realize this reading is much like prior readings: It has made residence in my mind, and though I posit by saying this, I cannot help but believe (and hope) it will stay. 
