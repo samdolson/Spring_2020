@@ -1,0 +1,191 @@
+---
+title: "MATH 392 Problem Set 6"
+author: "Sam D. Olson"
+output: 
+  pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = FALSE, fig.align = "center", 
+                      message = FALSE, warning = FALSE)
+library(tidyverse)
+library(knitr)
+library(here)
+```
+
+
+## Exercise from the book
+
+**9.1 #1**
+
+***Q:*** Let X have the exponential distribution with parameter $\beta$. Suppose that we wish to test the hypotheses $H_0 : \beta \geq 1$ versus $H_1 : \beta < 1$. Consider the test procedure $\delta$ that rejects $H_0$ if $X \geq 1$. 
+
+**(A)**
+
+Determine the power function of the test.  
+
+**(B)**
+
+Compute the size of the test. 
+
+**9.1 #2**
+
+***Q:*** Suppose that $X_1, ..., X_n$ form a random sample from the uniform distribution on the interval $[0, \theta]$, and that the following hypotheses are to be tested: 
+
+$H_{0} : \theta \geq 2$
+
+$H_{1} : \theta < 2$
+
+Let $Y_n = max \left(X_1, ..., X_n \right)$ and consider a test procedure such that the critical region contains all the outcomes for which $Y_n \leq 1.5$. 
+
+**(A)**
+
+Determine the power function of the test.  
+
+**(B)**
+
+Determine the size of the test. 
+
+**9.1 #14** 
+
+Plus: plot power functions in R
+
+***Q:*** Let $X_1, ..., X_n$ be i.i.d. with exponential distribution with parameter $\theta$. Suppose that we wish to test the hypotheses: 
+
+$H_{0} : \theta \geq \theta_0$
+
+$H_{1} : \theta < \theta_0$
+
+Let $X = \sum \limits_{i=1}^{n} {X_i}$. Let $\delta_c$ be the test that rejects $H_0$ if $X \geq c$.
+
+**(A)**
+
+Show that $\pi \left( \theta \mid \delta_c \right)$ is a decreasing function of $\theta$ 
+
+**(B)**
+
+Find c in order to make $\delta_c$ have size $\alpha_0$. 
+
+**(C)**
+
+Let $\theta_0 = 2$, $n=1$, and $\alpha_0 = 0.1$. Find the precise form of the test $\delta_c$ and sketch its power function. 
+
+```{r echo=TRUE, eval=TRUE, fig.heigh=3}
+theta <- 250
+n <- (1:50)
+
+mle_mse <- rep(NA, 50) 
+mom_mse <- rep(NA, 50)
+mle_adj_mse <- rep(NA, 50)
+for (i in 1:50){ 
+  mle_mse[i] <- ((theta ^ 2) * 2 )/ ((n[i] + 1) * (n[i] + 2))
+  mom_mse[i] <- (theta ^ 2) / (3 * n[i])
+  mle_adj_mse[i] <- (theta ^ 2) / ((n[i] * (n[i] +2)))
+}
+
+df <- data.frame(n,mle_mse,mom_mse, mle_adj_mse)
+
+ggplot(df, aes(n)) +                  
+  geom_line(aes(y=mle_mse), colour="red") +  
+  geom_line(aes(y=mom_mse), colour="green") +
+  geom_line(aes(y=mle_adj_mse), colour="blue") +
+  geom_text(x=3.5, y=500, label="MLE adj.") +
+  geom_text(x=20, y=2500, label="MOM") +
+  geom_text(x=8, y=3000, label="MLE") + 
+  ggtitle("MSE of MLE, MOM, and adjusted MLE Estimators") +
+  labs(y="MSE", x = "n (observations)")
+```
+
+**9.2 #2**
+
+***Q:*** Consider two p.d.f.'s $f_{0} \left(x\right)$ and $f_{1} \left(x\right)$ that are defined as follows: 
+
+$$\begin{aligned}
+f_{0} \left(x\right)) = \begin{Bmatrix} 
+{1} \ for\ 0 \leq x \leq 1 \\
+0 \ \ otherwise
+\end{Bmatrix}
+\end{aligned}$$
+
+and 
+
+$$\begin{aligned}
+f_{1} \left(x\right) = \begin{Bmatrix} 
+{2x} \ for\ 0 \leq x \leq 1 \\
+0 \ \ otherwise
+\end{Bmatrix}
+\end{aligned}$$
+
+Suppose that a single observation X is taken from a distribution for which the p.d.f. $f(x)$ is either $f_{0} \left(x\right)$ or $f_{1} \left(x\right)$, and the following simple hypotheses are to be tested: 
+
+$H_{0} : f(x) =  f_{0} \left(x\right)$
+
+$H_{1} : f(x) =  f_{0} \left(x\right)$
+
+**(A)**
+
+Describe a test procedure $\delta$ for which the value of $\alpha \left( \delta \right) + 2\beta \left(\delta \right)$ is a minimum. 
+
+**(B)**
+
+Determine the minimum value of $\alpha \left( \delta \right) + 2\beta \left(\delta \right)$ attained by that procedure.  
+
+**9.2 #3**
+
+***Q:*** Consider again the conditions of Exercise 2 (9.2.2), but suppose now that it is desired to find a test procedure for which the value of $3\alpha \left( \delta \right) + \beta \left(\delta \right)$ is a minimum. 
+
+**(A)**
+
+Determine the procedure.  
+
+**(B)**
+
+Determine the minimum value of $3\alpha \left( \delta \right) + \beta \left(\delta \right)$ attained by the procedure. 
+
+**9.2 #10**
+
+***Q:*** Suppose that $X_1, ..., X_n$ form a random sample from the Poisson distribution with unknown mean $\lambda$. Let $\lambda_0$ and $\lambda_1$ be specified values such that $\lambda_1 > \lambda_0 > 0$, and suppose that it is desired to test the following simple hypotheses:  
+
+$H_{0} : \lambda = \lambda_0$
+
+$H_{1} : \lambda = \lambda_1$
+
+**(A)**
+
+Show that the value of $\alpha \left( \delta \right) + \beta \left(\delta \right)$ is minimized by a test procedure which rejects $H_0$ when $\bar{X}_n > c$.
+
+**(B)**
+
+Find the value of c. 
+
+**(C)**
+
+For $\lambda_0 = \frac{1}{4}$, $\lambda_1 = \frac{1}{2}$, and $n=20$, determine the minimum value of $\alpha \left( \delta \right) + \beta \left(\delta \right)$ that can be attained. 
+
+**9.3 #1**
+
+***Q:*** Suppose that $X_1, ..., X_n$ form a random sample from the Poisson distribution with unknown mean $\lambda$ $\left( \lambda > 0 \right)$. Show that the joint p.f. of $X_1, ..., X_n$ has a monotone likelihood ratio in the statistic $\sum \limits_{i=1}^{n} {X_i}$.
+
+**9.3 #2**
+
+***Q:*** Suppose that $X_1, ..., X_n$ form a random sample from the normal distribution with known mean $\mu$ and unknown variance $\sigma^2$ $\left( \sigma^2 > 0 \right)$. Show that the joint p.d.f. of $X_1, ..., X_n$ has a monotone likelihood ratio in the statistic $\sum \limits_{i=1}^{n} {\left(X_i - \mu\right)^2}$. 
+
+**9.3 #13**
+
+***Q:*** Suppose that four observations are taken at random from the normal distribution with unknown mean $\mu$ and known variance 1. Suppose also that the following hypotheses are to be tested: 
+
+$H_{0} : \mu \geq 10$
+
+$H_{1} : \mu < 10$
+
+**(A)**
+
+Determine a UMP test at the level of significance $\alpha_{0} = 0.1$
+
+**(B)**
+
+Determine the power of this test when $\mu = 9$. 
+
+**(C)**
+
+Determine the probability of not rejecting $H_0$ if $\mu = 11$. 
