@@ -24,9 +24,24 @@ library(here)
 
 Determine the power function of the test.  
 
+Let $\delta$ demote a test, specifically: 
+
+$\delta$ :{Reject $H_0$ when $X \geq 1$}
+
+Then for $\beta >0$ we note the power function as follows, $\pi \left( \beta \mid \delta \right) = Pr \left(X \geq 1 \mid \beta \right) = e^{-\beta}$
+
 **(B)**
 
 Compute the size of the test. 
+
+By the definition of size, we have: 
+
+$size(\delta) = sup_{\beta \geq 1} \pi \left( \beta \mid \delta \right)$
+
+Note the power function from **(A)**, $\pi \left( \beta \mid \delta \right)  = e^{-\beta}$, such that $\pi \left( \beta \mid \delta \right)$ is a decreasing function of $\beta$. Thus, the power function takes a maximum at $\beta = 1$, and we may say: 
+
+The size of the test is $\pi \left( \beta = 1 \mid \delta \right) = e^{-1}$.
+
 
 **9.1 #2**
 
@@ -42,9 +57,19 @@ Let $Y_n = max \left(X_1, ..., X_n \right)$ and consider a test procedure such t
 
 Determine the power function of the test.  
 
+Note, for $0 < y < \theta$, then $Pr \left(Y_n \leq y\right) = \left( \frac{y}{\theta}\right) ^n$.
+
+Additionally note, if $y \geq \theta$, then $Pr \left(Y_n \leq y\right) = 1$.
+
+Thus, for the stated condition, if $\theta \leq 1.5$, then $\pi(\theta) = Pr(Y_n \leq 1.5) = 1$. 
+
+And if $\theta > 1.5$, then $\pi(\theta) = Pr(Y_n \leq 1.5) = \left( \frac{1.5}{\theta} \right) ^n$
+
 **(B)**
 
 Determine the size of the test. 
+
+The size of the test, $size(\delta) = \alpha = sup_{\theta \geq 2} \pi \left(\theta \right) = sup_{\theta \geq 2} \left(\frac{1.5}{\theta} \right)^n = \left(\frac{1.5}{2} \right)^n = \left(\frac{3}{4} \right)^n$.
 
 **9.1 #14** 
 
@@ -126,9 +151,27 @@ $H_{1} : f(x) =  f_{0} \left(x\right)$
 
 Describe a test procedure $\delta$ for which the value of $\alpha \left( \delta \right) + 2\beta \left(\delta \right)$ is a minimum. 
 
+Using Thm. 9.2.1 with $a-1, b=2$, we have: 
+
+$\delta$ :{Do not reject $H_0$ if $\frac{f_1(x)}{f_0(x)} < \frac{1}{2}$}
+
+Note, as  $\frac{f_1(x)}{f_0(x)} = 2x \rightarrow 2x < \frac{1}{2}$
+
+Thus we may say the procedure is: Do not reject $H_0$ if $x < \frac{1}{4}$, and likewise to reject $H_0$ if $x > \frac{1}{4}$. 
+
 **(B)**
 
 Determine the minimum value of $\alpha \left( \delta \right) + 2\beta \left(\delta \right)$ attained by that procedure.  
+
+Note the following formulations: 
+
+$\alpha (\delta) = Pr( Reject \space H_0 \mid f_0) = \int \limits_{\frac{1}{4}}^{1} {f_0(x) dx } = \frac{3}{4}$
+
+$\beta (\delta) = Pr( Fail \space to \space  Reject \space  H_0 \mid f_1) = \int \limits_{0}^{\frac{1}{4}} {2x dx } = \frac{1}{16}$
+
+Therefore, we have: 
+
+$\alpha \left( \delta \right) + 2\beta \left(\delta \right) = \frac{3}{4} + 2\frac{1}{16} = \frac{7}{8}$
 
 **9.2 #3**
 
@@ -138,9 +181,21 @@ Determine the minimum value of $\alpha \left( \delta \right) + 2\beta \left(\del
 
 Determine the procedure.  
 
+Using Thm. 9.2.1. with $a=3, b=1$, we have:
+
+$\delta$ :{Do not reject $H_0$ if $\frac{f_1(x)}{f_0(x)} < 3 \rightarrow 2x < 3$}
+
+Since all values of X lie in the interval (0, 1), the optimal procedure is to not reject $H_0$ for every possible observed value (as $max(X)=1 \rightarrow 2 \cdot max(X)=2 < 3$).
+
 **(B)**
 
 Determine the minimum value of $3\alpha \left( \delta \right) + \beta \left(\delta \right)$ attained by the procedure. 
+
+Since we never reject $H_0$ under the stated conditions, we have:
+
+$\alpha (\delta) = 0, \beta(\delta)=1$ and we thus have:
+
+$3\alpha (\delta) + \beta(\delta) = 1$
 
 **9.2 #10**
 
