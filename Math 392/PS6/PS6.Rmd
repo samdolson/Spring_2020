@@ -241,13 +241,46 @@ $H_{1} : \lambda = \lambda_1$
 
 Show that the value of $\alpha \left( \delta \right) + \beta \left(\delta \right)$ is minimized by a test procedure which rejects $H_0$ when $\bar{X}_n > c$.
 
+Applying Thm. 9.2.1 with $a = b = 1$, we know the optimal test procedure is to reject $H_0$ if $\frac{f_1(\bar{X})}{f_0(\bar{X})} > 1$. 
+
+Let $y = \sum \limits_{i=1}^{n} {x_i}$
+
+We may note the joint p.f. of the data as:
+
+$f_n(\bar{X} \mid \lambda) = f_n(X_1 \mid \lambda) ...f_n(X_n \mid \lambda) = \frac{e^{-\lambda} \lambda^{x_{1}}}{x_1!} ... \frac{e^{-\lambda} \lambda^{x_{n}}}{x_n!} = \frac{e^{-n\lambda} \lambda^{y}}{\prod \limits_{i=1}^{n} x_i!}$
+
+Thus we have: 
+
+$f_0(\bar{X}) = \frac{e^{-n\lambda_0} \lambda_0^y}{\prod \limits_{i=1}^{n} {x_i!}}$
+
+$f_1(\bar{X}) = \frac{e^{-n\lambda_1} \lambda_1^y}{\prod \limits_{i=1}^{n} {x_i!}}$
+
+It then follows that: 
+
+$\frac{f_1(\bar{X})} {f_0(\bar{X})} = e^{-n \left( \lambda_2 - \lambda_1 \right)} \cdot \left(\frac{\lambda_2}{\lambda_1}\right)^{y}$
+
+Taking the log of this gives us: 
+
+$log \left( \frac{f_1(\bar{X})} {f_0(\bar{X})} \right) = y  \space log\left(\frac{\lambda_2}{\lambda_1}\right) -n \left( \lambda_1 - \lambda_0 \right)$
+
+Note by construction $\lambda_1 > \lambda_0$. Therefore, we know: 
+
+$\frac{f_1(\bar{X})} {f_0(\bar{X})} > 1 \space \space iff \space \space \frac{y}{n} > \frac{(\lambda_1-\lambda_0)}{(log \space \lambda_1 - log \space \lambda_0)}$
+
 **(B)**
 
 Find the value of c. 
 
+Note that $\bar{x}_n = \frac{y}{n}$. 
+
+Utilizing the above and the formulations from **(A)**, we want a test procedure which rejects $H_0$ when $\bar{X}_n > c$, giving us: 
+$c = \frac{(\lambda_1-\lambda_0)}{(log \space \lambda_1 - log \space \lambda_0)}$
+
 **(C)**
 
 For $\lambda_0 = \frac{1}{4}$, $\lambda_1 = \frac{1}{2}$, and $n=20$, determine the minimum value of $\alpha \left( \delta \right) + \beta \left(\delta \right)$ that can be attained. 
+
+
 
 **9.3 #1**
 
@@ -295,7 +328,7 @@ Noting the prior condition that $0 < \sigma_1^2 < \sigma_2^2 \rightarrow \frac{1
 
 We may then conclude that the joint p.d.f. of $X_1, ..., X_n$ has a monotone likelihood ratio in the statistic $\sum \limits_{i=1}^{n} {\left(X_i - \mu\right)^2}$.
 
-**9.3 #13** [To Do]
+**9.3 #13**
 
 ***Q:*** Suppose that four observations are taken at random from the normal distribution with unknown mean $\mu$ and known variance 1. Suppose also that the following hypotheses are to be tested: 
 
@@ -307,10 +340,47 @@ $H_{1} : \mu < 10$
 
 Determine a UMP test at the level of significance $\alpha_{0} = 0.1$
 
+Note: via Exercise 9.3.12, a test which rejects $H_0$ when $\bar{X}_n \leq c$ will be a UMP test. 
+
+Thus, for a significance level $\alpha_{0} = 0.1$, we want to choose a value of c that satisfies: 
+
+$Pr(\bar{X}_n \leq c \mid \mu =10) = 0.1$
+
+As we have four observations, we have $n=4$. For $\mu = 10$, let us note the variable z with the standard normal distribution, specifically: 
+
+$z = 2(\bar{X}_n - 10)$
+
+Referencing the above probability formula, we thus have: 
+
+$Pr(\bar{X}_n \leq c \mid \mu =10) = Pr(Z \leq 2(c - 10)) = 0.1$
+
+As the standard normal distribution is a known distribution, we may take advantage of the known formulation, namely: 
+
+$Pr(Z \leq 2(c - 10)) = 0.1 = Pr(Z \leq -1.28)$
+
+Solving for c gives us: 
+
+$2(c-10) = -1.28 \rightarrow c = \frac{18.72}{2} = 9.36$
+
 **(B)**
 
 Determine the power of this test when $\mu = 9$. 
 
+Using a similar formulation to **(A)**, we note: 
+
+$z = 2(\bar{X}_n - 9) ~ N(0,1)$ (the standard normal distribution). 
+We then formulate the power of the test as: 
+
+$Pr(\bar{X}_n \leq 9.36 \mid \mu = 9) = Pr(Z \leq 0.718) = \Phi (0.718) \approx 0.76$
+
 **(C)**
 
-Determine the probability of not rejecting $H_0$ if $\mu = 11$. 
+Determine the probability of not rejecting $H_0$ if $\mu = 11$.
+
+Using a similar formulation to **(A)** and **(A)**, we note: 
+
+$z = 2(\bar{X}_n - 11) ~ N(0,1)$ (the standard normal distribution). 
+
+We then formulate the probability of rejecting $H_0$ as:  
+
+$Pr(\bar{X}_n \leq 9.36 \mid \mu = 11) = Pr(Z \geq -3.282) = Pr(Z \leq 3.282) = \Phi (3.282) \approx 0.9995$
