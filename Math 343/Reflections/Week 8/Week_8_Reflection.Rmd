@@ -1,0 +1,77 @@
+---
+title: "Week 8 - Reflection"
+author: "Sam D. Olson"
+output:
+  pdf_document: default
+  html_document:
+    highlight: pygments
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Note on Structure
+
+For ease of reading, this reflection is grouped by topic (Reading Reflections and Presentation Reflections) and by thoughts/questions. Bullet points are used for conciseness.  
+
+### Reading Reflections
+
+1. General Thoughts
+
+**A.** Given the recent transition to remote work, I'm anxious to see how the project changes and evolves as we move from modelling (including the transition from linear models to GREG and other estimation techniques) to report writing. I can't help but connect this to how research is frequently conducted, e.g. the research you do with Gretchen. 
+
+**B.** These readings were less impactful than prior readings, which may be due to our current focus on modelling and data description. This isn't to say the readings were not important, in fact far from it. After taking some time to reflect on the readings, I appreciated them once I connected the idea of a data description as a resource for creating a storyboard and 'Middle' of a research report. 
+
+2. What ideas from the readings do you think you will utilize most in your project?
+
+**A.** I am interested in creating a storyboard, both to aid in structuring our research as well as a tool to diagnose holes in our work. This is a concept I hope to use in future research projects. 
+
+**B.** Broadly, CwD provides a number of helpful lists to reference when writing (and when considering writing) a research report---including sections such as an Introduction or Conclusion. It will be helpful to have the book to reference when writing the eventual report. 
+
+### Presentation Reflections
+
+1. General Thoughts
+
+**A.** We should have officially introduced ourselves as the Tree Amigos. 
+
+**B.** I'm especially glad we had time to get stakeholder feedback, as it will help us set expectations for the next presentation (and broadly for our analysis).
+
+2. What did you like most about the presentation?
+
+**A.** The presentation felt and sounded a lot smoother than the prior one. 
+
+3. What were the key takeaways?
+
+**A.** We're looking into different ways to group estimates---ecologies and forest type---to compare at county, state, and total IW levels. 
+
+**B.** We're starting to create estimates and will be analyzing what resolution and predictors to use for our models. 
+
+4. How easy was it to figure out the key takeaways?  How could they have been made clearer?
+
+**A.** I felt that the presentation was framed well in the beginning, but it didn't include key takeaways. This should be included in the introduction of future presentations. 
+
+**B.** Our next steps were not clear, aside from "modelling" writ large.    
+
+5. Did the presentation flow well (i.e. have smooth transitions between points)?  Provide a concrete example of a place in the presentation where a transition could be made smoother and how you would make it smoother.
+
+**A.** I think it would be helpful to find a way to present the slides in presentation mode. Slide 3 (containing 6 different bivariate plots) appeared a bit cramped. I believe it would have been difficult for the audience to analyze the graphs on their own. 
+
+**B.** The transition to 'Questions' could have been smoother, i.e. taking the audience along the narrative journey we've been going through. Many thanks to Kelly for jumping in at this point in the presentation. 
+
+6. Suggest two ways the presenters could better tailor their presentation to their audience.
+
+**A.** Pause between slides/presenters to ask the audience if they have thoughts or questions. 
+
+**B.** Frame the beginning of the presentation as a conversation, asking the audience/stakeholders to jump in when they think of something or have questions. 
+
+7. Did the presenters make good eye contact, keep a good pace, and use their voice and hands effectively?  If not, where could there be improvements?
+
+**A.** Overall, I felt we did well at maintaining eye contact and having a consistent pace. However, we didn't use our hands to great effect, though I am not particularly concerned about this given the medium of communication (Zoom). 
+
+8. Were the slides clear and informative?  Do they support the main points of the presentation?  How could they be improved?
+
+**A.** This was a noticeable improvement from the prior presentation, with significantly less slides. I think we can continue trimming down the number of slides to 10 or less. 
+
+**B.** It bears repeating, we should be mindful of how the slides look when presenting, especially slides with multiple plots (Slides 3 and 4). 
