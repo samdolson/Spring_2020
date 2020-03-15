@@ -71,7 +71,7 @@ Determine the size of the test.
 
 The size of the test, $size(\delta) = \alpha = sup_{\theta \geq 2} \pi \left(\theta \right) = sup_{\theta \geq 2} \left(\frac{1.5}{\theta} \right)^n = \left(\frac{1.5}{2} \right)^n = \left(\frac{3}{4} \right)^n$.
 
-**9.1 #14** 
+**9.1 #14** [To Do]
 
 Plus: plot power functions in R
 
@@ -197,7 +197,7 @@ $\alpha (\delta) = 0, \beta(\delta)=1$ and we thus have:
 
 $3\alpha (\delta) + \beta(\delta) = 1$
 
-**9.2 #10**
+**9.2 #10** [To Do]
 
 ***Q:*** Suppose that $X_1, ..., X_n$ form a random sample from the Poisson distribution with unknown mean $\lambda$. Let $\lambda_0$ and $\lambda_1$ be specified values such that $\lambda_1 > \lambda_0 > 0$, and suppose that it is desired to test the following simple hypotheses:  
 
@@ -241,7 +241,29 @@ Note, as $0 < \lambda_1 < \lambda_2$, this is an increasing function of y and we
 
 ***Q:*** Suppose that $X_1, ..., X_n$ form a random sample from the normal distribution with known mean $\mu$ and unknown variance $\sigma^2$ $\left( \sigma^2 > 0 \right)$. Show that the joint p.d.f. of $X_1, ..., X_n$ has a monotone likelihood ratio in the statistic $\sum \limits_{i=1}^{n} {\left(X_i - \mu\right)^2}$. 
 
-**9.3 #13**
+Let $y = \sum \limits_{i=1}^{n} {\left(x_i - \mu\right)^2}$
+
+We may then note the joint p.d.f. of the data as: 
+
+$f_n(\bar{X} \mid \sigma^2) = f_n(X_1 \mid \sigma^2) ... f_n(X_n \mid \sigma^2) = \frac{1}{\sqrt{\left( 2 \pi \sigma^2 \right)}} \cdot e^{\frac{-x_1}{2 \sigma^2}} ... \frac{1}{\sqrt{\left( 2 \pi \sigma^2 \right)}} \cdot e^{\frac{-x_n}{2 \sigma^2}}$
+
+Simplifying this expression gives us: 
+
+$f_n(\bar{X} \mid \sigma^2) = \frac{1}{\sqrt{\left( 2 \pi \sigma^2 \right)}^n} \cdot e^{\frac{-y}{2 \sigma^2}}$
+
+Thus, noting the condition $0 < \sigma_1^2 < \sigma_2^2$, we have: 
+
+$\frac{f_n(\bar{X} \mid \sigma_2^2)}{f_n(\bar{X} \mid \sigma_1^2)} = \frac{\frac{1}{\sqrt{\left( 2 \pi \sigma_2^2 \right)}^n} \cdot e^{\frac{-y}{2 \sigma_2^2}}} {\frac{1}{\sqrt{\left( 2 \pi \sigma_1^2 \right)}^n} \cdot e^{\frac{-y}{2 \sigma_1^2}}}$
+
+Simplifying this expression then gives us:m 
+
+$\frac{f_n(\bar{X} \mid \sigma_2^2)}{f_n(\bar{X} \mid \sigma_1^2)} = \left(\frac{\sigma_1}{\sigma_2}\right)^n \cdot e^{\frac{y}{2} \cdot \left(\frac{1}{\sigma_1^2} - \frac{1}{\sigma_2^2} \right)}$
+
+Noting the prior condition that $0 < \sigma_1^2 < \sigma_2^2 \rightarrow \frac{1}{\sigma_1^2} > \frac{1}{\sigma_2^2}$, and we may say the above ($\frac{f_n(\bar{X} \mid \sigma_2^2)}{f_n(\bar{X} \mid \sigma_1^2)}$) is an increasing function of y. 
+
+We may then conclude that the joint p.d.f. of $X_1, ..., X_n$ has a monotone likelihood ratio in the statistic $\sum \limits_{i=1}^{n} {\left(X_i - \mu\right)^2}$.
+
+**9.3 #13** [To Do]
 
 ***Q:*** Suppose that four observations are taken at random from the normal distribution with unknown mean $\mu$ and known variance 1. Suppose also that the following hypotheses are to be tested: 
 
