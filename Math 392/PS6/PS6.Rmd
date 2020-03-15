@@ -158,7 +158,7 @@ ggplot(df, aes(theta)) +
 ***Q:*** Consider two p.d.f.'s $f_{0} \left(x\right)$ and $f_{1} \left(x\right)$ that are defined as follows: 
 
 $$\begin{aligned}
-f_{0} \left(x\right)) = \begin{Bmatrix} 
+f_{0} \left(x\right) = \begin{Bmatrix} 
 {1} \ for\ 0 \leq x \leq 1 \\
 0 \ \ otherwise
 \end{Bmatrix}
@@ -229,7 +229,7 @@ $\alpha (\delta) = 0, \beta(\delta)=1$ and we thus have:
 
 $3\alpha (\delta) + \beta(\delta) = 1$
 
-**9.2 #10** [To Do]
+**9.2 #10**
 
 ***Q:*** Suppose that $X_1, ..., X_n$ form a random sample from the Poisson distribution with unknown mean $\lambda$. Let $\lambda_0$ and $\lambda_1$ be specified values such that $\lambda_1 > \lambda_0 > 0$, and suppose that it is desired to test the following simple hypotheses:  
 
@@ -280,7 +280,29 @@ $c = \frac{(\lambda_1-\lambda_0)}{(log \space \lambda_1 - log \space \lambda_0)}
 
 For $\lambda_0 = \frac{1}{4}$, $\lambda_1 = \frac{1}{2}$, and $n=20$, determine the minimum value of $\alpha \left( \delta \right) + \beta \left(\delta \right)$ that can be attained. 
 
+If $H_0$ is true, then $Y = \sum \limits_{i=1}^{n} {X_i} \sim Poisson \left( \lambda_0\right)$ with mean $n\lambda_0$
 
+And if $H_1$ is true, then $Y = \sum \limits_{i=1}^{n} {X_i} \sim Poisson \left( \lambda_1\right)$ with mean $n\lambda_1$
+
+Noting the specified conditions, $\lambda_0 = \frac{1}{4}$, $\lambda_1 = \frac{1}{2}$, and $n=20$, we have: 
+
+$\frac{n (\lambda_1-\lambda_0)}{(log \space \lambda_1 - log \space \lambda_0)} = \frac{20 \cdot 0.25}{log(0.50) - log(0.25)} \approx 7.21$
+
+We use this value in the following computations, which we are able to evaluate using Poisson distribution tables, but first we must path our tithe and say:
+
+***All Praise the Glorious Tables in the Back of the Book***
+
+With tithes out of the way, note to evaluate $\alpha (delta)$ we use a Poisson distribution with mean $5 = 20 \cdot 0.25$. 
+
+$\alpha (\delta) = Pr(Y > 7.21 \mid H_0) = Pr(Y \geq 8 \mid H_0) \approx  0.13$
+
+Similarly, to evaluate $\beta (delta)$ we use a Poisson distribution with mean $10 = 20 \cdot 0.50$.
+
+$\beta (\delta) = Pr(Y \leq 7.21 \mid H_1) = Pr(Y \leq 7 \mid H_1) \approx 0.22$
+
+Combining these together, we have: 
+
+$\alpha \left( \delta \right) + \beta \left(\delta \right) = 0.13 + 0.22 = 0.35$ as the minimum value that can be attained. 
 
 **9.3 #1**
 
