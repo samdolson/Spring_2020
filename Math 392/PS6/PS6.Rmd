@@ -71,7 +71,7 @@ Determine the size of the test.
 
 The size of the test, $size(\delta) = \alpha = sup_{\theta \geq 2} \pi \left(\theta \right) = sup_{\theta \geq 2} \left(\frac{1.5}{\theta} \right)^n = \left(\frac{1.5}{2} \right)^n = \left(\frac{3}{4} \right)^n$.
 
-**9.1 #14** [To Do]
+**9.1 #14**
 
 Plus: plot power functions in R
 
@@ -87,38 +87,70 @@ Let $X = \sum \limits_{i=1}^{n} {X_i}$. Let $\delta_c$ be the test that rejects 
 
 Show that $\pi \left( \theta \mid \delta_c \right)$ is a decreasing function of $\theta$ 
 
+We take advantage of the second parameter of the Gamma distribution being being a location parameter. Thus we may note: 
+
+The distribution of $X \sim Gamma\left( n, \theta\right)$ 
+
+The distribution of $Y = \theta X \sim Gamma\left( n , 1\right)$ 
+
+Let us then note the c.d.f. of Y, $G_{n}$. 
+
+We then note the power function of $\delta_c$ as: 
+
+$\pi\left( \theta \mid \delta_c\right) = Pr(X \geq c\mid \theta) = Pr(Y \geq c\theta \mid \theta) = 1- G_{n} \left( c\theta \right)$
+
+Note that $G_{n}$ is an increasing function of $\theta$ and $c \theta$ is an increasing function of $\theta$, making $\pi\left( \theta \mid \delta_c\right) = 1- G_{n} \left( c\theta \right)$ a decreasing function of $\theta$. 
+
 **(B)**
 
 Find c in order to make $\delta_c$ have size $\alpha_0$. 
+
+Note, to find c we set the above power function equal to the size, giving us: 
+
+$\pi\left( \theta_0 \mid \delta_c\right) = 1- G_{n} \left( c\theta_0 \right) = \alpha_0$
+
+Taking the inverse c.d.f. allows us to solve for c, giving us: 
+
+$1 - \alpha_0 = G_{n} \left( c\theta_0 \right)$
+
+$G_{n}^{-1} \left(1 - \alpha_0 \right) = c \theta_0$
+
+$c = \frac{G_{n}^{-1} \left(1 - \alpha_0 \right)}{\theta_0}$
 
 **(C)**
 
 Let $\theta_0 = 2$, $n=1$, and $\alpha_0 = 0.1$. Find the precise form of the test $\delta_c$ and sketch its power function. 
 
-```{r echo=TRUE, eval=TRUE, fig.heigh=3}
-theta <- 250
-n <- (1:50)
+We have: 
 
-mle_mse <- rep(NA, 50) 
-mom_mse <- rep(NA, 50)
-mle_adj_mse <- rep(NA, 50)
-for (i in 1:50){ 
-  mle_mse[i] <- ((theta ^ 2) * 2 )/ ((n[i] + 1) * (n[i] + 2))
-  mom_mse[i] <- (theta ^ 2) / (3 * n[i])
-  mle_adj_mse[i] <- (theta ^ 2) / ((n[i] * (n[i] +2)))
+$G_n (y) = 1 - e^{-y}$, 
+
+$G_n ^{-1} = -log(1-p)$ 
+
+Using our formulation of c from **(B)** gives us: 
+
+$c = \frac{- log(0.1)}{2} \approx 1.15$
+
+We may then plot the relationship between $\theta$ and the power function, given below.
+
+```{r echo=TRUE, eval=TRUE, fig.heigh=3}
+theta <- (0:6)
+
+power <- rep(NA, 7) 
+
+for(i in 0:6) {
+  power[i] <- exp((-1)* 1.15 * theta[i])
 }
 
-df <- data.frame(n,mle_mse,mom_mse, mle_adj_mse)
+df <- data.frame(theta,power)
 
-ggplot(df, aes(n)) +                  
-  geom_line(aes(y=mle_mse), colour="red") +  
-  geom_line(aes(y=mom_mse), colour="green") +
-  geom_line(aes(y=mle_adj_mse), colour="blue") +
-  geom_text(x=3.5, y=500, label="MLE adj.") +
-  geom_text(x=20, y=2500, label="MOM") +
-  geom_text(x=8, y=3000, label="MLE") + 
-  ggtitle("MSE of MLE, MOM, and adjusted MLE Estimators") +
-  labs(y="MSE", x = "n (observations)")
+ggplot(df, aes(theta)) +                  
+  geom_line(aes(y=power), colour="black") + 
+  geom_text(x=1.5, y=0.4, label="Power") +
+  ggtitle("Power as a Function of Theta") +
+  geom_text(x=2.5, y=0.145, label="Size") +
+  geom_hline(yintercept=0.1, linetype="dashed", color = "red") +
+  labs(y="Power", x = "Theta")
 ```
 
 **9.2 #2**
