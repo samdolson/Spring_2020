@@ -221,6 +221,22 @@ For $\lambda_0 = \frac{1}{4}$, $\lambda_1 = \frac{1}{2}$, and $n=20$, determine 
 
 ***Q:*** Suppose that $X_1, ..., X_n$ form a random sample from the Poisson distribution with unknown mean $\lambda$ $\left( \lambda > 0 \right)$. Show that the joint p.f. of $X_1, ..., X_n$ has a monotone likelihood ratio in the statistic $\sum \limits_{i=1}^{n} {X_i}$.
 
+Let $y = \sum \limits_{i=1}^{n} {x_i}$
+
+We may note the joint p.f. of the data as: 
+
+$f_n(\bar{X} \mid \lambda) = f_n(X_1 \mid \lambda) ...f_n(X_n \mid \lambda) = \frac{e^{-\lambda} \lambda^{x_{1}}}{x_1!} ... \frac{e^{-\lambda} \lambda^{x_{n}}}{x_n!} = \frac{e^{-n\lambda} \lambda^{y}}{\prod \limits_{i=1}^{n} x_i!}$
+
+Thus, for $0 < \lambda_1 < \lambda_2$, we have: 
+
+$\frac{f_n(\bar{X} \mid \lambda_2)}{f_n(\bar{X} \mid \lambda_1)} = \frac{\frac{e^{-n\lambda_2} \lambda_2^{y}}{\prod \limits_{i=1}^{n} x_i!}}{\frac{e^{-n\lambda_1} \lambda_1^{y}}{\prod \limits_{i=1}^{n} x_i!}}$
+
+Noting the factorials of $x_i$ cancel out, we then have: 
+
+$\frac{f_n(\bar{X} \mid \lambda_2)}{f_n(\bar{X} \mid \lambda_1)} = e^{-n \left( \lambda_2 - \lambda_1 \right)} \cdot \left(\frac{\lambda_2}{\lambda_1}\right)^{y}$
+
+Note, as $0 < \lambda_1 < \lambda_2$, this is an increasing function of y and we conclude the joint p.f. of $X_1, ..., X_n$ has a monotone likelihood ratio in the statistic $\sum \limits_{i=1}^{n} {X_i}$. 
+
 **9.3 #2**
 
 ***Q:*** Suppose that $X_1, ..., X_n$ form a random sample from the normal distribution with known mean $\mu$ and unknown variance $\sigma^2$ $\left( \sigma^2 > 0 \right)$. Show that the joint p.d.f. of $X_1, ..., X_n$ has a monotone likelihood ratio in the statistic $\sum \limits_{i=1}^{n} {\left(X_i - \mu\right)^2}$. 
