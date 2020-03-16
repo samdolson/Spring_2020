@@ -13,6 +13,13 @@ library(knitr)
 library(here)
 ```
 
+## Time Spent
+
+Total: $7$ hours
+
+Book Exercises: $6 \space \frac{1}{2}$ hours
+
+R Coding: $\frac{1}{2}$ hours
 
 ## Exercise from the book
 
@@ -24,11 +31,13 @@ library(here)
 
 Determine the power function of the test.  
 
-Let $\delta$ demote a test, specifically: 
+Let $\delta$ denote a test procedure, and define $\delta$ as follows: 
 
 $\delta$ :{Reject $H_0$ when $X \geq 1$}
 
-Then for $\beta >0$ we note the power function as follows, $\pi \left( \beta \mid \delta \right) = Pr \left(X \geq 1 \mid \beta \right) = e^{-\beta}$
+Then for $\beta > 0$ we note the power function as follows:
+
+$\pi \left( \beta \mid \delta \right) = Pr \left(X \geq 1 \mid \beta \right) = e^{-\beta}$
 
 **(B)**
 
@@ -38,9 +47,11 @@ By the definition of size, we have:
 
 $size(\delta) = sup_{\beta \geq 1} \pi \left( \beta \mid \delta \right)$
 
-Note the power function from **(A)**, $\pi \left( \beta \mid \delta \right)  = e^{-\beta}$, such that $\pi \left( \beta \mid \delta \right)$ is a decreasing function of $\beta$. Thus, the power function takes a maximum at $\beta = 1$, and we may say: 
+Note the power function from **(A)**, $\pi \left( \beta \mid \delta \right)  = e^{-\beta}$. 
 
-The size of the test is $\pi \left( \beta = 1 \mid \delta \right) = e^{-1}$.
+Note that $\pi \left( \beta \mid \delta \right)$ is a decreasing function of $\beta$. Thus, given the condition $\beta \geq 1$, the power function takes a maximum at $\beta = 1$, and we may say: 
+
+The size of the test is $\pi \left( \beta = 1 \mid \delta \right) = e^{-1} \approx 0.37$.
 
 
 **9.1 #2**
@@ -69,11 +80,10 @@ And if $\theta > 1.5$, then $\pi(\theta) = Pr(Y_n \leq 1.5) = \left( \frac{1.5}{
 
 Determine the size of the test. 
 
-The size of the test, $size(\delta) = \alpha = sup_{\theta \geq 2} \pi \left(\theta \right) = sup_{\theta \geq 2} \left(\frac{1.5}{\theta} \right)^n = \left(\frac{1.5}{2} \right)^n = \left(\frac{3}{4} \right)^n$.
+The size of the test is given as follows:
+$size(\delta) = \alpha = sup_{\theta \geq 2} \pi \left(\theta \right) = sup_{\theta \geq 2} \left(\frac{1.5}{\theta} \right)^n = \left(\frac{1.5}{2} \right)^n = \left(\frac{3}{4} \right)^n$.
 
 **9.1 #14**
-
-Plus: plot power functions in R
 
 ***Q:*** Let $X_1, ..., X_n$ be i.i.d. with exponential distribution with parameter $\theta$. Suppose that we wish to test the hypotheses: 
 
@@ -87,11 +97,13 @@ Let $X = \sum \limits_{i=1}^{n} {X_i}$. Let $\delta_c$ be the test that rejects 
 
 Show that $\pi \left( \theta \mid \delta_c \right)$ is a decreasing function of $\theta$ 
 
-We take advantage of the second parameter of the Gamma distribution being being a location parameter. Thus we may note: 
+We take advantage of the location parameters, noting: 
 
-The distribution of $X \sim Gamma\left( n, \theta\right)$ 
+As  $X_1, ..., X_n \sim Exp(\theta)$, 
 
-The distribution of $Y = \theta X \sim Gamma\left( n , 1\right)$ 
+$X \sim Gamma\left( n, \theta\right)$, and  
+
+$Y = \theta X \sim Gamma\left( n , 1\right)$ 
 
 Let us then note the c.d.f. of Y, $G_{n}$. 
 
@@ -185,7 +197,7 @@ Describe a test procedure $\delta$ for which the value of $\alpha \left( \delta 
 
 Using Thm. 9.2.1 with $a-1, b=2$, we have: 
 
-$\delta$ :{Do not reject $H_0$ if $\frac{f_1(x)}{f_0(x)} < \frac{1}{2}$}
+$\delta$ :{Do not reject $H_0$ if $\frac{f_1(x)}{f_0(x)} < \frac{a}{b} = \frac{1}{2}$}
 
 Note, as  $\frac{f_1(x)}{f_0(x)} = 2x \rightarrow 2x < \frac{1}{2}$
 
@@ -215,19 +227,19 @@ Determine the procedure.
 
 Using Thm. 9.2.1. with $a=3, b=1$, we have:
 
-$\delta$ :{Do not reject $H_0$ if $\frac{f_1(x)}{f_0(x)} < 3 \rightarrow 2x < 3$}
+$\delta$ :{Do not reject $H_0$ if $\frac{f_1(x)}{f_0(x)} < \frac{a}{b} = 3 \rightarrow 2x < 3 \rightarrow x < \frac{3}{2}$}
 
-Since all values of X lie in the interval (0, 1), the optimal procedure is to not reject $H_0$ for every possible observed value (as $max(X)=1 \rightarrow 2 \cdot max(X)=2 < 3$).
+Since all values of X lie in the interval (0, 1), and since $x < \frac{3}{2}$, the optimal procedure is to not reject $H_0$ for every possible observed value, noting as $max(X)=1 \rightarrow 2 \cdot max(X)=2 < 3$.
 
 **(B)**
 
 Determine the minimum value of $3\alpha \left( \delta \right) + \beta \left(\delta \right)$ attained by the procedure. 
 
-Since we never reject $H_0$ under the stated conditions, we have:
+Since we never reject $H_0$ under **(A)**, we have:
 
 $\alpha (\delta) = 0, \beta(\delta)=1$ and we thus have:
 
-$3\alpha (\delta) + \beta(\delta) = 1$
+$3\alpha (\delta) + \beta(\delta) = 0 + 1 = 1$
 
 **9.2 #10**
 
@@ -274,7 +286,11 @@ Find the value of c.
 Note that $\bar{x}_n = \frac{y}{n}$. 
 
 Utilizing the above and the formulations from **(A)**, we want a test procedure which rejects $H_0$ when $\bar{X}_n > c$, giving us: 
-$c = \frac{(\lambda_1-\lambda_0)}{(log \space \lambda_1 - log \space \lambda_0)}$
+$log(c) = y  \space log\left(\frac{\lambda_2}{\lambda_1}\right) -n \left( \lambda_1 - \lambda_0 \right)$
+
+Giving us a value of c defined as: 
+
+$c = \left(\frac{\lambda_2}{\lambda_1}\right)^y - \left( \lambda_1 - \lambda_0 \right)^n$
 
 **(C)**
 
@@ -296,13 +312,19 @@ With tithes out of the way, note to evaluate $\alpha (delta)$ we use a Poisson d
 
 $\alpha (\delta) = Pr(Y > 7.21 \mid H_0) = Pr(Y \geq 8 \mid H_0) \approx  0.13$
 
+**Note:** We go from 7.21 to 8 in the above formulation as the Poisson is a discrete distribution. 
+
 Similarly, to evaluate $\beta (delta)$ we use a Poisson distribution with mean $10 = 20 \cdot 0.50$.
 
 $\beta (\delta) = Pr(Y \leq 7.21 \mid H_1) = Pr(Y \leq 7 \mid H_1) \approx 0.22$
 
+**Note:** Similar to the prior formulation, we go from 7.21 to 7 in the above formulation as the Poisson is a discrete distribution. 
+
 Combining these together, we have: 
 
 $\alpha \left( \delta \right) + \beta \left(\delta \right) = 0.13 + 0.22 = 0.35$ as the minimum value that can be attained. 
+
+**Note:** For 9.3.1 and 9.3.2, we need to show that as a parameter of interest increases (e.g. $\lambda, \sigma^2$), then y increases as well, where $y=\sum \limits_{i=1}^{n}x_i$. This is sufficient to show the joint p.f. (or p.d.f.) of $X_1, ..., X_n$ has a monotone likelihood ratio in the specified statistic(s). 
 
 **9.3 #1**
 
@@ -352,7 +374,9 @@ We may then conclude that the joint p.d.f. of $X_1, ..., X_n$ has a monotone lik
 
 **9.3 #13**
 
-***Q:*** Suppose that four observations are taken at random from the normal distribution with unknown mean $\mu$ and known variance 1. Suppose also that the following hypotheses are to be tested: 
+***Q:*** Suppose that four observations are taken at random from the normal distribution with unknown mean $\mu$ and known variance 
+
+Suppose also that the following hypotheses are to be tested: 
 
 $H_{0} : \mu \geq 10$
 
@@ -405,4 +429,4 @@ $z = 2(\bar{X}_n - 11) ~ N(0,1)$ (the standard normal distribution).
 
 We then formulate the probability of rejecting $H_0$ as:  
 
-$Pr(\bar{X}_n \leq 9.36 \mid \mu = 11) = Pr(Z \geq -3.282) = Pr(Z \leq 3.282) = \Phi (3.282) \approx 0.9995$
+$Pr(\bar{X}_n \leq 9.36 \mid \mu = 11) = Pr(Z \geq -3.282) = Pr(Z \leq 3.282) = \Phi (3.282) \approx 0.9995$ (More digits shown due to inappropriateness of rounding)
