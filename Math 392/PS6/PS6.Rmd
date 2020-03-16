@@ -386,7 +386,7 @@ $H_{1} : \mu < 10$
 
 Determine a UMP test at the level of significance $\alpha_{0} = 0.1$
 
-Note: via Exercise 9.3.12, a test which rejects $H_0$ when $\bar{X}_n \leq c$ will be a UMP test. 
+Note: Taking the prior Exercise, Exercise 9.3.12, as a given, we know a test which rejects $H_0$ when $\bar{X}_n \leq c$ will be a UMP test. 
 
 Thus, for a significance level $\alpha_{0} = 0.1$, we want to choose a value of c that satisfies: 
 
@@ -415,9 +415,13 @@ Determine the power of this test when $\mu = 9$.
 Using a similar formulation to **(A)**, we note: 
 
 $z = 2(\bar{X}_n - 9) ~ N(0,1)$ (the standard normal distribution). 
-We then formulate the power of the test as: 
+We then formulate the power of the test as follows, where $\Phi$ is the c.d.f. of the standard normal distribution: 
 
-$Pr(\bar{X}_n \leq 9.36 \mid \mu = 9) = Pr(Z \leq 0.718) = \Phi (0.718) \approx 0.76$
+$Pr(\bar{X}_n \leq 9.36 \mid \mu = 9) = Pr(Z \leq 0.72) = \Phi (0.72) \approx 0.76$
+
+```{r echo=TRUE, eval=TRUE}
+pnorm(.718, 0, 1)
+```
 
 **(C)**
 
@@ -427,6 +431,10 @@ Using a similar formulation to **(A)** and **(A)**, we note:
 
 $z = 2(\bar{X}_n - 11) ~ N(0,1)$ (the standard normal distribution). 
 
-We then formulate the probability of rejecting $H_0$ as:  
+We then formulate the probability of rejecting $H_0$ as follows, where $\Phi$ is the c.d.f. of the standard normal distribution:  
 
-$Pr(\bar{X}_n \leq 9.36 \mid \mu = 11) = Pr(Z \geq -3.282) = Pr(Z \leq 3.282) = \Phi (3.282) \approx 0.9995$ (More digits shown due to inappropriateness of rounding)
+$Pr(\bar{X}_n \leq 9.36 \mid \mu = 11) = Pr(Z \geq -3.28) = Pr(Z \leq 3.28) = \Phi (3.28) \approx 0.9995$ (More digits shown due to inappropriateness of rounding)
+
+```{r echo=TRUE, eval=TRUE}
+pnorm(3.282, 0, 1)
+```
