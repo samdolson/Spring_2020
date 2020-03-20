@@ -1,0 +1,88 @@
+---
+title: "Self and Group Assessment"
+author: "Sam D. Olson"
+date: "3/19/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+At the mid-point and end of the semester, we will use this form to do a self assessment and a group assessment.  Please provide honest feedback on how the project is progressing.  
+
+1. Quickly summarize the tasks you have completed since the last assessment.
+
+I have done the following individually:
+
+  + Created a Data Dictionary
+  
+  + Found & delegated unassigned readings
+  
+  + Wrangled & Analyzed Ecologies data
+  
+  + Baked Cookies :) 
+
+I have done the following collaboratively with the team: 
+
+  + Literature Reviews & Summaries
+  
+  + Linear Model Coding & Combinations
+  
+  + Discussion of Research Questions & Objective
+  
+  + Create Presentations
+  
+  + Data Codebook
+
+2. Quickly summarize the tasks completed by the rest of your group members.
+
+Other group members have done the following individually: 
+
+  + Created a Slack Channel for the team (Paul)
+  
+  + Created & analyzed bivariate plots of forest attributes (Paul)
+  
+  + Awesome (and inspiring) superlatives (Paul)
+  
+  + Best Group nickname (Paul, 'Tree Amigos')
+  
+  + Principal Component Analysis (Paul)
+  
+  + Created & modified BibTeX file (Olek)
+  
+  + Wrangled Forest Types (Olek)
+  
+  + Pioneered Geospatial Data Plots (Olek)
+  
+  + Shared delicious Polish apple pastry (Olek)
+  
+Other group members have done the following collaboratively:
+
+  + Drafted Literature Review & Data Description
+  
+  + Literature Reviews & Summaries
+  
+  + Linear Model Coding & Combinations
+  
+  + Discussion of Research Questions & Objective
+  
+  + Create Presentations
+  
+  + Data Codebook
+
+3. Do you feel the workload has been shared fairly?  If not, please elaborate.  
+
+I believe the workload has been shared fairly, and pardon my going against the prompt but I want to elaborate on why. 
+
+I feel my workload has been---on net---a bit more than the others. However, I am both happy for this, and want it to be this way. That being said, the difference is almost negligible, and honestly I wish I have done (and want to continue doing) more given my time commitments (or lack thereof). 
+
+Olek and Paul have been great. It's clear they've both had their ups and downs this semester. Unlike me, they've been dealing with midterms, numerous problem sets, and other obstacles life has thrown at them, but they have continued to be communicative and responsible for their assigned tasks through it all. At the expense of being repetitive in the next prompt, I greatly appreciate everything they've been doing. 
+
+4. Do you feel that all group members are meeting their obligations to the group (e.g., completing tasks on-time, attending group meetings, demonstrating a cooperative attitude)? If not, please elaborate.
+
+Yes, wholeheartedly yes! 
+
+We are all timely on being responsible and timely regarding obligations. Everyone has been communicative about what's going on and what they're working on and when. All group meetings have been attended (though I was admittedly late to one), and I feel our output has been exceptional. 
+
+I particularly appreciate Olek and Paul treating me as a fellow student, one of the reasons I initially was unsure about auditing this course instead of Data Science. Thankfully everything has been better than I imagined. They have been especially helpful at getting back into the swing using R and conducting research. I am excited to continue the project, even though we will all be degrees of separation removed given the transition to remote work.  
