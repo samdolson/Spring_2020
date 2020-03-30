@@ -1,0 +1,41 @@
+---
+title: "Week 9 - Reflection"
+author: "Sam D. Olson"
+output:
+  pdf_document: default
+  html_document:
+    highlight: pygments
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Two Quotes of Interest---from Lurie (1962)
+
+*But in addition to providing mathematical and linguistic ornamentation for these publications, the statistician, if he is really to assist the scientist, must perform a necessary, but annoying task: he must ask the scientist impertinent questions. Indeed, the questions, if bluntly asked, may appear to be not only impertinent but almost indecently prying - because they deal with the foundations of the scientist's thinking. By these questions unexpected weaknesses in the foundations may be brought to light, and the exposure of weaknesses in one's thinking is a rather unpleasant occurrence.*
+
+*It is the statistican's responsibility to ask these questions, not to answer them. It is the scientist's responsibility to decide exactly what his hypotheses are, what these hypotheses are about, and how sure he wants to be of their correctness.*
+
+## Reflections 
+
+**Impertinent:** Not showing proper respect; rude.
+
+**Degrassé:** entranced and unsettled by the vastness of the universe.
+
+Lurie's 1962 article was published by Institute for General Semantics, and as such I find a semantic reflection of this article appropriate. Bearing in mind the preface, I am critical of Lurie's use of the word *'impertinent'*, and the implied necessity of a statistican to ask impertinent questions, or to perform an *'annoying task'*.
+
+Referring to the above definition of impertinent, Lurie is recommending a statistician to be rude, and I do not agree with this assertion. I believe this paints a picture of the statistician as a pariah, someoneone who gets what *needs to be done* at the expense of hurting a hypothetical scientist's feelings, ultimately leading them to the proper, mathematically rigorous, path. There are kernals of truth to this, but I am opposed to this characterization.  
+
+For one: Other, less dramatic, words fit the bill. Statisticians could instead ask collaborative, critical, of explorative questions. Each of the three adjectives given indicate the necessity of understanding, but importantly don't imply their asking causes duress for the one being asked. Perhaps this is not an apt characterization of statisticans of the present, at least compared to the period of time Lurie belonged to during the initial publication or the article. Then again, my optimism is darkened by Vance & Smith's reference to *'impertinent questions'* in their 2018 article. 
+
+Bearing in mind Lurie's implied necessity for a statistican to be rude---lacking 'a flattering implication' and asking questions such as *"Just what are your ideas about?"*---there is another option: Playing dumb. Personally, I've found this helpful, though importantly with the inclusion of questions such as 'I'm not an expert in the field and will need your knowledge to better understand the context' or 'These questions may seem silly, but they genuinely help me understand and confirm what we're trying to accomplish'. One aside on this technique: Playing dumb may cause a hypothetical scientist to think you are in fact dumb, and damage their trust of your expertise. However, I would much rather seem ignorant than rude, as ignorance hasn't (in my experience) caused as much harm---meetings weren't cancelled because I was rude, instead they were protracted so I could better understand what was going on.
+
+Aside from the disappointment I experienced in hearing the phrase *'impertinant questions'* from Vance & Smith's 2018 article, my reading experience was hindered from the frequent use alphabet soup, i.e. abundant use of acronyms. Not only is there ASCCR, but there's also POWER, $Q_1Q_2Q_3$, The Triangle of Statistical Communication, and the ADEPT method---and this doesn't even include the numerous bulletted (and sometimes numbered) lists! I cannot help but recognize this critique as semantic (or stylistic), and so I will readily admit the article is in fact structured *well*. Unfortunately, my reading experience was dampened by the solid structure, and I ultimately didn't enjoy the article as much as the Lurie article, notwithstanding any differences based on content of the articles.
+
+What's more, I was disconcerted by the following note in Vance & Smith: *"collaboration skills are part of the personal and professional skills—along with communication, career planning, and leadership—that the American Statistical Association has deemed essential for success as a statistician or data scientist"*. 
+
+I could only find one word that fits the feeling I experienced when reflecting upon this quote: Degrassé. But even this word is imperfect, as I don't feel unsettled by the vastness of the universe as much as the vastness of statistics---the multitude of *things* it touches and is touched by. 
+
+I don't know where to go from here but to attempt a conclusion. To begin with, I certainly have more thoughts, loosely connecting the readings to my experience in market research, that have been omitted. However, they've been removed so I can be direct about my opinions on this reading: I hope other students value this reading and its applications, and recognize and apply its recommendations. That, and: I didn't particularly enjoy reading these articles, but I can't deny their importance. Thank you. 

@@ -1,0 +1,72 @@
+---
+title: "Reflection Week 9 - Notes"
+author: "Sam D. Olson"
+output:
+  pdf_document: default
+  html_document:
+    highlight: pygments
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Your reading reflection document should be about 1-2 pages.  I have provided a few potential questions you can use to frame your reflections but you are not required to answer all (or even any) of these questions.  Your reflections should do more than just summarize the readings.  The primary goal is to reflect on how what you learned in the readings will impact you as a researcher.  (Delete this paragraph and any of the following questions that you don't tackle before turning in your reflections.)
+
+### Potential questions to answer
+
+1. Summarize two or three key points.
+1. What ideas from the readings do you think you will utilize most in your project?
+1. Are there parts of the readings where you disagree with the authors?  If so, how and why?
+1. What parts of the readings are unclear?  What is confusing about these parts?
+1. For the topic discussed, are there important ideas that are missing from the author's argument?
+
+## General Thoughts
+
+*: Impertinent
+
+1. not showing proper respect; rude.
+
+2. not pertinent to a particular matter; irrelevant.
+
+*: Explicit
+
+1. stated clearly and in detail, leaving no room for confusion or doubt.
+
+*: Specific
+
+1. clearly defined or identified.
+
+*: Lurie's characterization charges the statistican with a certain aspect of rudeness, but there is another option: Playing dumb. This may cause some negative impact on the scientist's trust of the statistican's expertise, but it certainly would mitigate issues such as Lurie's 'not a flattering implication' when the statistican asks questions such as "Just what are your ideas about?"
+
+*: Significance level is an important consideration, particularly for whether type 1 or type 2 errors are more important to root out/minimize. 
+
+*:  Lurie's article comes from the Institute for General Semantics, and as such I find a semantic exploration of Lurie's argument appropriate. It is for that reason I am critical of Lurie's implied necessity for a statistican to ask inperinent questions, rather than say, collaborative, critical, of explorative questions. Perhaps this is a piece of context from 1962 and is not an apt characterization of statisticans of the present, at least that is my hope. 
+
+*: From personal experience in market research consulting, it is helpful to send some communication--typically email--to stakeholders and domain experts outlining the items to address, a timeline of the project, and open the door to confirm if anything was missed or needs adding. This reinforces the (hopefully positive) meeting that just occurred, while ensuring expectations are being managed. (Regarding the POWER acronym of Structure, specifically the 'END')
+
+*: Introspection is important, but constantly asking for feedback may result in burnout. Either too much feedback to internalize and improve, or not receiving additional feedback. Unfortunately, not everyone wants to answer a survey every time a meeting is finished, especially if their whole day is filled with meetings. 
+
+*: Vance & Smith uses a lot of alphabet soup, with ASCCR, POWER, $Q_1Q_2Q_3$, The Triangle of Statistical Communication, and the ADEPT method---not to mention numerous bulletted lists of dichtotomies. Though this is an effective technique for structuring topics, it was a drag on my enjoyment of the article. 
+
+### Notes from Readings
+
+*: (Lurie) But in addition to providing mathematical and linguistic ornamentation for these publications, the statistician, if he is really to assist the scientist, must perform a necessary, but an- noying task: he must ask the scientist impertinent questions. Indeed, the questions, if bluntly asked, may appear to be not only impertinent but almost indecently prying - because they deal with the foundations of the scientist's thinking. By these questions unexpected weaknesses in the foundations may be brought to light, and the exposure of weaknesses in one's thinking is a rather unpleasant occurrence.
+
+*: (Lurie) From the statistician's point of view, what the scientist does, is to perform experiments and/or make observations obtain data relating to an idea he has about the organization of that portion of the world he is interested in, so that decide whether his idea was correct or not.
+
+*: (Lurie) property (or properties) of whatever is being experimented on. In the early stages of an investigation, where what are being sought are the influential factors (i.e., those which, when they are at varying levels, give rise to suf- ficiently varied results) the idea (or hypothesis) need not be specific, but it must be explicit
+
+*: (Lurie) One ask final these questions, word. It not is to the answer statistician's them. It responsibility is the scientist's to ask these questions, not to answer them. It is the scientist's responsibility to decide exactly what his hypotheses are, what these hypotheses are about, and how sure he wants to be of their correctness.
+
+*: (Vance & Smith) In the 2017-18 academic year, LISA
+had—for its first time ever—a 100% satisfaction rate from domain experts who responded to a request for feedback (Vance 2018). 
+
+*: (Vance & Smith) Collaboration skills are part of the personal and professional skills—along with communication, career planning, and leadership—that the American Statistical Association has deemed essential for success as a statistician or data scientist
+
+*: (Vance & Smith) The statistician should ideally send this
+meeting summary to the domain expert immediately after the meeting and solicit corrections or additions to the summary. Sometimes the statistician will write all of the salient points on a whiteboard during the meeting, in which case sending a photo of the whiteboard to the domain expert might suffice as a written meeting summary report.
+
+*: (Vance & Smith) Therefore, we recommend developing and practicing suitable analogies for concepts that arise most often in statistical collaborations before they are needed and then deploying them as
+appropriate to explain concepts such as power and sample size calculation, types I and II errors, p-values, confidence intervals, residuals, correlation, sampling, inference, and multiple comparisons.
