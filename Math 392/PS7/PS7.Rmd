@@ -30,6 +30,10 @@ $\sum \limits_{i=1}^{n} x_i\left( y_i - \hat{y}_i \right) = 0$
 
 Eq. (11.1.1): 
 
+(1): $\hat{\beta}_1 = \frac{\sum\limits_{i=1}^{n} \left(y_i - \bar{y} \right) \left(x_i - \bar{x} \right)} {\sum\limits_{i=1}^{n} {\left(x_i - \bar{x} \right) ^ 2}}$
+
+(2): $\hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x}$
+
 **A:**
 
 
@@ -51,9 +55,11 @@ Eq. (11.1.1):
 
 **Q:** Show that $Var \left( \hat{\beta}_0\right)$ is as given in Eq. (11.2.5). 
 
-**Notes:** 
+**Note:** 
 
 Eq. (11.2.6):
+
+(1): $f_n \left( \mathbf{y} | \mathbf{x}, \beta_o, \beta_1, \sigma^2 \right) = \frac{1}{\left( 2 \pi \sigma^2 \right) ^ \frac{n}{2}} e^{-\frac{1}{2 \sigma^2} \sum \limits_{i=1} ^{n} {\left( y_i - \beta_0 - \beta_1 x_i \right) ^2}}$
 
 **A:**
 
@@ -66,7 +72,15 @@ Eq. (11.2.6):
 
 Eq. (11.2.6):
 
+(1): $Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = - \frac{\bar{x} \sigma^2}{ s^2_x} \equiv - \frac{\bar{x} \sigma^2}{ ss_x}$
+
+*The equivalence relation is to solidfy the notation being used in this problemset.* 
+
 Exercise 8, Sec. 4.6.: 
+
+(1): For $X_1, ..., X_m$ and $Y_1, ..., Y_n$ random variables, let $i= 1, ..., m$ and $j=1, ..., n$. Suppose $Cov(X_i, Y_j)$ exists and let $a_1, ..., a_m$ and $b_1, ..., b_n$ be constants. Then the following holds: 
+
+(2): $Cov(\sum \limits_{i=1}^{m} {a_iX_i} , \sum \limits_{i=1}^{n} {b_jY_j}) = \sum \limits_{i=1}^{m} \sum \limits_{i=1}^{n} a_ib_j Cov( X_i Y_j)$
 
 **A:**
 
