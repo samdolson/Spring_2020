@@ -316,6 +316,76 @@ data(corrExerciseB)
 
 a. Create a scatter plot of all of the data, which each group plotted in a different color. Add in the group means for each.
 
+```{r}
+library(ggplot2)
+library(plyr)
+
+mean_table <- ddply(corrExerciseB, .(Z), summarize,  X_mean =mean(X), Y_mean =mean(Y))
+
+a_x_mean <- mean_table$X_mean[1]
+a_y_mean <- mean_table$Y_mean[1]
+b_x_mean <- mean_table$X_mean[2]
+b_y_mean <- mean_table$Y_mean[2]
+c_x_mean <- mean_table$X_mean[3]
+c_y_mean <- mean_table$Y_mean[3]
+d_x_mean <- mean_table$X_mean[4]
+d_y_mean <- mean_table$Y_mean[4]
+
+ggplot(data=corrExerciseB, aes(x=X, y=Y, color=Z)) +
+  geom_point(size=2, shape=1) +
+  scale_color_manual(values=c("green", "red", "blue", "purple")) +
+  geom_line(aes(x=a_x_mean), colour="green") +
+  geom_line(aes(y=a_y_mean), colour="green") +
+  geom_line(aes(x=b_x_mean), colour="red") +
+  geom_line(aes(y=b_y_mean), colour="red") +
+  geom_line(aes(x=c_x_mean), colour="blue") +
+  geom_line(aes(y=c_y_mean), colour="blue") +
+  geom_line(aes(x=d_x_mean), colour="purple") +
+  geom_line(aes(y=d_y_mean), colour="purple") +
+  geom_text(x=a_x_mean, y=a_y_mean+.66, label="Group A Mean", colour="black") +
+  geom_text(x=b_x_mean, y=b_y_mean+.66, label="Group B Mean", colour="black") +
+  geom_text(x=c_x_mean, y=c_y_mean+.66, label="Group C Mean", colour="black") +
+  geom_text(x=d_x_mean, y=d_y_mean+.66, label="Group D Mean", colour="black") +
+  guides(color=guide_legend(title="Group")) 
+```
+
 b. Compute two sample correlations: one for the group means, the other for all of the data. Under which conditions, stated informally, will the correlation at the group level exceed that at the individual level? Do you expect that this is the a more common or less common feature of aggregated data in the real world?
 
+```{r}
+library(plyr)
+
+# Group Level Correlations
+
+cor_func <- function(corrExerciseB)
+{
+return(data.frame(COR = cor(corrExerciseB$X, corrExerciseB$Y)))
+}
+
+ddply(corrExerciseB, .(Z), cor_func)
+
+# Validate Group Level Correlations
+
+group_a_cor <- corrExerciseB[which(corrExerciseB$Z=='A'),]
+cor(group_a_cor$X, group_a_cor$Y)
+
+group_b_cor <- corrExerciseB[which(corrExerciseB$Z=='B'),]
+cor(group_b_cor$X, group_b_cor$Y)
+
+group_c_cor <- corrExerciseB[which(corrExerciseB$Z=='C'),]
+cor(group_c_cor$X, group_c_cor$Y)
+
+group_d_cor <- corrExerciseB[which(corrExerciseB$Z=='D'),]
+cor(group_d_cor$X, group_d_cor$Y)
+```
+
+```{r}
+# Total Data Correlation
+cor(corrExerciseB$X, corrExerciseB$Y)
+
+# Total Data Correlation Using Means
+cor(mean_table$X, mean_table$Y)
+```
+
 c. In a setting such as this, what is the consequence for your data analysis of committing an ecological fallacy?
+
+
