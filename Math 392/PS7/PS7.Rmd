@@ -208,7 +208,56 @@ Exercise 8, Sec. 4.6.:
 
 **A:**
 
+Note: 
 
+$Var(\bar{Y}_n) =  Var(\hat{\beta}_0) + Var(\hat{\beta_1} \bar{x}_n) + Cov(\hat{\beta}_0 , \hat{\beta_1} \bar{x}_n)$
+
+Taking out values of $\bar{x}_n$ gives us: 
+
+$Var(\bar{Y}_n) = Var(\hat{\beta}_0) + \bar{x}_n^2 Var(\hat{\beta}_1) + 2 \bar{x}_nCov(\hat{\beta_0} , \hat{\beta_1})$
+
+Isolating $Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right)$ gives us: 
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = \frac{1}{2\bar{x}_n}\left( Var(\bar{Y}_n) - Var(\hat{\beta}_0) - \bar{x}_n^2 Var(\hat{\beta}_1) \right)$
+
+Note: The above relation holds for $\bar{x}_n \neq 0$.
+
+Using the equations for the Variance of $\bar{Y}_n, \hat{\beta}_0,$ and $\hat{\beta}_1$ gives us: 
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = \frac{1}{2\bar{x}_n} \left( \frac{\sigma^2}{n} - \frac{\sum \limits_{i=1}^{n} {x_i^2}}{nss_x}\sigma^2 - \frac{\bar{x}_n^2}{ss_x} \sigma^2\right)$
+
+Bringing out like terms gives us: 
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = \frac{\sigma^2}{2\bar{x}_n} \left( \frac{ss_x - \sum \limits_{i=1}^{n} {x_i^2} - n\bar{x}_n^2}{nss_x}\right)$
+
+Simplifying this equation gives us: 
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = \frac{\sigma^2}{2\bar{x}_n} \left( \frac{-2n\bar{x}_n^2}{nss_x}\right) = -\frac{\bar{x}_n^2 \sigma^2}{ss_x}$
+
+### Another Condition
+
+Let us then determine $Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right)$ when $\bar{x}_n = 0$. 
+
+Under this assumption, we have: 
+
+$\hat{\beta}_0 = \bar{Y}_n$. 
+
+Noting $\bar{Y}_n = \frac{1}{n} \sum \limits_{i=1}^{n} {Y_i}$, we have: 
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = Cov\left( \frac{1}{n} \sum \limits_{i=1}^{n} {Y_i},  \frac{1}{ss_x} \sum \limits_{j=1}^{n} {x_jY_j}\right)$
+
+Taking advantage of relation (3) given above gives us: 
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) =  \frac{1}{nss_x} \sum \limits_{i=1}^{n} \sum \limits_{j=1}^{n} {x_j Cov(Y_i, Y_j)}$
+
+In addition to taking advantage of relation (3) from Exercise 8, Sec. 4.6., note the Y's are independent and each has variance $\sigma^2$. Importantly, this means that for $i=j$, $Cov(Y_i, Y_j) = \sigma^2$, and for $i \neq j$, $Cov(Y_i, Y_j) = 0$.
+
+Thus, we are left with the following relation: 
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = \frac{1}{nss_x} \sum \limits_{i=1}^{n} \sum \limits_{j=1}^{n} {x_j Cov(Y_i, Y_j)} = \frac{\sigma^2}{nss_x} \sum \limits_{i=1}^{n} x_i= \frac{\bar{x}_n \sigma^2}{ss_x} = 0$
+
+However, under the condition of interest, $\bar{x}_n = 0$, we have: 
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) =  \frac{\sigma^2}{nss_x} \sum \limits_{i=1}^{n} x_i= \frac{\bar{x}_n \sigma^2}{ss_x} = 0 = -\frac{\bar{x}_n^2 \sigma^2}{ss_x}$, and it holds that $Cov \left( \hat{\beta}_0 , \hat{\beta}_1 \right)$ is as given in Eq. (11.2.6) $\forall \bar{x}_n$.
 
 ## Additional Exercises
 
