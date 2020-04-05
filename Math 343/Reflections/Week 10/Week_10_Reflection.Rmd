@@ -26,30 +26,49 @@ As there are two articles of interest, reflections on each question are broken u
 
 1. What is the research and who is (are) the person (people) behind the story?
 
-Bhattavharjee:
+### Bhattavharjee:
 
-Cadwalladr & Graham-Harrison:
+The research in question are a collection of social science experiments involving Diederik Stapel, a former Dutch social psychologist, who was found to have committed academic/research fraud by falsifying data. The research occurred on numerous subjects, but was particularly focused on psychology, e.g. impact of framing. 
+
+The author of the article is Yudhijit Bhattacharjee, a staff writer at Science magazine and a contributor to Wired, Discover and other publications.
+
+### Cadwalladr & Graham-Harrison:
 
 2. What moral issue did the research breach in this case? Relate your answer to the ASA guidelines.
 
-Bhattavharjee:
+### Bhattavharjee: 
 
-Cadwalladr & Graham-Harrison:
+The committees identified several practices as “sloppy science” — misuse of statistics, ignoring of data that do not conform to a desired hypothesis and the pursuit of a compelling story no matter how scientifically unsupported it may be.
+
+Under the ASA guidelines, Stapel did not: 
+*1. Identify and mitigate any preferences on the part of the investigators or data providers that might predetermine or influence the analyses/results.*
+
+*2. Apply statistical sampling and analysis procedures scientifically, without predetermining the outcome.*
+
+### Cadwalladr & Graham-Harrison:
 
 3. How was the moral breach discovered, and what were the consequences?
 
-Bhattavharjee:
+### Bhattavharjee:
 
-Cadwalladr & Graham-Harrison:
+Student researchers suspected Stapel was engaging in fraud and elevated it to a professor. The professor engaged in a research project with Stapel and similarly suspected fraud. However, after consulting another statistician (in the U.S. no less), they decided to leave it at that. Instances such as this piled up, until finally a group of students brought this to Zeelenberg's attention and it went to the rector of the university where Stapel was teaching. This furthed into a full investitation and upended Stapel's career in academic research. The consequences are commented further in the prompt below, but of note: The consequences damaged numerous careers and relationships, in addition to the trust of society on scientific research. 
+
+### Cadwalladr & Graham-Harrison:
 
 4. How did this ethical breach adversely affect the offender? How did it affect his or her colleagues? How did it affect other people (e.g., medical patients)?
 
-Bhattavharjee:
+### Bhattavharjee:
 
-Cadwalladr & Graham-Harrison:
+It upended his career, and led to intense psychological damage. His research was discredited, which in turn impacted Ph. D. students and colleagues' collaborative research efforts with Stapel. Beyond contributors, Stapel's fraud caused shockwaves throughout the academic community---social science and otherwise---which led to greater recognition of fraudulent activities. 
+
+### Cadwalladr & Graham-Harrison:
 
 5. If you were a statistician involved in this study, how might you have prevented the fraud?
 
-Bhattavharjee:
+### Bhattavharjee:
 
-Cadwalladr & Graham-Harrison:
+As a student researcher or professor, reporting this to superiors---such as the rector or Zeelenberg---may have prevented further fraud from occurring. Other options exist as well, namely forgoing Stapel's collection of data and insisting on being the data collector for a research project. Furthermore, metadata analysis of some of Stapel's studies in addition to replication of a given project, may have been able to identify and raise awareness of Stapel's fraud earlier than they were---though this point is understandably hypothetical and subject to numerous caveats. 
+
+### Cadwalladr & Graham-Harrison:
+
+
