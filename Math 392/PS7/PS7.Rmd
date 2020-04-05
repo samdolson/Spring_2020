@@ -299,12 +299,24 @@ Which agree very closely with the analytical solutions from the normal equations
 
 a. Using numerical optimization, find the estimates that minimize two additional loss functions: a) the absolute deviation in the `y` and b) the squared deviation in the x.
 
+```{r}
+opt$par
+```
+
 b. Plot all three lines on top of a scatterplot of the data. Add an `annotate()` layer or legend to make it clear which line is which.
+
+```{r}
+opt$par
+```
 
 c. Create a second scatterplot that again shows the least squares regression line. Add to this plot pairs of lines that represent each of the following intervals:
     - A confidence interval on $\beta_1$.
     - A confidence interval on $E(Y | X = x)$.
     - A prediction interval on $[Y | X = x]$.
+
+```{r}
+opt$par
+```
     
 2. [Ecological Fallacy](https://en.wikipedia.org/wiki/Ecological_fallacy) refers to a situation where one draws inferences on the individual level from data that was collected at the group level.
 
@@ -386,6 +398,22 @@ cor(corrExerciseB$X, corrExerciseB$Y)
 cor(mean_table$X, mean_table$Y)
 ```
 
+**Under which conditions, stated informally, will the correlation at the group level exceed that at the individual level? Do you expect that this is the a more common or less common feature of aggregated data in the real world?**
+
+This appears to be an example of Simpson's paradox, also known as the Yule-Simpson effect, which *'occurs when the marginal association between two categorical variables is qualitatively different from the partial association between the same two variables after controlling for one or more other variables.'*
+
+To directly answer the question at hand, and to provide personal perspective beyond regurgitating a definition---as relevant as it may be---the correlations at the group level may exceed those at an individual level when there are large differences between the number of observations available across the groups being considered, in addition to differences between observations within the same group. 
+
+Though this is common, I would caution against interpreting this as 'Defcon 1' for statisticans, because there are a host of factors to consider. Before dampening the argument though, I will point out that improving data literacy (including knowledge of fallacies, paradoxes, and other phenomenon) would go a long way to mitigating risks, and improving data literacy in targetted efforts (or perhaps to say group-level educational efforts) would certainly improve things. 
+
+Nonetheless, I would dampen the heart-grabbing, table-clearing reaction one may have had by noting an ecological fallacy ultimately causes harm when it isn't considered, or when a decision is made without vetting the potential for an ecological fallacy to have occured. Additional dimensions to this point may be noted, particularly the application and field of study for the data in question. 
+
+That being said, this is one of many concepts and observations to consider--such as correlation vs. causation, extrapolation, robustness of results, and countably many others---when handling data. At the very least, it would do good to prioritize this on the list of things to know. I'd recommend putting it above the Borel–Kolmogorov Paradox and the Banach–Tarski Paradox.
+
 c. In a setting such as this, what is the consequence for your data analysis of committing an ecological fallacy?
 
+The consequence of committing an ecological fallacy is having inappropriate conclusions. 
 
+To expand on this point: If one uses the total correlation of X on Y (positive) to infer what happens in a particular group's value of Y when X increases, one would be led to inappropriate conclusions. For one: Inferences of groups 'B' and 'D', whose correlation value was negative, would likely assume the incorrect relationship by signage. By contrast, an inference of groups 'A' and 'C' would also be incorrect, though due to magnitude instead of signage. 
+
+Akin to the observation of 'statistical significance' and 'magnitude significance', committing an ecological fallacy makes for inappropriate conclusions, both in signage and magnitude. 
