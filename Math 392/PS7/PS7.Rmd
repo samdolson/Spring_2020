@@ -300,13 +300,40 @@ Which agree very closely with the analytical solutions from the normal equations
 a. Using numerical optimization, find the estimates that minimize two additional loss functions: a) the absolute deviation in the `y` and b) the squared deviation in the x.
 
 ```{r}
-opt$par
+# A Absolute Deviation in the y
+abs_dif <- function(par, x, y) {
+  beta_0 <- par[1]
+  beta_1 <- par[2]
+  sum(abs(y - (beta_0 + beta_1 * x)))
+}
+opt_abs <- optim(par = c(1, 1), fn = abs_dif, x = x, y = y)
+
+opt_abs$par
+```
+
+```{r}
+# B Squared Deviation in the X
+ss_x <- function(par, x, y) {
+  beta_0 <- par[1]
+  beta_1 <- par[2]
+  sum((x - (y/beta_1) + (beta_0/beta_1) )^2)
+}
+opt_ss_x <- optim(par = c(1, 1), fn = ss_x, x = x, y = y)
+
+opt_ss_x$par
 ```
 
 b. Plot all three lines on top of a scatterplot of the data. Add an `annotate()` layer or legend to make it clear which line is which.
 
 ```{r}
-opt$par
+ggplot(data=df, aes(x=x, y=y)) +
+  geom_point(size=2, shape=1) + 
+  geom_abline(slope = 1.2495164, intercept = -0.4488259, colour="red") +
+  geom_abline(slope = 1.2176767, intercept = -0.5811111, colour="blue") +
+  geom_abline(slope = 1.7879482, intercept = -0.5679669, colour="green") +
+  annotate("text", x = -.25, y = -.35, label = "Squared Deviation in the Y Line") +
+  annotate("text", x = .5, y = -.35, label = "Absolute Deviation Line") +
+  annotate("text", x = -.25, y = -1.5, label = "Squared Deviation in the X Line")
 ```
 
 c. Create a second scatterplot that again shows the least squares regression line. Add to this plot pairs of lines that represent each of the following intervals:
@@ -315,9 +342,41 @@ c. Create a second scatterplot that again shows the least squares regression lin
     - A prediction interval on $[Y | X = x]$.
 
 ```{r}
-opt$par
+# compute 95% confidence interval for \beta_1
+confint(m1)
 ```
-    
+
+```{r}
+# compute 95% confidence interval for E(Y | X = x)
+conf_values <-predict(m1, newdata = df, interval = 'confidence')
+conf_data <- data.frame(conf_values)
+
+df_conf <- cbind(df, conf_data)
+df_conf
+```
+
+```{r}
+# compute 95% prediction interval on [Y | X = x]
+pred_values <- predict(m1, newdata = df, interval = 'prediction')
+pred_data <- data.frame(pred_values)
+
+df_pred <- cbind(df, pred_data)
+df_pred
+```
+
+```{r}
+ggplot(data=df, aes(x=x, y=y)) +
+  geom_point(size=2, shape=1) +
+  geom_ribbon(data=df_conf,aes(ymin=lwr,ymax=upr),alpha=0.3) +
+  geom_ribbon(data=df_pred,aes(ymin=lwr,ymax=upr),alpha=0.3) +
+  geom_abline(slope = m1$coefficients[2], intercept = m1$coefficients[1], colour="red") +
+  geom_abline(slope = confint(m1)[2,1], intercept = m1$coefficients[1], colour="blue") +
+  geom_abline(slope = confint(m1)[2,2], intercept = m1$coefficients[1], colour="blue") +
+  annotate("text", x = -.25, y = 0.25, label = "Prediction Interval of Y's") +
+  annotate("text", x = .5, y = -.45, label = "Confidence Interval of Y's") +
+  annotate("text", x = -0, y = -1.35, label = "Confidence Interval of Beta 1 Coef.")
+```
+
 2. [Ecological Fallacy](https://en.wikipedia.org/wiki/Ecological_fallacy) refers to a situation where one draws inferences on the individual level from data that was collected at the group level.
 
 ```{r}
@@ -388,17 +447,10 @@ cor(group_c_cor$X, group_c_cor$Y)
 
 group_d_cor <- corrExerciseB[which(corrExerciseB$Z=='D'),]
 cor(group_d_cor$X, group_d_cor$Y)
-```
-
-```{r}
-# Total Data Correlation
-cor(corrExerciseB$X, corrExerciseB$Y)
 
 # Total Data Correlation Using Means
 cor(mean_table$X, mean_table$Y)
 ```
-
-**Under which conditions, stated informally, will the correlation at the group level exceed that at the individual level? Do you expect that this is the a more common or less common feature of aggregated data in the real world?**
 
 This appears to be an example of Simpson's paradox, also known as the Yule-Simpson effect, which *'occurs when the marginal association between two categorical variables is qualitatively different from the partial association between the same two variables after controlling for one or more other variables.'*
 
