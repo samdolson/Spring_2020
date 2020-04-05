@@ -1,0 +1,55 @@
+---
+title: "Week 10 - Reflection"
+author: "Sam D. Olson"
+output:
+  pdf_document: default
+  html_document:
+    highlight: pygments
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Articles
+
+1. Bhattavharjee (2013): The Diederik Stapel case [https://www.nytimes.com/2013/04/28/magazine/diederik-stapels-audacious-academic-fraud.html]
+
+2. Carole Cadwalladr and Emma Graham-Harrison (2018): Cambridge Analytica/Facebook case [https://www.theguardian.com/news/2018/mar/17/cambridge-analytica-facebook-influence-us-election]
+
+## Note on Structure
+
+As there are two articles of interest, reflections on each question are broken up by article. 
+
+## Questions:
+
+1. What is the research and who is (are) the person (people) behind the story?
+
+Bhattavharjee:
+
+Cadwalladr & Graham-Harrison:
+
+2. What moral issue did the research breach in this case? Relate your answer to the ASA guidelines.
+
+Bhattavharjee:
+
+Cadwalladr & Graham-Harrison:
+
+3. How was the moral breach discovered, and what were the consequences?
+
+Bhattavharjee:
+
+Cadwalladr & Graham-Harrison:
+
+4. How did this ethical breach adversely affect the offender? How did it affect his or her colleagues? How did it affect other people (e.g., medical patients)?
+
+Bhattavharjee:
+
+Cadwalladr & Graham-Harrison:
+
+5. If you were a statistician involved in this study, how might you have prevented the fraud?
+
+Bhattavharjee:
+
+Cadwalladr & Graham-Harrison:
