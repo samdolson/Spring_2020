@@ -46,7 +46,7 @@ Eq. (11.1.4):
 
 Note: The values of $\beta_0$ and $\beta_1$ must satisfy relation (3) as above, such that $\frac{\partial{Q}}{\partial{\beta_0}} = 0$. 
 
-Thus, noting that $\hat{y}_i = \beta_0 + \beta_1 x_i$, and taking out the constant, this is to say: 
+Thus, noting that $\hat{y}_i = \beta_0 + \beta_1 x_i$, and taking out the constant, -2, this is to say: 
 
 $\frac{\partial{Q}}{\partial{\beta_0}} = 0 = \sum \limits_{i=1}^{n} \left( y_i - \hat{y}_i \right)$. 
 
@@ -54,9 +54,13 @@ However, the above relations must also satisfy relation (4) given above, leading
 
 $\frac{\partial{Q}}{\partial{\beta_1}} = 0 = \sum \limits_{i=1}^{n} \left( y_i - \hat{y}_i \right)x_i$
 
-Combining the above relations together, we obtain the following, as noted in Eq. (11.1.5):
+Combining the above relations, we obtain the following, leading us to Eq. (11.1.5):
+
+$\sum \limits_{i=1}^{n} \beta_0 + \sum \limits_{i=1}^{n} \beta_1 {x_i} = \sum \limits_{i=1}^{n} {y_i}$
 
 (5): $\beta_0 n + \beta_1 \sum \limits_{i=1}^{n} {x_i} = \sum \limits_{i=1}^{n} {y_i}$
+
+$\sum \limits_{i=1}^{n} \beta_0 x_i + \sum \limits_{i=1}^{n} \beta_1 {x_i^2} = \sum \limits_{i=1}^{n} {y_i}$
 
 (6): $\beta_0 \sum \limits_{i=1}^{n} {x_i} + \beta_1 \sum \limits_{i=1}^{n} {x_i^2} = \sum \limits_{i=1}^{n} {x_i y_i}$
 
@@ -66,9 +70,9 @@ We then note some shorthand, namely:
 
 (8): $\bar{y} = \frac{1}{n} \sum \limits_{i=1}^{n} {y_i}$
 
-Bearing in mind relations (7) and (8), we may then note relations (5) and (6) are the same as those given in (1) and (2) respectively, such that we conclude that $\hat{\beta_0}$ and $\hat{\beta_1}$, as given in Eq. (11.1.1), are unique values of $\beta_0$ and $\beta_1$. 
+Bearing in mind relations (7) and (8), we may then note relations (5) and (6) are the same as those given in (1) and (2) respectively, concluding that $\hat{\beta_0}$ and $\hat{\beta_1}$, are as given in Eq. (11.1.1), and are unique values of $\beta_0$ and $\beta_1$. 
 
-## Notational Note
+## A Note on Notation
 
 In the exercises that follow, we use the following shorthand: 
 
@@ -86,7 +90,7 @@ Eq. (11.2.7)
 
 **A:**
 
-Note: $E(Y_i) = \beta_0 + \beta_1 x_i$. Combining this with the above relation (1) gives us: 
+Note: $E(Y_i) = \beta_0 + \beta_1 x_i$. Substituting this into the above relation (1) gives us: 
 
 $E \left( \hat{\beta}_1\right) = \frac{\sum \limits_{i=1}^{n} \left( x_i - \bar{x}_n \right) \left(\beta_0 + \beta_1 x_i \right)}{ss_x}$
 
@@ -140,7 +144,7 @@ Eq. (11.2.5)
 
 **A:**
 
-Note the beginning of the prior exercise, specifically:
+Note the beginning of the prior exercise, 11.2.3, specifically:
 
 $\hat{\beta}_0 = \bar{Y}_n - \hat{\beta_1}\bar{x}_n$
 
@@ -148,39 +152,55 @@ Breaking out this equation gives us:
 
 $\hat{\beta}_0 = \frac{1}{n} \sum \limits_{i=1}^{n} Y_i - \hat{\beta}_1\bar{x}_n$
 
-Using the equation for $\hat{\beta}_1$ gives us: 
+Substituting the equation for $\hat{\beta}_1$ gives us: 
 
 $\hat{\beta}_0 = \frac{1}{n} \sum \limits_{i=1}^{n} Y_i - \bar{x}_n \frac{\sum \limits_{i=1}^{n} {(x_i - \bar{x}_n)Y_i}}{ss_x}$
 
-We can simplify this equation as follows: 
+Note, as:
 
-**Double Check this part**
+$Y_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$
+
+It then follows that: 
+
+$\hat{\beta}_0 = \frac{1}{n} \sum \limits_{i=1}^{n} \left( \hat{\beta}_0 + \hat{\beta}_1 x_i\right) - \bar{x}_n \frac{\sum \limits_{i=1}^{n} {(x_i - \bar{x}_n)Y_i}}{ss_x}$
+
+After grouping terms of $\hat{\beta}_0$, we are left with: 
 
 $\hat{\beta}_0 = \sum \limits_{i=1}^{n} {\left( \frac{1}{n} - \frac{\bar{x}_n}{ss_x} \left( x_i - \bar{x}_n \right) Y_i\right)}$
 
-Using the above equation for variance, we have: 
+Applying variance to the above relation, we have: 
 
 $Var(\hat{\beta}_0) = Var(\sum \limits_{i=1}^{n} {\left( \frac{1}{n} - \frac{\bar{x}_n}{ss_x} \left( x_i - \bar{x}_n \right) Y_i\right)})$
 
-We assume independence of the Y's, such that we may say: 
+Under the assumption independence of the Y's,we may say: 
 
 $Var(\hat{\beta}_0) =\sum \limits_{i=1}^{n} {\left( \frac{1}{n} - \frac{\bar{x}_n}{ss_x} \left( x_i - \bar{x}_n \right)\right)^2  Var \left( Y_i \right)}$
 
-Since each Y has variance $\sigma^2$, we have: 
+Noting that each Y has variance $\sigma^2$, we have: 
 
 $Var(\hat{\beta}_0) = \sigma^2 \sum \limits_{i=1}^{n} {\left( \frac{1}{n} - \frac{\bar{x}_n}{ss_x} \left( x_i - \bar{x}_n \right)\right)^2}$
 
 Expanding this equation gives us: 
 
-$Var(\hat{\beta}_0) = \sigma^2 \sum \limits_{i=1}^{n} {\left( \frac{1}{n^2} - \frac{2\bar{x}_n}{nss_x}\left( x_i - \bar{x}_n\right) + \frac{\bar{x}_n^2}{ss_x^2}\left( x_i - \bar{x}_n \right)^2 \right)}$
+(2): $Var(\hat{\beta}_0) = \sigma^2 \sum \limits_{i=1}^{n} {\left( \frac{1}{n^2} - \frac{2\bar{x}_n}{nss_x}\left( x_i - \bar{x}_n\right) + \frac{\bar{x}_n^2}{ss_x^2}\left( x_i - \bar{x}_n \right)^2 \right)}$
 
-Additionally, we note an alternative form of $\hat{\beta}_1$ as follows: 
+Separating this relation, we have: 
 
-**Check this part too**
+$Var(\hat{\beta}_0) = \sigma^2 \left( \frac{1}{n} + \frac{\bar{x}_n^2}{ss_x}\right) - \sigma^2 \sum \limits_{i=1}^{n} \frac{2\bar{x}_n}{nss_x}\left( x_i - \bar{x}_n\right)$
 
-$\hat{\beta}_1 = \frac{\sum \limits_{i=1}^{n} {x_iy_i - n \bar{x}_n \bar{y}_n}}{\sum \limits_{i=1}^{n} {x_i^2 - n \bar{x}_n^2}}$
+Looking at the latter-most term, we have: 
 
-Giving us: 
+$\sigma^2 \sum \limits_{i=1}^{n} \frac{2\bar{x}_n}{nss_x}\left( x_i - \bar{x}_n\right) = \frac{2 \sigma^2}{n} \sum \limits_{i=1}^{n} \frac{\bar{x}_n}{x_i - \bar{x}_n}$
+
+Note: 
+
+$\bar{x}_n = \frac{1}{n} \sum \limits_{i=1}^{n} {x_i}$
+
+Such that we may say: 
+
+$\sigma^2 \sum \limits_{i=1}^{n} \frac{2\bar{x}_n}{nss_x}\left( x_i - \bar{x}_n\right) = 0$
+
+Going back to relation (2), we may now say: 
 
 $Var(\hat{\beta}_0) = \sigma^2 \left( \frac{1}{n} - 0 + \frac{\bar{x}_n^2}{ss_x}\right)$
 
@@ -220,7 +240,7 @@ Isolating $Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right)$ gives us:
 
 $Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = \frac{1}{2\bar{x}_n}\left( Var(\bar{Y}_n) - Var(\hat{\beta}_0) - \bar{x}_n^2 Var(\hat{\beta}_1) \right)$
 
-Note: The above relation holds for $\bar{x}_n \neq 0$.
+Note: The above relation holds for $\bar{x}_n \neq 0$, we tend not to like dividing by zero.
 
 Using the equations for the Variance of $\bar{Y}_n, \hat{\beta}_0,$ and $\hat{\beta}_1$ gives us: 
 
@@ -250,7 +270,9 @@ Taking advantage of relation (3) given above gives us:
 
 $Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) =  \frac{1}{nss_x} \sum \limits_{i=1}^{n} \sum \limits_{j=1}^{n} {x_j Cov(Y_i, Y_j)}$
 
-In addition to taking advantage of relation (3) from Exercise 8, Sec. 4.6., note the Y's are independent and each has variance $\sigma^2$. Importantly, this means that for $i=j$, $Cov(Y_i, Y_j) = \sigma^2$, and for $i \neq j$, $Cov(Y_i, Y_j) = 0$.
+***All Praise the Glorious Hints When They are Given***
+
+Tithe aside, in addition to taking advantage of relation (3) from Exercise 8, Sec. 4.6., we note the Y's are independent and each has variance $\sigma^2$. Importantly, this means that for $i=j$, $Cov(Y_i, Y_j) = \sigma^2$, and for $i \neq j$, $Cov(Y_i, Y_j) = 0$.
 
 Thus, we are left with the following relation: 
 
@@ -374,7 +396,30 @@ ggplot(data=df, aes(x=x, y=y)) +
   geom_abline(slope = confint(m1)[2,2], intercept = m1$coefficients[1], colour="blue") +
   annotate("text", x = -.25, y = 0.25, label = "Prediction Interval of Y's") +
   annotate("text", x = .5, y = -.45, label = "Confidence Interval of Y's") +
-  annotate("text", x = -0, y = -1.35, label = "Confidence Interval of Beta 1 Coef.")
+  annotate("text", x = -0, y = -1.35, label = "Confidence Interval of Beta 1 Coef.") +
+  ggtitle("Interval Estimates with Shaded Regions for Confidence, Prediction")
+```
+
+```{r}
+predict_int <- predict(m1, interval="prediction") 
+conf_int <- predict(m1, interval="confidence")
+#Prediction Interval
+new_df <- cbind(df,predict_int, conf_int)
+colnames(new_df) <- make.unique(names(new_df))
+ggplot(new_df, aes(x=x, y=y))+
+  geom_point() +
+  geom_abline(slope = confint(m1)[2,1], intercept = m1$coefficients[1], colour="green") +
+  geom_abline(slope = confint(m1)[2,2], intercept = m1$coefficients[1], colour="green") +
+    geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
+    geom_line(aes(y=upr), color = "red", linetype = "dashed")+
+    geom_line(aes(y=lwr.1), color = "blue", linetype = "dashed")+
+    geom_line(aes(y=upr.1), color = "blue", linetype = "dashed")+
+  geom_smooth(method="lm") +
+annotate("text", x = -.25, y = 0.25, label = "Prediction Interval of Y's") +
+  annotate("text", x = .5, y = -.45, label = "Confidence Interval of Y's") +
+  annotate("text", x = -0, y = -1.35, label = "Confidence Interval of Beta 1 Coef.") +
+  ggtitle("Interval Estimates with Shaded Regions for Confidence Only")
+#95% Confidence Interval
 ```
 
 2. [Ecological Fallacy](https://en.wikipedia.org/wiki/Ecological_fallacy) refers to a situation where one draws inferences on the individual level from data that was collected at the group level.
