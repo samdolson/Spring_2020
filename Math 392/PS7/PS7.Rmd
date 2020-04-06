@@ -198,7 +198,7 @@ $\bar{x}_n = \frac{1}{n} \sum \limits_{i=1}^{n} {x_i}$
 
 Such that we may say: 
 
-$\sigma^2 \sum \limits_{i=1}^{n} \frac{2\bar{x}_n}{nss_x}\left( x_i - \bar{x}_n\right) = 0$
+$\sigma^2 \sum \limits_{i=1}^{n} \frac{2\bar{x}_n}{nss_x}\left( x_i - \bar{x}_n\right) = 0$ [This is hand-wavey and not proven, apologies]
 
 Going back to relation (2), we may now say: 
 
@@ -227,6 +227,24 @@ Exercise 8, Sec. 4.6.:
 (3): $Cov(\sum \limits_{i=1}^{m} {a_iX_i} , \sum \limits_{i=1}^{n} {b_jY_j}) = \sum \limits_{i=1}^{m} \sum \limits_{i=1}^{n} a_ib_j Cov( X_i Y_j)$
 
 **A:**
+
+## Warm-up Formulation
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = Cov\left( \bar{y} - \hat{\beta}_1\bar{x} , \hat{\beta}_1 \right) = Cov(\bar{y}, \hat{\beta}_1) - Cov(\bar{x}\hat{\beta}_1, \hat{\beta}_1)$
+
+We assume independence of $\bar{y}, \hat{\beta}_1$, thus it follows that: 
+
+$Cov(\bar{y}, \hat{\beta}_1) = 0$
+
+Thus: 
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = - Cov(\bar{x}\hat{\beta}_1, \hat{\beta}_1) = -\bar{x} Cov(\hat{\beta}_1, \hat{\beta}_1) = -\bar{x} Var(\hat{\beta}_1)$
+
+As we know $Var(\hat{\beta}_1)$, this relation simplifies to:
+
+$Cov\left( \hat{\beta}_0 , \hat{\beta}_1 \right) = - \frac{\bar{x} \sigma^2}{ ss_x}$, as given in Eq. 11.2.6.
+
+## Alternative Formulation
 
 Note: 
 
