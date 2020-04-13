@@ -1,0 +1,29 @@
+---
+title: "Week 11 Reflection"
+author: "Sam D. Olson"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Reflections 
+
+When you offered me the opportunity to join the forestry project during this summer, I was giddy with excitement. One of the first things I did was share the news with was my parents. After initial greetings and congratulations, they asked the natural question: *"What will you be doing?"*. I kept hemming and hawing, before rambling about the nature of the research, modifying an R package, and the prospect of making and editing a manuscript. I'm fairly certain my parents came away from the conversation confused about what I would be doing (and what I have been doing the past couple months, to boot).
+
+This is all to say, when reading (and watching) this week's media, I recognized the importance of the elevator speech.  find three quotes from the Kwok article particularly helpful, and will be referencing both the Kwok and MITCommLab articles when developing my elevator speech for Tuesday's class. One brief aside on the topic of that speech: Though I'm personally interested in giving an elevator speech on my Pokémon thesis, I also recognize the importance of having an elevator speech ready on the Forestry Project. What a conundrum. 
+
+### Kwok Notes on Elevator Pitches
+
+*Baron suggests thinking about four key topics: the problem, why it matters, potential solutions and the benefits of fixing it. * 
+
+*Even if practical applications are a long way off, think about how the research might eventually improve health, food, safety, everyday technology or some other aspect of people's lives.* 
+
+*The purpose of an elevator speech is to get someone interested, not to tell them everything there is to know.* 
+
+## Reflections Cont. 
+
+Points on elevator speeches notwithstanding, I liked listening (and watching) the Melinda Seckington video. It was a welcome change of pace from the typical format (readings), and reminded when other videos were assigned (such as the Literature Review video). Additionally, after watching the Seckington video, I further appreciated the stance of *statistics as an art*, primarily from connecting the idea of presenting statistics to concepts of Graphic Design---such the use of signal and noise. And though I can't guarentee I'll use the resources cited in the presentation, I nonetheless found it helpful and inspiring.
+
+## Shameless Plug 
+
+Shout-out to one of my favorite presentations: Brian David Gilbert's *The Perfect PokéRap*.  [https://www.youtube.com/watch?v=2cT6ULpScZA]

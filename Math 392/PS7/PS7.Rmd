@@ -77,7 +77,7 @@ Bearing in mind relations (7) and (8), we may then note relations (5) and (6) ar
 In the exercises that follow, we use the following shorthand: 
 
 (*): $ss_x = \sum \limits_{i=1}^{n} {(x_i - \bar{x} _n)^2}$
-
+  
 **11.2 #2**
 
 **Q:** Show that $E \left( \hat{\beta}_1\right) = \beta_1$
