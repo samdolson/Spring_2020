@@ -371,7 +371,33 @@ Does the inference change for the statistics investigated in the previous exerci
 
 Generate a scatterplot matrix involving all pairwise relationships between the three simulated regression coefficients in the original model. To be clear, this involves generating a good number fitted betas from your simulator and plotting them. Based on a visual assessment of these plots, please characterize the joint distribution of these statistics in terms of center, shape, spread, and correlation. Compare the empirical covariance matrix to the analytical form that we derived in class.
 
+### Empirical Note
+
+The covariance matrix C is given as follows: 
+
+$$
+C = 
+ \begin{pmatrix}
+  Cov(\beta_0, \beta_0) & Cov(\beta_0, \beta_1)  & Cov(\beta_0, \beta_2) \\
+  Cov(\beta_1, \beta_0)  & Cov(\beta_1, \beta_1)  & Cov(\beta_1, \beta_2)  \\
+  Cov(\beta_2, \beta_0)  & Cov(\beta_2, \beta_1)   & Cov(\beta_2, \beta_2) 
+ \end{pmatrix}
+$$
+Where $Cov(\beta_0, \beta_0) = Var(\beta_0)$, $Cov(\beta_1, \beta_1) = Var(\beta_1)$, and $Cov(\beta_2, \beta_2) = Var(\beta_2)$
+
 ### Commentary
+
+As the non-diagonal entries of the covariance matrix are identical, e.g. $Cov(\beta_1, \beta_0) = Cov(\beta_0, \beta_1)$, there are three distributions of note: 
+
+(1): $Cov(\beta_1, \beta_0)$
+
+
+
+(2): $Cov(\beta_2, \beta_0)$
+
+
+
+(3): $Cov(\beta_2, \beta_1)$
 
 
 
