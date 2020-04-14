@@ -5,6 +5,8 @@ output:
   pdf_document
 ---
 
+### Time Spent: 10(ish) Hours
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center", 
                       message = FALSE, warning = FALSE)
@@ -63,7 +65,7 @@ Where $Y$ and $\epsilon$ are vectors of length $n$, $X$ is an $n \times 3$ desig
 
 You're welcome to select any values that you like for the parameters and any distribution that you like for the $x$'s (you may be want to check out the `rmvnorm()` function in the `mvtnorm` package). The core bit of code should look something like:
 
-```{r}
+```{r initial plots}
 library(mvtnorm)
 # set params
 B0 <- 4
@@ -135,7 +137,7 @@ The empirical distributions all closely align with their analytical distribution
 
 ### Code
 
-```{r}
+```{r comparison plots}
 # set params
 B0 <- 1
 B1 <- 2
@@ -167,7 +169,7 @@ Y_s_mean <- t(x_s)%*%B
 Y_s_var <- sigma^2
 ```
 
-```{r plots}
+```{r plots initial comp}
 ggplot(data.frame(x = B1_samp),aes(x)) + 
   geom_histogram(aes(color = "simulation", y = ..density..), colour="black", fill="white") + 
   stat_function(fun = dnorm, args = list(mean = B1_hat_mean, sd = sqrt(B1_hat_var)), aes(color = "analytic")) + 
@@ -197,7 +199,7 @@ Changing the marginal distribution of the $\epsilon$ impacts the distributions o
 
 ### Code
 
-```{r}
+```{r error term comparison plots}
 # set params
 B0 <- 1
 B1 <- 2
@@ -229,7 +231,7 @@ Y_s_mean <- t(x_s)%*%B
 Y_s_var <- sigma^2
 ```
 
-```{r plots}
+```{r plots error viz}
 ggplot(data.frame(x = B1_samp),aes(x)) + 
   geom_histogram(aes(color = "simulation", y = ..density..), colour="black", fill="white") + 
   stat_function(fun = dnorm, args = list(mean = B1_hat_mean, sd = sqrt(B1_hat_var)), aes(color = "analytic")) + 
@@ -255,7 +257,7 @@ Introducing non-zero covariance into the joint distribution of the $X$ impacts t
 
 ### Code
 
-```{r}
+```{r non-zero cov plots}
 # set params
 B0 <- 1
 B1 <- 2
@@ -289,7 +291,7 @@ Y_s_mean <- t(x_s)%*%B
 Y_s_var <- sigma^2
 ```
 
-```{r plots}
+```{r plots non-zero cov}
 ggplot(data.frame(x = B1_samp),aes(x)) + 
   geom_histogram(aes(color = "simulation", y = ..density..), colour="black", fill="white") + 
   stat_function(fun = dnorm, args = list(mean = B1_hat_mean, sd = sqrt(B1_hat_var)), aes(color = "analytic")) + 
@@ -315,7 +317,7 @@ ggplot(data.frame(x = Y_s_samp),aes(x)) +
 Introducing non-zero covariance appears to have a marginal impact on the sampling distributions of $\beta_1$, $Y_s$, and $E(Y_s)$. However, though the shape, spread, and centers of these statistics closely mirror their analytical forms, there are some slight differences for $E(Y_s)$. It is important to note these differences may be exacerbated by increasing the observations, number of simulations, or the magnitude of covariance (including signage).    
 ### Code
 
-```{r}
+```{r error covariance plots}
 # set params
 B0 <- 1
 B1 <- 2
@@ -347,7 +349,7 @@ Y_s_mean <- t(x_s)%*%B
 Y_s_var <- sigma^2
 ```
 
-```{r plots}
+```{r plots error cov}
 ggplot(data.frame(x = B1_samp),aes(x)) + 
   geom_histogram(aes(color = "simulation", y = ..density..), colour="black", fill="white") + 
   stat_function(fun = dnorm, args = list(mean = B1_hat_mean, sd = sqrt(B1_hat_var)), aes(color = "analytic")) + 
@@ -385,25 +387,35 @@ C =
 $$
 Where $Cov(\beta_0, \beta_0) = Var(\beta_0)$, $Cov(\beta_1, \beta_1) = Var(\beta_1)$, and $Cov(\beta_2, \beta_2) = Var(\beta_2)$
 
+Additionally, when considering covariances, it is helpful to note: 
+
+$Cov(\hat{\beta} | X) = \sigma^2 (X'X)^{-1}$
+
 ### Commentary
 
-As the non-diagonal entries of the covariance matrix are identical, e.g. $Cov(\beta_1, \beta_0) = Cov(\beta_0, \beta_1)$, there are three distributions of note: 
+As the non-diagonal entries of the covariance matrix are identical (symmetric about the diagonal), e.g. $Cov(\beta_1, \beta_0) = Cov(\beta_0, \beta_1)$, there are three distributions of note: 
+
+![Joint Probability Distribution](Multivariate_normal_sample.svg.png "Joint Probability Distribution")
 
 (1): $Cov(\beta_1, \beta_0)$
 
+Similar to the image attached above, the joint distribution of $\beta_1$ and $\beta_0$ indicate that both distributions appear normally distributed with little to no correlation between each other. 
 
+(2): $Cov(\beta_2, \beta_1)$
 
-(2): $Cov(\beta_2, \beta_0)$
+Similar to (1) and the image attached above, the joint distribution of $\beta_1$ and $\beta_2$ indicate that both distributions appear normally distributed with little to no correlation between each other. 
 
+(3): $Cov(\beta_2, \beta_0)$
 
+Interestingly, we get a very different picture of the distribution of $\beta_0$ and $\beta_2$ compared to (1) and (2). While the joint distributions of (1) and (2) were circular, the joint distribution of (3) is elongated, making a "football-like" shape. Additionally, $\beta_0$ and $\beta_2$ appear negatively correlated. 
 
-(3): $Cov(\beta_2, \beta_1)$
+(4): 
 
-
+In reviewing (1) through (3), it is apparent that each of the covariances are negative. This is similar to the empirical results we obtained in class of the non-diagonal entries having a negative value (though that value was $-\bar{x}$) for the case when p=2. 
 
 ### Code
 
-```{r}
+```{r betas comparison}
 # set params
 B0 <- 1
 B1 <- 2
@@ -439,6 +451,7 @@ Betas <- cbind(B0_samp,B1_samp,B2_samp)
 Betas <- data.frame(Betas)
 ```
 
-```{r plots}
-pairs(Betas, pch = 1)
+```{r pairwise plots}
+library(GGally)
+ggpairs(Betas)
 ```
