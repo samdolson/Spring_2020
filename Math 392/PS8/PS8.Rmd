@@ -144,11 +144,11 @@ B1 <- 2
 B2 <- 4
 B <- c(B0, B1, B2)
 sigma <- 1 
-# complete specification
+# specification
 n <- 100
 X <- rmvnorm(n, c(1,2,4),matrix(c(0,0,0,0,2,0,0,0,1), byrow = TRUE, nrow = 3))
-# simulation 
-x_s <- c(1,2,3) # Given a fixed new observation 
+# Simulation 
+x_s <- c(1,2,3) 
 B1_samp <- rep(NA, 1000)
 Y_s_hat_samp <- rep(NA, 1000)
 Y_s_samp <- rep(NA, 1000)
@@ -160,7 +160,7 @@ for(i in 1:1000){
   Y_s_hat_samp[i] <- t(x_s)%*%B_hat
   Y_s_samp[i] <- t(x_s)%*%B + rnorm(1,mean=0,sd=sigma)
 }
-# Find the analytical form 
+# analytical form 
 B1_hat_mean <- B1
 B1_hat_var <- sigma^2*solve(t(X)%*%X)[2,2]
 Y_s_hat_mean <- t(x_s)%*%B
@@ -169,7 +169,7 @@ Y_s_mean <- t(x_s)%*%B
 Y_s_var <- sigma^2
 ```
 
-```{r plots initial comp}
+```{r plots initial comp, echo = FALSE}
 ggplot(data.frame(x = B1_samp),aes(x)) + 
   geom_histogram(aes(color = "simulation", y = ..density..), colour="black", fill="white") + 
   stat_function(fun = dnorm, args = list(mean = B1_hat_mean, sd = sqrt(B1_hat_var)), aes(color = "analytic")) + 
@@ -206,11 +206,11 @@ B1 <- 2
 B2 <- 4
 B <- c(B0, B1, B2)
 sigma <- .5 
-# complete specification
+# omplete specification
 n <- 100
 X <- rmvnorm(n, c(1,2,4),matrix(c(0,0,0,0,2,0,0,0,1), byrow = TRUE, nrow = 3))
 # simulation 
-x_s <- c(1,2,3) # Given a fixed new observation 
+x_s <- c(1,2,3)
 B1_samp <- rep(NA, 1000)
 Y_s_hat_samp <- rep(NA, 1000)
 Y_s_samp <- rep(NA, 1000)
@@ -222,7 +222,7 @@ for(i in 1:1000){
   Y_s_hat_samp[i] <- t(x_s)%*%B_hat
   Y_s_samp[i] <- t(x_s)%*%B + rnorm(1,mean=0,sd=sigma)
 }
-# Find the analytical form 
+# analytical form 
 B1_hat_mean <- B1
 B1_hat_var <- sigma^2*solve(t(X)%*%X)[2,2]
 Y_s_hat_mean <- t(x_s)%*%B
@@ -231,7 +231,7 @@ Y_s_mean <- t(x_s)%*%B
 Y_s_var <- sigma^2
 ```
 
-```{r plots error viz}
+```{r plots error viz, echo = FALSE}
 ggplot(data.frame(x = B1_samp),aes(x)) + 
   geom_histogram(aes(color = "simulation", y = ..density..), colour="black", fill="white") + 
   stat_function(fun = dnorm, args = list(mean = B1_hat_mean, sd = sqrt(B1_hat_var)), aes(color = "analytic")) + 
@@ -264,13 +264,13 @@ B1 <- 2
 B2 <- 4
 B <- c(B0, B1, B2)
 sigma <- 1 
-# complete specification
+# specification
 n <- 100
 X <- rmvnorm(n, c(1,2,4),matrix(c(1,.25,.5,.25,2,.25,.5,.25,1), byrow = TRUE, nrow = 3))
 x_0 <- rep(1, n)
 X[,1] <- x_0
 # simulation 
-x_s <- c(1,2,3) # Given a fixed new observation 
+x_s <- c(1,2,3)
 B1_samp <- rep(NA, 1000)
 Y_s_hat_samp <- rep(NA, 1000)
 Y_s_samp <- rep(NA, 1000)
@@ -282,7 +282,7 @@ for(i in 1:1000){
   Y_s_hat_samp[i] <- t(x_s)%*%B_hat
   Y_s_samp[i] <- t(x_s)%*%B + rnorm(1,mean=0,sd=sigma)
 }
-# Find the analytical form 
+# analytical form 
 B1_hat_mean <- B1
 B1_hat_var <- sigma^2*solve(t(X)%*%X)[2,2]
 Y_s_hat_mean <- t(x_s)%*%B
@@ -291,7 +291,7 @@ Y_s_mean <- t(x_s)%*%B
 Y_s_var <- sigma^2
 ```
 
-```{r plots non-zero cov}
+```{r plots non-zero cov, echo = FALSE}
 ggplot(data.frame(x = B1_samp),aes(x)) + 
   geom_histogram(aes(color = "simulation", y = ..density..), colour="black", fill="white") + 
   stat_function(fun = dnorm, args = list(mean = B1_hat_mean, sd = sqrt(B1_hat_var)), aes(color = "analytic")) + 
@@ -324,11 +324,11 @@ B1 <- 2
 B2 <- 4
 B <- c(B0, B1, B2)
 sigma <- 1 
-# complete specification
+# specification
 n <- 100
 X <- rmvnorm(n, c(1,2,4),matrix(c(0,0,0,0,2,0,0,0,1), byrow = TRUE, nrow = 3))
 # simulation 
-x_s <- c(1,2,3) # Given a fixed new observation 
+x_s <- c(1,2,3)
 B1_samp <- rep(NA, 1000)
 Y_s_hat_samp <- rep(NA, 1000)
 Y_s_samp <- rep(NA, 1000)
@@ -349,7 +349,7 @@ Y_s_mean <- t(x_s)%*%B
 Y_s_var <- sigma^2
 ```
 
-```{r plots error cov}
+```{r plots error cov, echo = FALSE}
 ggplot(data.frame(x = B1_samp),aes(x)) + 
   geom_histogram(aes(color = "simulation", y = ..density..), colour="black", fill="white") + 
   stat_function(fun = dnorm, args = list(mean = B1_hat_mean, sd = sqrt(B1_hat_var)), aes(color = "analytic")) + 
@@ -422,11 +422,11 @@ B1 <- 2
 B2 <- 4
 B <- c(B0, B1, B2)
 sigma <- 1 
-# complete specification
+# specification
 n <- 100
 X <- rmvnorm(n, c(1,2,4),matrix(c(0,0,0,0,2,0,0,0,1), byrow = TRUE, nrow = 3))
 # simulation 
-x_s <- c(1,2,3) # Given a fixed new observation 
+x_s <- c(1,2,3) 
 B0_samp <- rep(NA, 5000)
 B1_samp <- rep(NA, 5000)
 B2_samp <- rep(NA, 5000)
@@ -438,7 +438,7 @@ for(i in 1:5000){
   B1_samp[i] <- B_hat[2]
   B2_samp[i] <- B_hat[3]
 }
-# Find the analytical form 
+# analytical form 
 B0_hat_mean <- B0
 B0_hat_var <- sigma^2*solve(t(X)%*%X)[1,1]
 B1_hat_mean <- B1
@@ -451,7 +451,7 @@ Betas <- cbind(B0_samp,B1_samp,B2_samp)
 Betas <- data.frame(Betas)
 ```
 
-```{r pairwise plots}
+```{r pairwise plots, echo = FALSE}
 library(GGally)
 ggpairs(Betas)
 ```
