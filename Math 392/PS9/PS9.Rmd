@@ -54,7 +54,7 @@ $L(\beta_0, \beta_1, \sigma^2) = L(f(y_1 | x_1, \beta_0, \beta_1, \sigma^2) ... 
 
 We isolate each of the logs into the following relation: 
 
-(**): $L(\beta_0, \beta_1, \sigma^2) = {n}log(\frac{1}{\sqrt{2 \pi}}) + n log(\frac{1}{\sqrt{\sigma^2}}) - \frac{1}{2 \sigma^2} \sum \limits_{i=1}^{n} {(y_i - (\beta_0 + \beta_1 x_i))^2}$
+(**): $$L(\beta_0, \beta_1, \sigma^2) = {n}log(\frac{1}{\sqrt{2 \pi}}) + n log(\frac{1}{\sqrt{\sigma^2}}) - \frac{1}{2 \sigma^2} \sum \limits_{i=1}^{n} {(y_i - (\beta_0 + \beta_1 x_i))^2}$$
 
 **For the following derivations, we maximize the above relation with respect to our parameter of interest, which yields the maximum likelihood estimate. This involves deriving the equation (w.r.t. our parameter) and setting equal to zero, then solving for that parameter.**
 
@@ -356,15 +356,75 @@ a1 + a2 + a3 + a4
 
 e) *Can I perform shrinkage on logistic coefficients?* The original motivation for ridge regression was to make the $X'X$ matrix in OLS invertible. Statisticians have since realized the practical value of its variance-reducing characteristics when shrinking $\hat{\beta}$ towards zero. Traditional ridge regression is performed by adding a penalty term, $\lambda \sum_{j = 1}^p \beta_j^2$, to the RSS. In logistic regression, we instead of finding our estimates by minimizing RSS, we choose to maximize the likehood. Although the original motivation of matrix inversion is lost, it can still be perfectly valid and valuable to shink the logistic regression estimates by penalizing the likelihood.
 
-
-```{r part e}
-
-
-```
-
     For the same data set that you used to create the plot in part a, find three more estimated mean functions, each one corresponding to a different value of $\lambda$, and add them to the plot. Admittedly, this will demonstrate the *downside* of penalized regression: that we have actually *increased* the bias. The plot should have five overlaid sigmoid curves. Play around with the values of $\lambda$ so that you can the shape of all five on the same plot.
 
 
+```{r functions}
+penalized_l_bern <- function(B, X, Y, lamby) {
+  p <- 1/(1 + exp(- X %*% B))
+  sum(Y * log(p) + (1 - Y) * log(1 - p)) - lamby*sum(B)
+}
+l_bern <- function(B, X, Y) {
+  p <- 1/(1 + exp(- X %*% B))
+  sum(Y * log(p) + (1 - Y) * log(1 - p))
+}
+```
+
+```{r part e}
+# Set data
+p <- 1
+n <- 500
+# Generate X
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+# Set B
+B <- c(-1, 2)
+it <- 500
+Y <- rbinom(n, size = 1, prob = 1/(1+exp(- X%*%B)))
+lambda <- c(1, 4, 8)
+estimates <- maxLik(penalized_l_bern , start = c(0, 0), X = X, Y = Y, lamby = lambda[1])$estimate
+B0_ests_1 <- estimates[1]
+B1_ests_1 <- estimates[2]
+estimates <- maxLik(penalized_l_bern , start = c(0, 0), X = X, Y = Y, lamby = lambda[2])$estimate
+B0_ests_2 <- estimates[1]
+B1_ests_2 <- estimates[2]
+estimates <- maxLik(penalized_l_bern , start = c(0, 0), X = X, Y = Y, lamby = lambda[3])$estimate
+B0_ests_3 <- estimates[1]
+B1_ests_3 <- estimates[2]
+
+fit_values_1 <- rep(NA, n)
+fit_values_2 <- rep(NA, n)
+fit_values_3 <- rep(NA, n)
+
+for(i in 1:n){
+  fit_values_1 <- 1/(1+exp(- (B0_ests_1 + B1_ests_1 * X[, 2])))
+  fit_values_2 <- 1/(1+exp(- (B0_ests_2 + B1_ests_2 * X[, 2])))
+  fit_values_3 <- 1/(1+exp(- (B0_ests_3 + B1_ests_3 * X[, 2])))
+}
+
+x1 <- X[, 2]
+fit_data_1 <- cbind.data.frame(fit_values_1, x1)
+fit_data_2 <- cbind.data.frame(fit_values_2, x1)
+fit_data_3 <- cbind.data.frame(fit_values_3, x1)
+
+df <- data.frame(Y = Y, x1 = X[, 2]) 
+fit <- (glm(Y ~ x1, data = df, family = "binomial"))
+```
+
+```{r viz part e}
+ggplot(df, aes(x = x1, y = Y)) +
+  geom_point() + 
+   geom_smooth(method = "glm", 
+    method.args = list(family = "binomial"), 
+    se = FALSE) +
+  geom_line(data = fit_data_1, mapping = aes(x = x1, y = fit_values_1),
+            color = "red", size = 0.05) + 
+  geom_line(data = fit_data_2, mapping = aes(x = x1, y = fit_values_2),
+            color = "green", size = 0.05) + 
+  geom_line(data = fit_data_3, mapping = aes(x = x1, y = fit_values_3),
+            color = "yellow", size = 0.05) + 
+  stat_function(fun = function(x) (1 / (1 + exp(-x)))) + 
+  theme_bw()
+```
 
 f) To bring in a sense of both bias and variance, select one of your values of $\lambda$ and use it to replicate the plot from part b, but now with two clumps of sigmoids: one corresponding to the MLE, the other to the ridge estimates. Use color to differentiate between the two clups. Describe what the plot demonstrates about the bias and variance for the MLE and the ridge estimates in this setting.
 
