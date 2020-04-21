@@ -181,13 +181,13 @@ coef(glm(Y ~ x1, data = df, family = "binomial"))
 fit <- (glm(Y ~ x1, data = df, family = "binomial"))
 ```
 
-```{r viz}
+```{r viz part a}
 ggplot(df, aes(x = x1, y = Y)) +
   geom_point() + 
   geom_smooth(method = "glm", 
     method.args = list(family = "binomial"), 
     se = FALSE) +
-  stat_function(fun = function(x) 1 / (1 + exp(-x))) + 
+  stat_function(fun = function(x) (1 / (1 + exp(-x)))) + 
   theme_bw()
 ```
 
@@ -241,6 +241,135 @@ c) *How does the bias of an estimate change with sample size for a particular va
 
 
 ```{r part c}
+# Set B
+B <- c(-1, 2)
+# Calc
+it <- 2500
+beta <- rep(NA, it)
+bias <- rep(NA, it)
+df <- data.frame()
+for (j in 1:it) {
+  p <- 1
+  n <- j + 20
+  # Generate X
+  X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+  df <- data.frame(Y = Y, x1 = X[, 2])
+  fit <- glm(Y ~ x1, data = df, family = "binomial")
+  beta[j] <- coef(fit)[2] # beta_1
+  bias[j] <- beta[j] - 2
+}
+# Generate dataset
+n <- seq(20, 2519, by=1)
+df <- cbind.data.frame(n, bias)
+```
+
+```{r viz part b}
+ggplot(df, aes(x = n, y = bias)) +
+  geom_point() + 
+  theme_minimal()
+```
+
+
+d) *How does the bias of an estimate change with sample size for multiple values of the parameter?* Extend the idea of the previous plot by expressing the relationship between the value of $\beta_1$ and the corresponding element of $\hat{\beta}^{MLE}$ for various fixed values of $\beta_1$. Examine this relationship at a handful of sample sizes $n$.
+
+
+```{r part d}
+# Set B
+beta_1 <- seq(1, 100, by=2)
+beta <- matrix(nrow=50, ncol=2)
+for(i in 1:length(beta_1)){
+  beta[i,] <- c(-1, beta_1[i])
+}
+# simulation
+p <- 1
+n <- 200
+it <- length(beta_1)
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+df <- data.frame()
+beta_1_mle <- rep(NA, it)
+for (j in 1:length(beta_1)) {
+  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% beta[j,])))
+  df <- data.frame(Y = Y, x1 = X[, 2])
+  fit <- glm(Y ~ x1, data = df, family = "binomial")
+  beta_1_mle[j] <- coef(fit)[2] # beta_1
+}
+df_1 <- cbind.data.frame(beta_1, beta_1_mle)
+
+# simulation
+n <- 500
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+df <- data.frame()
+beta_1_mle <- rep(NA, it)
+for (j in 1:length(beta_1)) {
+  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% beta[j,])))
+  df <- data.frame(Y = Y, x1 = X[, 2])
+  fit <- glm(Y ~ x1, data = df, family = "binomial")
+  beta_1_mle[j] <- coef(fit)[2] # beta_1
+}
+df_2 <- cbind.data.frame(beta_1, beta_1_mle)
+
+# simulation
+n <- 1000
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+df <- data.frame()
+beta_1_mle <- rep(NA, it)
+for (j in 1:length(beta_1)) {
+  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% beta[j,])))
+  df <- data.frame(Y = Y, x1 = X[, 2])
+  fit <- glm(Y ~ x1, data = df, family = "binomial")
+  beta_1_mle[j] <- coef(fit)[2] # beta_1
+}
+df_3 <- cbind.data.frame(beta_1, beta_1_mle)
+
+# simulation
+it <- length(beta_1)
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+df <- data.frame()
+beta_1_mle <- rep(NA, it)
+for (j in 1:length(beta_1)) {
+  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% beta[j,])))
+  df <- data.frame(Y = Y, x1 = X[, 2])
+  fit <- glm(Y ~ x1, data = df, family = "binomial")
+  beta_1_mle[j] <- coef(fit)[2] # beta_1
+}
+df_4 <- cbind.data.frame(beta_1, beta_1_mle)
+```
+
+```{r viz part d}
+# Generate dataset
+library(patchwork)
+a1 <- ggplot(df_1, aes(x = beta_1, y = beta_1_mle)) +
+  geom_point() + 
+  theme_minimal()
+a2 <- ggplot(df_2, aes(x = beta_1, y = beta_1_mle)) +
+  geom_point() + 
+  theme_minimal()
+a3 <- ggplot(df_3, aes(x = beta_1, y = beta_1_mle)) +
+  geom_point() + 
+  theme_minimal()
+a4 <- ggplot(df_4, aes(x = beta_1, y = beta_1_mle)) +
+  geom_point() + 
+  theme_minimal()
+a1 + a2 + a3 + a4
+```
+
+e) *Can I perform shrinkage on logistic coefficients?* The original motivation for ridge regression was to make the $X'X$ matrix in OLS invertible. Statisticians have since realized the practical value of its variance-reducing characteristics when shrinking $\hat{\beta}$ towards zero. Traditional ridge regression is performed by adding a penalty term, $\lambda \sum_{j = 1}^p \beta_j^2$, to the RSS. In logistic regression, we instead of finding our estimates by minimizing RSS, we choose to maximize the likehood. Although the original motivation of matrix inversion is lost, it can still be perfectly valid and valuable to shink the logistic regression estimates by penalizing the likelihood.
+
+
+```{r part e}
+
+
+```
+
+    For the same data set that you used to create the plot in part a, find three more estimated mean functions, each one corresponding to a different value of $\lambda$, and add them to the plot. Admittedly, this will demonstrate the *downside* of penalized regression: that we have actually *increased* the bias. The plot should have five overlaid sigmoid curves. Play around with the values of $\lambda$ so that you can the shape of all five on the same plot.
+
+
+
+f) To bring in a sense of both bias and variance, select one of your values of $\lambda$ and use it to replicate the plot from part b, but now with two clumps of sigmoids: one corresponding to the MLE, the other to the ridge estimates. Use color to differentiate between the two clups. Describe what the plot demonstrates about the bias and variance for the MLE and the ridge estimates in this setting.
+
+
+```{r part f}
 
 
 ```
@@ -344,32 +473,3 @@ sapply(MLE_350, mean)
 # Observing variance matrix
 ggpairs(MLE_35)
 ```
-
-d) *How does the bias of an estimate change with sample size for multiple values of the parameter?* Extend the idea of the previous plot by expressing the relationship between the value of $\beta_1$ and the corresponding element of $\hat{\beta}^{MLE}$ for various fixed values of $\beta_1$. Examine this relationship at a handful of sample sizes $n$.
-
-
-```{r part d}
-
-
-```
-
-e) *Can I perform shrinkage on logistic coefficients?* The original motivation for ridge regression was to make the $X'X$ matrix in OLS invertible. Statisticians have since realized the practical value of its variance-reducing characteristics when shrinking $\hat{\beta}$ towards zero. Traditional ridge regression is performed by adding a penalty term, $\lambda \sum_{j = 1}^p \beta_j^2$, to the RSS. In logistic regression, we instead of finding our estimates by minimizing RSS, we choose to maximize the likehood. Although the original motivation of matrix inversion is lost, it can still be perfectly valid and valuable to shink the logistic regression estimates by penalizing the likelihood.
-
-
-```{r part e}
-
-
-```
-
-    For the same data set that you used to create the plot in part a, find three more estimated mean functions, each one corresponding to a different value of $\lambda$, and add them to the plot. Admittedly, this will demonstrate the *downside* of penalized regression: that we have actually *increased* the bias. The plot should have five overlaid sigmoid curves. Play around with the values of $\lambda$ so that you can the shape of all five on the same plot.
-
-
-
-f) To bring in a sense of both bias and variance, select one of your values of $\lambda$ and use it to replicate the plot from part b, but now with two clumps of sigmoids: one corresponding to the MLE, the other to the ridge estimates. Use color to differentiate between the two clups. Describe what the plot demonstrates about the bias and variance for the MLE and the ridge estimates in this setting.
-
-
-```{r part f}
-
-
-```
-
