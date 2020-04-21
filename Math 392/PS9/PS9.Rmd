@@ -153,69 +153,6 @@ For this problem you'll be working in a setting when the design matrix including
 
 a) *How does a single estimate compare with the true mean function?* Simulate one data set and fit one model using the MLEs. Construct a scatterplot with the simulated data, the estimated mean function ($\hat{E}(Y|X = x)$) and the true mean function ($\hat{E}(Y|X = x)$).
 
-```{r testing part a}
-l_bern <- function(B, X, Y) {
-  p <- 1/(1 + exp(- X %*% B))
-  sum(Y * log(p) + (1 - Y) * log(1 - p))
-}
-# Set data
-p <- 1
-n <- 35
-# Generate X
-X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
-# Set B
-B <- c(-1, 2)
-# Simulate Y
-Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
-# Log Likelihood
-l_bern(B, X, Y)
-l_bern(c(0, 0), X, Y)
-# Using optim
-optim(par = c(0, 0), fn = l_bern, X = X, Y = Y)
-# Dedicated optimizer
-maxLik(l_bern, start = c(0, 0), X = X, Y = Y)
-# Glm method
-df <- data.frame(Y = Y, x1 = X[, 2])
-coef(glm(Y ~ x1, data = df, family = "binomial"))
-
-# Calc
-x_s <- c(1, 1)
-b <- .5
-it <- 5000
-beta <- rep(NA, it)
-E_y <- rep(NA, it)
-y_s <- rep(NA, it)
-for (j in 1:it) {
-  epsilon <- rnorm(n, m = 0, s = b)
-  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
-  df <- data.frame(Y = Y, x1 = X[, 2])
-  fit <- glm(Y ~ x1, data = df, family = "binomial")
-  beta[j] <- coef(fit)[2] #beta_1
-  E_y[j] <- coef(fit) %*% x_s
-  y_s[j] <- coef(fit) %*% x_s + rnorm(1, m = 0, s = b)
-}
-```
-
-```{r mle viz}
-# Visual
-sigma <- sqrt(2 * b^2)
-var_theory <- sigma^2 * solve(t(X) %*% X) [2, 2]
-
-library(tidyverse)
-ggplot(data.frame(beta), aes(x = beta)) +
-  geom_histogram(aes(y=..density..), col = "white") +
-  stat_function(fun = dnorm, 
-                args = list(mean = B1, 
-                            sd = sqrt(var_theory)),
-                color = "goldenrod",
-                lwd = 2) +
-  theme_bw()
-
-p_norm_qq <- ggplot(data.frame(beta), aes(sample = beta)) +
-  stat_qq() +
-  stat_qq_line(color = "goldenrod", lwd = 2) +
-  theme_bw()
-```
 
 ```{r part a}
 l_bern <- function(B, X, Y) {
@@ -224,7 +161,7 @@ l_bern <- function(B, X, Y) {
 }
 # Set data
 p <- 1
-n <- 35
+n <- 500
 # Generate X
 X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
 # Set B
@@ -241,7 +178,76 @@ maxLik(l_bern, start = c(0, 0), X = X, Y = Y)
 # Glm method
 df <- data.frame(Y = Y, x1 = X[, 2])
 coef(glm(Y ~ x1, data = df, family = "binomial"))
+fit <- (glm(Y ~ x1, data = df, family = "binomial"))
+```
 
+```{r viz}
+ggplot(df, aes(x = x1, y = Y)) +
+  geom_point() + 
+  geom_smooth(method = "glm", 
+    method.args = list(family = "binomial"), 
+    se = FALSE) +
+  stat_function(fun = function(x) 1 / (1 + exp(-x))) + 
+  theme_bw()
+```
+
+b) *Is the MLE Biased?* Simulate many data sets and fit many models using MLE. Create a plot similar to the previous, but with *all* of the fitted models' mean functions plotted. To make this more complex plot intelligible, I recommend the [gghighlight](https://yutannihilation.github.io/gghighlight/index.html) package.
+
+```{r part b}
+# Set data
+p <- 1
+n <- 500
+# Generate X
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+# Set B
+B <- c(-1, 2)
+it <- 100
+data <- data.frame()
+# Simulate Y
+for(i in 1:it) {
+  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+  df <- data.frame(Y = Y, x1 = X[, 2])
+  fit <- (glm(Y ~ x1, data = df, family = "binomial"))
+  fit_val <- fit$fitted.values
+  sim <- i 
+  df <- cbind( sim , df, fit_val)
+  data <- rbind(data, df)
+}
+```
+
+```{r testing viz part b}
+ggplot(data, aes(x = x1, y = fit_val, color=sim)) +
+  geom_smooth(aes(group=sim), method = "glm", 
+   method.args = list(family = "binomial"), 
+   se = FALSE) +
+  gghighlight(max(fit_val) > 0.991, min(fit_val) > 	0.002) +
+  stat_function(fun = function(x) 1 / (1 + exp(-x)))  +
+  theme_minimal() 
+```
+
+```{r viz}
+ggplot(data, aes(x = x1, y = fit_val, color=sim)) +
+  geom_smooth(aes(group=sim), method = "glm", 
+   method.args = list(family = "binomial"), 
+   se = FALSE) +
+  gghighlight(max(fit_val) > 0.991, min(fit_val) > 	0.002) +
+  stat_function(fun = function(x) 1 / (1 + exp(-x)))  +
+  theme_minimal() +
+  facet_wrap(~ sim)
+```
+
+
+c) *How does the bias of an estimate change with sample size for a particular value of the parameter?* For a single fixed value of $\beta_1$, construct a plot that shows the relationship between $n$ and the bias of the corresponding MLE.
+
+
+```{r part c}
+
+
+```
+
+## New
+
+```{r other code}
 # Alternative specification
 n <- 35
 X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
@@ -322,8 +328,6 @@ p_norm_qq <- ggplot(data.frame(beta), aes(sample = beta)) +
   theme_bw()
 ```
 
-b) *Is the MLE Biased?* Simulate many data sets and fit many models using MLE. Create a plot similar to the previous, but with *all* of the fitted models' mean functions plotted. To make this more complex plot intelligible, I recommend the [gghighlight](https://yutannihilation.github.io/gghighlight/index.html) package.
-
 ```{r part b}
 # Larger Sample simulation
 n <- 350
@@ -339,14 +343,6 @@ sapply(MLE_350, mean)
 
 # Observing variance matrix
 ggpairs(MLE_35)
-```
-
-c) *How does the bias of an estimate change with sample size for a particular value of the parameter?* For a single fixed value of $\beta_1$, construct a plot that shows the relationship between $n$ and the bias of the corresponding MLE.
-
-
-```{r part c}
-
-
 ```
 
 d) *How does the bias of an estimate change with sample size for multiple values of the parameter?* Extend the idea of the previous plot by expressing the relationship between the value of $\beta_1$ and the corresponding element of $\hat{\beta}^{MLE}$ for various fixed values of $\beta_1$. Examine this relationship at a handful of sample sizes $n$.
