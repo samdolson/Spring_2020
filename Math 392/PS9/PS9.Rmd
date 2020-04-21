@@ -13,6 +13,8 @@ library(knitr)
 library(EstimationTools)
 library(maxLik)
 library(mvtnorm)
+library(GGally)
+library(gghighlight)
 set.seed(1999) # set seed for reproducibility
 ```
 
@@ -38,7 +40,7 @@ Find the maximum likelihood estimates of $\beta_0$, $\beta_1$, and $\sigma^2$.
 
 a) Provide the derivation of closed-form solutions, if they exist. For reference, if $X \sim N(\mu, \sigma^2), f(x | \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{\frac{(x - \mu)^2}{2\sigma^2}}$.
 
-(*): 
+(*): Formulating the likelihood function
 
 Note: For $X_i$, $f(y_i | x_i, \beta_0, \beta_1, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(y_i - (\beta_0 + \beta_1 x_i))^2}{2\sigma^2}}$
 
@@ -46,7 +48,7 @@ Thus, for $X_1, ..., X_n$, we may write:
 
 $f(y_1 | x_1, \beta_0, \beta_1, \sigma^2) ... f(y_n | x_n, \beta_0, \beta_1, \sigma^2) = \prod \limits_{i=1}^{n} {f(y_i | x_i, \beta_0, \beta_1, \sigma^2)} = \prod \limits_{i=1}^{n} {\frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(y_i - (\beta_0 + \beta_1 x_i))^2}{2\sigma^2}}}$
 
-To ease our future calculations, we take the log-likelihood, turning the above relation into a summation instead of a product. To that end, let L denote the log, giving us: 
+To ease our future calculations, we take the log-likelihood, turning the above relation into a summation instead of a product. To that end, let L denote the log, giving us a log-likelihood of: 
 
 $L(\beta_0, \beta_1, \sigma^2) = L(f(y_1 | x_1, \beta_0, \beta_1, \sigma^2) ... f(y_n | x_n, \beta_0, \beta_1, \sigma^2)) = L(\prod \limits_{i=1}^{n} {\frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(y_i - (\beta_0 + \beta_1 x_i))^2}{2\sigma^2}}}) = \sum \limits_{i=1}^{n} {log(\frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(y_i - (\beta_0 + \beta_1 x_i))^2}{2\sigma^2}}})$
 
@@ -100,14 +102,22 @@ The MLEs of $\beta_0$, $\beta_1$, and $\sigma^2$ are the same as the least squar
 
 b) Describe in pseudocode (or actual R code) how to find them using numerical optimization.
 
-### Pseudocode - MLE
+### MLE
 
 There are a number of options available for estimating the MLE, ranging from general optimzation using 'optim', generating a generalized linear model, to dedicated maximum likelihood package such as 'maxLik'. 
+
+The process is as follows: 
+
+(1): Specify likelihood function
+(2): Specify parameters
+(3): Generate data (X's and Y's)
+(4): Generate Model/Estimates (optim, maxLik, glm, etc.)
 
 ### Code Example - MLE
 
 ```{r mle example}
 # specify likelihood function, using gaussian assumptions
+set.seed(1999)
 l_gauss <- function(n, sigma, B, X, Y) {
   (-(n / 2) * log(2 * pi)) - (n * log( sigma)) - ((1 / (2 * (sigma^2))) * (sum((Y - (X %*% B))^2)))   
 }
@@ -120,7 +130,7 @@ X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
 # Set Beta values
 B <- c(2, 4)
 # Generate Y
-Y <- rnorm(n, mean = 4, sd = sqrt(sigma))
+Y <- rnorm(n, mean = (X %*% B), sd = sqrt(sigma))
 # Optim example
 optim(par = c(0, 0), fn = l_gauss, X = X, Y = Y, n = n, sigma = sigma)
 # maxLik example
@@ -143,16 +153,192 @@ For this problem you'll be working in a setting when the design matrix including
 
 a) *How does a single estimate compare with the true mean function?* Simulate one data set and fit one model using the MLEs. Construct a scatterplot with the simulated data, the estimated mean function ($\hat{E}(Y|X = x)$) and the true mean function ($\hat{E}(Y|X = x)$).
 
+```{r testing part a}
+l_bern <- function(B, X, Y) {
+  p <- 1/(1 + exp(- X %*% B))
+  sum(Y * log(p) + (1 - Y) * log(1 - p))
+}
+# Set data
+p <- 1
+n <- 35
+# Generate X
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+# Set B
+B <- c(-1, 2)
+# Simulate Y
+Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+# Log Likelihood
+l_bern(B, X, Y)
+l_bern(c(0, 0), X, Y)
+# Using optim
+optim(par = c(0, 0), fn = l_bern, X = X, Y = Y)
+# Dedicated optimizer
+maxLik(l_bern, start = c(0, 0), X = X, Y = Y)
+# Glm method
+df <- data.frame(Y = Y, x1 = X[, 2])
+coef(glm(Y ~ x1, data = df, family = "binomial"))
+
+# Calc
+x_s <- c(1, 1)
+b <- .5
+it <- 5000
+beta <- rep(NA, it)
+E_y <- rep(NA, it)
+y_s <- rep(NA, it)
+for (j in 1:it) {
+  epsilon <- rnorm(n, m = 0, s = b)
+  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+  df <- data.frame(Y = Y, x1 = X[, 2])
+  fit <- glm(Y ~ x1, data = df, family = "binomial")
+  beta[j] <- coef(fit)[2] #beta_1
+  E_y[j] <- coef(fit) %*% x_s
+  y_s[j] <- coef(fit) %*% x_s + rnorm(1, m = 0, s = b)
+}
+```
+
+```{r mle viz}
+# Visual
+sigma <- sqrt(2 * b^2)
+var_theory <- sigma^2 * solve(t(X) %*% X) [2, 2]
+
+library(tidyverse)
+ggplot(data.frame(beta), aes(x = beta)) +
+  geom_histogram(aes(y=..density..), col = "white") +
+  stat_function(fun = dnorm, 
+                args = list(mean = B1, 
+                            sd = sqrt(var_theory)),
+                color = "goldenrod",
+                lwd = 2) +
+  theme_bw()
+
+p_norm_qq <- ggplot(data.frame(beta), aes(sample = beta)) +
+  stat_qq() +
+  stat_qq_line(color = "goldenrod", lwd = 2) +
+  theme_bw()
+```
+
 ```{r part a}
+l_bern <- function(B, X, Y) {
+  p <- 1/(1 + exp(- X %*% B))
+  sum(Y * log(p) + (1 - Y) * log(1 - p))
+}
+# Set data
+p <- 1
+n <- 35
+# Generate X
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+# Set B
+B <- c(-1, 2)
+# Simulate Y
+Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+# Log Likelihood
+l_bern(B, X, Y)
+l_bern(c(0, 0), X, Y)
+# Using optim
+optim(par = c(0, 0), fn = l_bern, X = X, Y = Y)
+# Dedicated optimizer
+maxLik(l_bern, start = c(0, 0), X = X, Y = Y)
+# Glm method
+df <- data.frame(Y = Y, x1 = X[, 2])
+coef(glm(Y ~ x1, data = df, family = "binomial"))
 
+# Alternative specification
+n <- 35
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+ml <- maxLik(l_bern, start = c(0, 0), X = X, Y = Y)
+ml$estimate
+# Comparison 
+Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+ml <- maxLik(l_bern, start = c(0, 0), X = X, Y = Y)
+ml$estimate
 
+# Joint Distribution of \hat{\theta}_{MLE}
+it <- 500
+MLE <- matrix(rep(NA, it * (p + 1)), ncol = p + 1)
+for (i in 1:it) {
+  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+  ml <- maxLik(l_bern, start = c(0, 0), X = X, Y = Y)
+  MLE[i, ] <- ml$estimate
+}
+MLE_35 <- as.data.frame(MLE)
+sapply(MLE_35, mean)
+
+# Observing variance matrix
+ggpairs(MLE_35)
+
+```
+
+```{r echo = FALSE, cache = TRUE}
+library(rmutil)
+library(mvtnorm)
+set.seed(403)
+B0 <- 1
+B1 <- 1
+B2 <- 1
+B <- c(B0, B1, B2)
+b <- .25
+
+n <- 100
+mean <- c(1, -1)
+cov <- matrix(c(1, 0, 0, 1),
+              byrow = TRUE, 
+              ncol = 2)
+X <- cbind(rep(1, n), rmvnorm(n, mean, cov))
+
+x_s <- c(1, 1, 1)
+it <- 5000
+beta <- rep(NA, it)
+E_y <- rep(NA, it)
+y_s <- rep(NA, it)
+for (j in 1:it) {
+  epsilon <- rnorm(n, m = 0, s = b)
+  y <- X %*% B + epsilon
+  df <- data.frame(y, X)
+  fit <- lm(y ~ X2 + X3, data = df) 
+  beta[j] <- coef(fit)[2] #beta_1
+  E_y[j] <- coef(fit) %*% x_s
+  y_s[j] <- coef(fit) %*% x_s + rnorm(1, m = 0, s = b)
+}
+```
+
+```{r echo = FALSE, fig.height = 5}
+sigma <- sqrt(2 * b^2)
+var_theory <- sigma^2 * solve(t(X) %*% X) [2, 2]
+
+library(tidyverse)
+ggplot(data.frame(beta), aes(x = beta)) +
+  geom_histogram(aes(y=..density..), col = "white") +
+  stat_function(fun = dnorm, 
+                args = list(mean = B1, 
+                            sd = sqrt(var_theory)),
+                color = "goldenrod",
+                lwd = 2) +
+  theme_bw()
+
+p_norm_qq <- ggplot(data.frame(beta), aes(sample = beta)) +
+  stat_qq() +
+  stat_qq_line(color = "goldenrod", lwd = 2) +
+  theme_bw()
 ```
 
 b) *Is the MLE Biased?* Simulate many data sets and fit many models using MLE. Create a plot similar to the previous, but with *all* of the fitted models' mean functions plotted. To make this more complex plot intelligible, I recommend the [gghighlight](https://yutannihilation.github.io/gghighlight/index.html) package.
 
 ```{r part b}
+# Larger Sample simulation
+n <- 350
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+MLE <- matrix(rep(NA, it * (p + 1)), ncol = p + 1)
+for (i in 1:it) {
+  Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+  ml <- maxLik(l_bern, start = c(0, 0), X = X, Y = Y)
+  MLE[i, ] <- ml$estimate
+}
+MLE_350 <- as.data.frame(MLE)
+sapply(MLE_350, mean)
 
-
+# Observing variance matrix
+ggpairs(MLE_35)
 ```
 
 c) *How does the bias of an estimate change with sample size for a particular value of the parameter?* For a single fixed value of $\beta_1$, construct a plot that shows the relationship between $n$ and the bias of the corresponding MLE.
@@ -183,7 +369,7 @@ e) *Can I perform shrinkage on logistic coefficients?* The original motivation f
 
 
 
-d) To bring in a sense of both bias and variance, select one of your values of $\lambda$ and use it to replicate the plot from part b, but now with two clumps of sigmoids: one corresponding to the MLE, the other to the ridge estimates. Use color to differentiate between the two clups. Describe what the plot demonstrates about the bias and variance for the MLE and the ridge estimates in this setting.
+f) To bring in a sense of both bias and variance, select one of your values of $\lambda$ and use it to replicate the plot from part b, but now with two clumps of sigmoids: one corresponding to the MLE, the other to the ridge estimates. Use color to differentiate between the two clups. Describe what the plot demonstrates about the bias and variance for the MLE and the ridge estimates in this setting.
 
 
 ```{r part f}
