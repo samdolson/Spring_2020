@@ -10,6 +10,9 @@ knitr::opts_chunk$set(echo = TRUE, eval = TRUE, fig.align = "center",
                       message = FALSE, warning = FALSE)
 library(tidyverse)
 library(knitr)
+library(EstimationTools)
+library(maxLik)
+library(mvtnorm)
 set.seed(1999) # set seed for reproducibility
 ```
 
@@ -49,7 +52,7 @@ $L(\beta_0, \beta_1, \sigma^2) = L(f(y_1 | x_1, \beta_0, \beta_1, \sigma^2) ... 
 
 We isolate each of the logs into the following relation: 
 
-(**): $L(\beta_0, \beta_1, \sigma^2) = -\frac{n}{2} log(2\pi) - n log(\sigma^2) - \frac{1}{2 \sigma^2} \sum \limits_{i=1}^{n} {(y_i - (\beta_0 + \beta_1 x_i))^2}$
+(**): $L(\beta_0, \beta_1, \sigma^2) = {n}log(\frac{1}{\sqrt{2 \pi}}) + n log(\frac{1}{\sqrt{\sigma^2}}) - \frac{1}{2 \sigma^2} \sum \limits_{i=1}^{n} {(y_i - (\beta_0 + \beta_1 x_i))^2}$
 
 **For the following derivations, we maximize the above relation with respect to our parameter of interest, which yields the maximum likelihood estimate. This involves deriving the equation (w.r.t. our parameter) and setting equal to zero, then solving for that parameter.**
 
@@ -83,7 +86,9 @@ $\beta_1^{MLE} = \frac{\sum \limits_{i=1}^{n}{(x_i - \bar{x}_n)(y_i - \bar{y}_n)
 
 (3): $\sigma_{MLE}^2$
 
-$\frac{\partial(L(\beta_0, \beta_1, \sigma^2))}{\partial \sigma^2} = \frac{\partial}{\partial \sigma^2} ( - n log(\sigma^2) - \frac{1}{\sigma^2}\sum \limits_{i=1}^{n} {(y_i - (\beta_0 + \beta_1x_i))^2}) = - \frac{n}{\sigma^2}  + \frac{1}{(\sigma^2)^2}\sum \limits_{i=1}^{n} {(y_i - (\beta_0 + \beta_1x_i))^2})}$
+$\frac{\partial(L(\beta_0, \beta_1, \sigma^2))}{\partial \sigma^2} = \frac{\partial}{\partial \sigma^2} ( - n log(\sigma^2) - \frac{1}{\sigma^2}\sum \limits_{i=1}^{n} {(y_i - (\beta_0 + \beta_1x_i))^2})$ 
+
+$\frac{\partial(L(\beta_0, \beta_1, \sigma^2))}{\partial \sigma^2} = - \frac{n}{\sigma^2}  + \frac{1}{(\sigma^2)^2}\sum \limits_{i=1}^{n} {(y_i - (\beta_0 + \beta_1x_i))^2})$
 
 Setting the above equation equal to zero, we have:
 
@@ -95,90 +100,40 @@ The MLEs of $\beta_0$, $\beta_1$, and $\sigma^2$ are the same as the least squar
 
 b) Describe in pseudocode (or actual R code) how to find them using numerical optimization.
 
-### Pseudocode
+### Pseudocode - MLE
 
-For a two-parameter simple linear model, $\beta_0$ is the intercept, $\beta_1$ is the slope, and $\sigma^2$ is the variance of the y's. 
+There are a number of options available for estimating the MLE, ranging from general optimzation using 'optim', generating a generalized linear model, to dedicated maximum likelihood package such as 'maxLik'. 
 
-For a pseudocode example, let X and Y be randomly distributed variables, defined as: 
+### Code Example - MLE
 
-x_0 <- rep(1, n)
-x_1 <- rnorm(n, mean = 2, sd = 1)
-X <- cbind(x_0, x_1)
-Y <- rnorm(100)
-
-Then, let lm denote a linear model of Y ~ X, with X having two parameters, $\beta_0$ and $\beta_1$. We may express the MLEs as: 
-
-(1): $\beta_0^{MLE}$ = coef(summary(lm))["(Intercept)"]
-
-(2): $\beta_1^{MLE}$ = coef(summary(lm))["X"]
-
-(3): $\sigma_{MLE}^2$ = var(Y)
-
-### R Code
-
-```{r simple example}
-set.seed(83)
-x_0 <- rep(1, n)
-x_1 <- rnorm(n, mean = 2, sd = 1)
-X <- cbind(x_0, x_1)
-Y <- rnorm(100)
-model <- lm(Y ~ X)
-model$coefficients[1]
-model$coefficients[3]
-var(Y)
-```
-
-#### With Simulation
-
-```{r more detailed mle formulation}
-# Note: initial code taken and reformulated from
-# https://www.stat.cmu.edu/~cshalizi/mreg/15/lectures/06/lecture-06.pdf
-# with additional modifications on visualizations and inclusion of error estimation
-
-# Set initial parameters
-n <- 200 
-beta.0 <- 2
-beta.1 <- 4
-sigma.sq <- 1
-fixed.x <- rexp(n=n)
-# Model Specifications Y=\beta_0+\beta_1*x+ \epsilon
-# Where \epsilon \sim N(0,\sigma^2)
-
-# Function to create initial model
-sim.lin.gauss <- function(intercept=beta.0, slope=beta.1,
-noise.variance=sigma.sq, x = fixed.x,
-model=FALSE) {
-# Adding Gaussian noise to the linear function
-y <- rnorm(length(x), intercept + slope*x, sd=sqrt(noise.variance))
-if (model) { return(lm(y~x)) }
-else { return(data.frame(x=x, y=y)) }
+```{r mle example}
+# specify likelihood function, using gaussian assumptions
+l_gauss <- function(n, sigma, B, X, Y) {
+  (-(n / 2) * log(2 * pi)) - (n * log( sigma)) - ((1 / (2 * (sigma^2))) * (sum((Y - (X %*% B))^2)))   
 }
-```
-
-```{r replicate data}
-par(mfrow=c(2,1))
-# Sample intercept \beta_0
-pred.sample <- replicate(1000, coefficients(sim.lin.gauss(model=TRUE))[1])
-# Sample slopes \beta_1
-slope.sample <- replicate(1000, coefficients(sim.lin.gauss(model=TRUE))["x"])
-# Sample variance \sigma^2
-pred.sigma <- replicate(1000, var((sim.lin.gauss(model=TRUE))$residuals))
-```
-
-```{r difference comparison}
-# Comparison of \beta_0 and \beta_0^{MLE}
-mean(pred.sample) - beta.0
-
-# Comparison of \beta_1 and \beta_1^{MLE}
-mean(slope.sample) - beta.1
-
-# Comparison of \sigma^2 and \sigma_{MLE}^2
-mean(pred.sigma) - sigma.sq
+# Set Parameters
+n <- 500
+p <- 1
+sigma <- 2
+# Generate X
+X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
+# Set Beta values
+B <- c(2, 4)
+# Generate Y
+Y <- rnorm(n, mean = 4, sd = sqrt(sigma))
+# Optim example
+optim(par = c(0, 0), fn = l_gauss, X = X, Y = Y, n = n, sigma = sigma)
+# maxLik example
+ml <- maxLik(l_gauss, start = c(0, 0), X = X, Y = Y, n = n, sigma = sigma)
+ml$estimate
+# glm example
+df <- data.frame(Y = Y, x1 = X[, 2])
+coef(glm(Y ~ x1, data = df, family = "gaussian"))
 ```
 
 ### Commentary
 
-In simulating data, the MLEs of $\beta_0$, $\beta_1$, and $\sigma^2$ are very close to their true parameters. 
+In the above code, the estimates of the coefficients are quite off. However, the maxLik estimates and the glm estimates are similar. 
 
 * * *
 
@@ -188,23 +143,41 @@ For this problem you'll be working in a setting when the design matrix including
 
 a) *How does a single estimate compare with the true mean function?* Simulate one data set and fit one model using the MLEs. Construct a scatterplot with the simulated data, the estimated mean function ($\hat{E}(Y|X = x)$) and the true mean function ($\hat{E}(Y|X = x)$).
 
+```{r part a}
 
+
+```
 
 b) *Is the MLE Biased?* Simulate many data sets and fit many models using MLE. Create a plot similar to the previous, but with *all* of the fitted models' mean functions plotted. To make this more complex plot intelligible, I recommend the [gghighlight](https://yutannihilation.github.io/gghighlight/index.html) package.
 
+```{r part b}
 
+
+```
 
 c) *How does the bias of an estimate change with sample size for a particular value of the parameter?* For a single fixed value of $\beta_1$, construct a plot that shows the relationship between $n$ and the bias of the corresponding MLE.
 
 
+```{r part c}
+
+
+```
 
 d) *How does the bias of an estimate change with sample size for multiple values of the parameter?* Extend the idea of the previous plot by expressing the relationship between the value of $\beta_1$ and the corresponding element of $\hat{\beta}^{MLE}$ for various fixed values of $\beta_1$. Examine this relationship at a handful of sample sizes $n$.
 
 
+```{r part d}
 
-d) *Can I perform shrinkage on logistic coefficients?* The original motivation for ridge regression was to make the $X'X$ matrix in OLS invertible. Statisticians have since realized the practical value of its variance-reducing characteristics when shrinking $\hat{\beta}$ towards zero. Traditional ridge regression is performed by adding a penalty term, $\lambda \sum_{j = 1}^p \beta_j^2$, to the RSS. In logistic regression, we instead of finding our estimates by minimizing RSS, we choose to maximize the likehood. Although the original motivation of matrix inversion is lost, it can still be perfectly valid and valuable to shink the logistic regression estimates by penalizing the likelihood.
+
+```
+
+e) *Can I perform shrinkage on logistic coefficients?* The original motivation for ridge regression was to make the $X'X$ matrix in OLS invertible. Statisticians have since realized the practical value of its variance-reducing characteristics when shrinking $\hat{\beta}$ towards zero. Traditional ridge regression is performed by adding a penalty term, $\lambda \sum_{j = 1}^p \beta_j^2$, to the RSS. In logistic regression, we instead of finding our estimates by minimizing RSS, we choose to maximize the likehood. Although the original motivation of matrix inversion is lost, it can still be perfectly valid and valuable to shink the logistic regression estimates by penalizing the likelihood.
 
 
+```{r part e}
+
+
+```
 
     For the same data set that you used to create the plot in part a, find three more estimated mean functions, each one corresponding to a different value of $\lambda$, and add them to the plot. Admittedly, this will demonstrate the *downside* of penalized regression: that we have actually *increased* the bias. The plot should have five overlaid sigmoid curves. Play around with the values of $\lambda$ so that you can the shape of all five on the same plot.
 
@@ -213,4 +186,8 @@ d) *Can I perform shrinkage on logistic coefficients?* The original motivation f
 d) To bring in a sense of both bias and variance, select one of your values of $\lambda$ and use it to replicate the plot from part b, but now with two clumps of sigmoids: one corresponding to the MLE, the other to the ridge estimates. Use color to differentiate between the two clups. Describe what the plot demonstrates about the bias and variance for the MLE and the ridge estimates in this setting.
 
 
+```{r part f}
+
+
+```
 
