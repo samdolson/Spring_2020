@@ -220,17 +220,17 @@ ggplot(data, aes(x = x1, y = fit_val, color=sim)) +
   geom_smooth(aes(group=sim), method = "glm", 
    method.args = list(family = "binomial"), 
    se = FALSE) +
-  gghighlight(max(fit_val) > 0.991, min(fit_val) > 	0.002) +
+  gghighlight(max(fit_val) > 0.95) +
   stat_function(fun = function(x) 1 / (1 + exp(-x)))  +
   theme_minimal() 
 ```
 
-```{r multi viz part b}
+```{r multi viz part b, eval=FALSE}
 ggplot(data, aes(x = x1, y = fit_val, color=sim)) +
   geom_smooth(aes(group=sim), method = "glm", 
    method.args = list(family = "binomial"), 
    se = FALSE) +
-  gghighlight(max(fit_val) > 0.991, min(fit_val) > 	0.002) +
+  gghighlight(max(fit_val) > 0.95) +
   stat_function(fun = function(x) 1 / (1 + exp(-x)))  +
   theme_minimal() +
   facet_wrap(~ sim)
@@ -429,45 +429,6 @@ ggplot(df, aes(x = x1, y = Y)) +
 f) To bring in a sense of both bias and variance, select one of your values of $\lambda$ and use it to replicate the plot from part b, but now with two clumps of sigmoids: one corresponding to the MLE, the other to the ridge estimates. Use color to differentiate between the two clups. Describe what the plot demonstrates about the bias and variance for the MLE and the ridge estimates in this setting.
 
 ```{r part f}
-# Prior Code to Copy Over
-# Set data
-p <- 1
-n <- 500
-# Generate X
-X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
-# Set B
-B <- c(-1, 2)
-it <- 500
-Y <- rbinom(n, size = 1, prob = 1/(1+exp(- X%*%B)))
-lambda <- c(1, 4, 8)
-estimates <- maxLik(penalized_l_bern , start = c(0, 0), X = X, Y = Y, lamby = lambda[1])$estimate
-B0_ests_1 <- estimates[1]
-B1_ests_1 <- estimates[2]
-estimates <- maxLik(penalized_l_bern , start = c(0, 0), X = X, Y = Y, lamby = lambda[2])$estimate
-B0_ests_2 <- estimates[1]
-B1_ests_2 <- estimates[2]
-estimates <- maxLik(penalized_l_bern , start = c(0, 0), X = X, Y = Y, lamby = lambda[3])$estimate
-B0_ests_3 <- estimates[1]
-B1_ests_3 <- estimates[2]
-
-fit_values_1 <- rep(NA, n)
-fit_values_2 <- rep(NA, n)
-fit_values_3 <- rep(NA, n)
-
-for(i in 1:n){
-  fit_values_1 <- 1/(1+exp(- (B0_ests_1 + B1_ests_1 * X[, 2])))
-  fit_values_2 <- 1/(1+exp(- (B0_ests_2 + B1_ests_2 * X[, 2])))
-  fit_values_3 <- 1/(1+exp(- (B0_ests_3 + B1_ests_3 * X[, 2])))
-}
-
-x1 <- X[, 2]
-fit_data_1 <- cbind.data.frame(fit_values_1, x1)
-fit_data_2 <- cbind.data.frame(fit_values_2, x1)
-fit_data_3 <- cbind.data.frame(fit_values_3, x1)
-
-df <- data.frame(Y = Y, x1 = X[, 2]) 
-fit <- (glm(Y ~ x1, data = df, family = "binomial"))
-
 # Actual Work
 # Set data
 p <- 1
@@ -476,39 +437,42 @@ n <- 500
 X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
 # Set B
 B <- c(-1, 2)
+lambda <- 4
 it <- 100
 data <- data.frame()
 # Simulate Y
 for(i in 1:it) {
   Y <- rbinom(n, size = 1, prob = 1/(1 + exp(- X %*% B)))
+  estimates <- maxLik(penalized_l_bern , start = c(0, 0), X = X, Y = Y, lamby = lambda)$estimate
+  B0_ests_1 <- estimates[1]
+  B1_ests_1 <- estimates[2]
   df <- data.frame(Y = Y, x1 = X[, 2])
   fit <- (glm(Y ~ x1, data = df, family = "binomial"))
-  fit_val <- fit$fitted.values
-  sim <- i 
-  df <- cbind( sim , df, fit_val)
+  fit_mle <- fit$fitted.values
+  fit_ridge <- 1/(1+exp(- (B0_ests_1 + B1_ests_1 * X[, 2])))
+  sim <- c(i,i)
+  type <- c("mle", "ridge")
+  fit <- c(fit_mle, fit_ridge)
+  df <- cbind(sim , df, fit, type)
   data <- rbind(data, df)
 }
 ```
 
 ```{r singular viz part f}
-ggplot(data, aes(x = x1, y = fit_val, color=sim)) +
-  geom_smooth(aes(group=sim), method = "glm", 
-   method.args = list(family = "binomial"), 
-   se = FALSE) +
-  gghighlight(max(fit_val) > 0.991, min(fit_val) > 	0.002) +
-  stat_function(fun = function(x) 1 / (1 + exp(-x)))  +
+ggplot(data, aes(x = x1, y = fit, color=sim, shape=as.factor(type), group=interaction(sim, type))) +
+  geom_point(alpha=.25) +
+  gghighlight(max(fit) > 0.95) +
+  stat_function(fun = function(x) 1 / (1 + exp(-x)), color="black")  +
   theme_minimal() 
 ```
 
 ```{r multi viz part f}
-ggplot(data, aes(x = x1, y = fit_val, color=sim)) +
-  geom_smooth(aes(group=sim), method = "glm", 
-   method.args = list(family = "binomial"), 
-   se = FALSE) +
-  gghighlight(max(fit_val) > 0.991, min(fit_val) > 	0.002) +
+ggplot(data, aes(x = x1, y = fit, color=sim, shape=as.factor(type), group=interaction(sim, type))) +
+  geom_point(alpha=.25) +
+  gghighlight(max(fit) > 0.95) +
   stat_function(fun = function(x) 1 / (1 + exp(-x)))  +
   theme_minimal() +
-  facet_wrap(~ sim)
+  facet_wrap(~ type)
 ```
 
 ### An Extra Portion for Your Consideration
