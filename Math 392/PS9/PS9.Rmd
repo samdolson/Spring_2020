@@ -138,7 +138,10 @@ ml <- maxLik(l_gauss, start = c(0, 0), X = X, Y = Y, n = n, sigma = sigma)
 ml$estimate
 # glm example
 df <- data.frame(Y = Y, x1 = X[, 2])
-coef(glm(Y ~ x1, data = df, family = "gaussian"))
+fit <- glm(Y ~ x1, data = df, family = "gaussian")
+sigma_mle <- sum((fit$residuals)^2)/n
+coef(fit)
+sigma_mle
 ```
 
 ### Commentary
@@ -181,15 +184,22 @@ coef(glm(Y ~ x1, data = df, family = "binomial"))
 fit <- (glm(Y ~ x1, data = df, family = "binomial"))
 ```
 
-```{r viz part a}
+```{r viz part a, echo=FALSE}
 ggplot(df, aes(x = x1, y = Y)) +
   geom_point() + 
   geom_smooth(method = "glm", 
     method.args = list(family = "binomial"), 
-    se = FALSE) +
-  stat_function(fun = function(x) (1 / (1 + exp(-x)))) + 
+    se = FALSE, aes(color = "estimated mean")) +
+  stat_function(fun = function(x) (1 / (1 + exp(-x))), aes(color = "true mean")) + 
+  xlim(-2, 2) + 
+  ylim(0, 1) +
+  ggtitle("Comparison of True and Estimated Mean Functions") +
   theme_bw()
 ```
+
+### Commentary
+
+The estimated mean is more likey to underestimate values of x1 lower than 1, and overestimate values of x1 greater than 1. Part of this may stem from the true mean estimate accounting for values of x1 not included in the dataset. 
 
 b) *Is the MLE Biased?* Simulate many data sets and fit many models using MLE. Create a plot similar to the previous, but with *all* of the fitted models' mean functions plotted. To make this more complex plot intelligible, I recommend the [gghighlight](https://yutannihilation.github.io/gghighlight/index.html) package.
 
@@ -215,27 +225,32 @@ for(i in 1:it) {
 }
 ```
 
-```{r singular viz part b}
+```{r singular viz part b, echo=FALSE}
 ggplot(data, aes(x = x1, y = fit_val, color=sim)) +
   geom_smooth(aes(group=sim), method = "glm", 
    method.args = list(family = "binomial"), 
    se = FALSE) +
-  gghighlight(max(fit_val) > 0.95) +
+  gghighlight(max(fit_val) > 0.98) +
   stat_function(fun = function(x) 1 / (1 + exp(-x)))  +
+  ggtitle("Comparison of Simulated Estimates of Mean Function") +
   theme_minimal() 
 ```
 
-```{r multi viz part b, eval=FALSE}
+```{r multi viz part b, echo=FALSE}
 ggplot(data, aes(x = x1, y = fit_val, color=sim)) +
   geom_smooth(aes(group=sim), method = "glm", 
    method.args = list(family = "binomial"), 
    se = FALSE) +
-  gghighlight(max(fit_val) > 0.95) +
+  gghighlight(max(fit_val) > 0.98) +
   stat_function(fun = function(x) 1 / (1 + exp(-x)))  +
+  ggtitle("Comparison of Top Simulated Estimates of Mean Function") +
   theme_minimal() +
   facet_wrap(~ sim)
 ```
 
+### Commentary
+
+Models that with top quantile x1 estimates of Y also have bottom quantile x1 estimates of Y. However, even with 100 simulations, the estimated mean functions do not converge to the true mean estimate, though they consistently intersect the true mean function for all simulations---albeit at different intercepts.  
 
 c) *How does the bias of an estimate change with sample size for a particular value of the parameter?* For a single fixed value of $\beta_1$, construct a plot that shows the relationship between $n$ and the bias of the corresponding MLE.
 
@@ -264,12 +279,17 @@ n <- seq(20, 2519, by=1)
 df <- cbind.data.frame(n, bias)
 ```
 
-```{r viz part b}
+```{r viz part b, ech=FALSE}
 ggplot(df, aes(x = n, y = bias)) +
   geom_point() + 
+  geom_smooth() + 
+  ggtitle("Bias Estimated of Mean Functions and Sample Size") +
   theme_minimal()
 ```
 
+### Commentary
+
+As theory suggests, the bias of our estimates converge to zero as n increases. 
 
 d) *How does the bias of an estimate change with sample size for multiple values of the parameter?* Extend the idea of the previous plot by expressing the relationship between the value of $\beta_1$ and the corresponding element of $\hat{\beta}^{MLE}$ for various fixed values of $\beta_1$. Examine this relationship at a handful of sample sizes $n$.
 
@@ -324,6 +344,7 @@ df_3 <- cbind.data.frame(beta_1, beta_1_mle)
 
 # simulation
 it <- length(beta_1)
+n <- 2000
 X <- cbind(1, rmvnorm(n, mean = rep(0, p), sigma = diag(p)/2))
 df <- data.frame()
 beta_1_mle <- rep(NA, it)
@@ -336,23 +357,45 @@ for (j in 1:length(beta_1)) {
 df_4 <- cbind.data.frame(beta_1, beta_1_mle)
 ```
 
-```{r viz part d}
+```{r viz part d, echo=FALSE}
 # Generate dataset
 library(patchwork)
 a1 <- ggplot(df_1, aes(x = beta_1, y = beta_1_mle)) +
   geom_point() + 
+  ggtitle("MLE Comparison at 200 Sample Size") +
+  geom_abline(intercept = 0, slope = 1) +
+  xlim(0, 105) + 
+  ylim(0, 400) +
   theme_minimal()
 a2 <- ggplot(df_2, aes(x = beta_1, y = beta_1_mle)) +
   geom_point() + 
+  geom_abline(intercept = 0, slope = 1) +
+  xlim(0, 105) + 
+  ylim(0, 400) +
+  ggtitle("MLE Comparison at 500 Sample Size") +
   theme_minimal()
 a3 <- ggplot(df_3, aes(x = beta_1, y = beta_1_mle)) +
   geom_point() + 
+  geom_abline(intercept = 0, slope = 1) +
+  xlim(0, 105) + 
+  ylim(0, 400) +
+  ggtitle("MLE Comparison at 1000 Sample Size") +
   theme_minimal()
 a4 <- ggplot(df_4, aes(x = beta_1, y = beta_1_mle)) +
   geom_point() + 
+  geom_abline(intercept = 0, slope = 1) +
+  xlim(0, 105) + 
+  ylim(0, 400) +
+  ggtitle("MLE Comparison at 2000 Sample Size") +
   theme_minimal()
 a1 + a2 + a3 + a4
 ```
+
+### Commentary
+
+Across all four sample sizes of interest, the difference between the true $\beta_1$ and the estimated $\beta_1^{MLE}$ increase for larger values of $\beta_1$. Said differently, the $\beta_1^{MLE}$ estimates have greater variance at higher values of $\beta_1$, though this effect is dampened as n increases. 
+
+Additionally, at small sample sizes, the variance of the difference between the estimated $\beta_1^{MLE}$ and the true $\beta_1$ increases. This levels out and becomes more consistent as n increases. 
 
 e) *Can I perform shrinkage on logistic coefficients?* The original motivation for ridge regression was to make the $X'X$ matrix in OLS invertible. Statisticians have since realized the practical value of its variance-reducing characteristics when shrinking $\hat{\beta}$ towards zero. Traditional ridge regression is performed by adding a penalty term, $\lambda \sum_{j = 1}^p \beta_j^2$, to the RSS. In logistic regression, we instead of finding our estimates by minimizing RSS, we choose to maximize the likehood. Although the original motivation of matrix inversion is lost, it can still be perfectly valid and valuable to shink the logistic regression estimates by penalizing the likelihood.
 
@@ -410,21 +453,26 @@ df <- data.frame(Y = Y, x1 = X[, 2])
 fit <- (glm(Y ~ x1, data = df, family = "binomial"))
 ```
 
-```{r viz part e}
+```{r viz part e, echo=FALSE}
 ggplot(df, aes(x = x1, y = Y)) +
   geom_point() + 
    geom_smooth(method = "glm", 
     method.args = list(family = "binomial"), 
-    se = FALSE) +
+    se = FALSE, aes(color="mle estimated mean")) +
   geom_line(data = fit_data_1, mapping = aes(x = x1, y = fit_values_1),
             color = "red", size = 0.05) + 
   geom_line(data = fit_data_2, mapping = aes(x = x1, y = fit_values_2),
             color = "green", size = 0.05) + 
   geom_line(data = fit_data_3, mapping = aes(x = x1, y = fit_values_3),
             color = "yellow", size = 0.05) + 
-  stat_function(fun = function(x) (1 / (1 + exp(-x)))) + 
+  stat_function(fun = function(x) (1 / (1 + exp(-x))), aes(color="true mean")) + 
+  ggtitle("Comparison of True, Estimated Mean Functions with Ridge Regression Estimates") +
   theme_bw()
 ```
+
+### Commentary
+
+The ridge regression estimates closely mirror the mle estimated mean function. Additionally, for larger values of $\lambda$, the estimates of Y appear to cluster together at low values of x1 (bottom quantile of x1 values), and the difference is greater for larger values of x1 (top quantile of x1 values). However, both the mle and ridge regression functions diverge from the true mean function. 
 
 f) To bring in a sense of both bias and variance, select one of your values of $\lambda$ and use it to replicate the plot from part b, but now with two clumps of sigmoids: one corresponding to the MLE, the other to the ridge estimates. Use color to differentiate between the two clups. Describe what the plot demonstrates about the bias and variance for the MLE and the ridge estimates in this setting.
 
@@ -458,24 +506,31 @@ for(i in 1:it) {
 }
 ```
 
-```{r singular viz part f}
+```{r singular viz part f, echo=FALSE}
 ggplot(data, aes(x = x1, y = fit, color=sim, shape=as.factor(type), group=interaction(sim, type))) +
   geom_point(alpha=.25) +
-  gghighlight(max(fit) > 0.95) +
+  gghighlight(max(fit) > 0.98) +
   stat_function(fun = function(x) 1 / (1 + exp(-x)), color="black")  +
+  ggtitle("Simulation: Comparison of True Mean Functions with MLE and Ridge Regression Estimates") +
   theme_minimal() 
 ```
 
-```{r multi viz part f}
+```{r multi viz part f, echo=FALSE}
 ggplot(data, aes(x = x1, y = fit, color=sim, shape=as.factor(type), group=interaction(sim, type))) +
   geom_point(alpha=.25) +
-  gghighlight(max(fit) > 0.95) +
+  gghighlight(max(fit) > 0.98) +
   stat_function(fun = function(x) 1 / (1 + exp(-x)))  +
   theme_minimal() +
+  ggtitle("Simulation: Comparison of True Mean Functions with Top MLE and Ridge Regression Estimates") +
   facet_wrap(~ type)
 ```
+### Commentary
+
+
 
 ### An Extra Portion for Your Consideration
+
+When we consider the bias of the ridge estimates as a function of sample size, we observe similar findings to part c), insomuch as the bias of the estimates decreases as sample size gets larger. Interestingly, this converge appears to occur for all three $\lambda$ values used in part e). 
 
 ```{r part f extd}
 # Set B, Lambda values
@@ -520,10 +575,11 @@ bias <- c(bias_mle, bias_ridge1, bias_ridge2, bias_ridge3)
 df <- cbind.data.frame(n, bias, type)
 ```
 
-```{r part f viz extd}
+```{r part f viz extd, echo=FALSE}
 ggplot(df, aes(x = n, y = bias, color=type)) +
   geom_point() + 
   ylim(-10,10) +
+  ggtitle("Bias of MLE and Ridge Regression Estimates as a Function of Sample Size") +
   theme_minimal()
 ```
 
