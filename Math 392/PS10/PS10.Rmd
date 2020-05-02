@@ -201,6 +201,35 @@ Joint of $f(Y, \mu, \lambda, m)= \prod \limits_{i=1}^{m} \frac{\lambda^m e^{-\la
 
 2. What is your acceptance rate? Tinker with the variance of the proposal distribution to bring it within the target range.
 
+```{r relevant functions, echo=FALSE}
+# The Likelihood
+likelihood <- function(theta) {
+    B0 <- theta[1]
+    B1 <- theta[2]
+    sigma <- theta[3]
+    y_fit <- B0 + B1 * x
+    logLik_vec <- dnorm(y, 
+                        mean = y_fit, 
+                        sd = sigma, 
+                        log = T)
+    sum(logLik_vec)
+}
+# Prior
+prior <- function(theta) {
+    B0 <- theta[1]
+    B1 <- theta[2]
+    sigma <- theta[3]
+    B0_prior <- dnorm(B0, sd = 5, log = T)
+    B1_prior <- dunif(B1, min = 0, max = 10, log = T)
+    sigma_prior <- dunif(sigma, min = 0, max = 30, log = T)
+    B0_prior + B1_prior + sigma_prior
+}
+# Posterior
+posterior <- function(theta) {
+   likelihood(theta) + prior(theta)
+}
+```
+
 ```{r Q2 part 2 new idea, eval=FALSE}
 library(patchwork)
 library(tidyverse)
@@ -208,107 +237,83 @@ library(hexbin)
 
 # Set Seed
 set.seed(497)
-
+# Adapted Metro-Hast
 # Set Parameters
 n <- 60
-m <- 38
-mu <- 2
-lambda <- 4
-y_mu <- rpois(m, lambda = mu)
-y_lambda <- rpois(n - m, lambda = lambda)
-y <- c(y_mu, y_lambda)
+# m <- 38
+# mu <- 2
+# lambda <- 4
+# y_mu <- rpois(m, lambda = mu)
+# y_lambda <- rpois(n - m, lambda = lambda)
+# y <- c(y_mu, y_lambda)
 alpha <- 10
 beta <- 4
 nu <- 8
 phi <- 2
-
-# Simulation
+# Create Chain
+# sample(1:(n - 1), size = 1, prob = p)
+chain <- matrix(NA, nrow = it+1, ncol = 3)
+# Set Initial Value
+theta_0 <- matrix(c(3,5,30), nrow = 1, ncol = 3)
+chain[1,] <- theta_0
+# Simulate/Run Algorithm
+val1 <- .4
+val2 <- .2
 it <- 50000
-post_samples <- matrix(rep(NA, it * 3), ncol = 3)
-colnames(post_samples) <- c("mu", "lambda", "m")
-m_j <- 2 # initialize m
-
-# Prior Code
-
-# Gibbs
-it <- 50000
-post_samples <- matrix(rep(NA, it * 3), ncol = 3)
-colnames(post_samples) <- c("mu", "lambda", "m")
-m_j <- 2 # initialize m
-for (j in 1:it) {
-  # sample mu
-  mu_j      <- rgamma(1, alpha + sum(y[1:m_j]), beta + m_j)
-  # sample lambda
-  lambda_j  <- rgamma(1, nu + sum(y[(m_j+1):n]), phi + (n - m_j))
-  # sample m
-  m_vec <- rep(NA, n - 1)
-  for (k in 1:(n - 1)) {
-    m_vec[k] <-  mu_j^(alpha + sum(y[1:k]) - 1) *
-      exp(-(beta + k) * mu_j) *
-      lambda_j^(nu + sum(y[(k+1):n]) - 1) *
-      exp(-(phi + n - k) * lambda_j)
-  }
-  p <- m_vec/sum(m_vec)
-  m_j <- sample(1:(n - 1), size = 1, prob = p)
-  # store results
-  post_samples[j, "mu"]     <- mu_j
-  post_samples[j, "lambda"] <- lambda_j
-  post_samples[j, "m"]      <- m_j
-}
-# Office Hour Notes
-
-n <- 50
-m_prop <- sample(1:n, 1, replace=FALSE, prob = rep(1/n, n))
-
-# Shrink variance of discrete distribution on 1 to n
-
-
-# Adapted Metro-Hast
-chain <- rep(NA, it + 1)
-chain[1] <- mu
 for (i in 1:it) {
-  proposal <- rnorm(1, chain[i], lambda)
-  p_move <- min(dgamma(proposal, alpha + sum(y[1:m_j]), beta + m_j)/
-                  dgamma(chain[i],  nu + sum(y[(m_j+1):n]), phi + (n - m_j)),
+  # Bound the proposals, otherwise infinite
+  # proposal <- matrix(c(min(rnorm(1, chain[i,1], val1),10), min(rnorm(1, chain[i,2], val2),10), rbinom(1, n, chain[i,3]/n)), nrow =1, ncol=3)
+  proposal <- matrix(c(min(rnorm(1, chain[i,1], val1),10), min(rnorm(1, chain[i,2], val2),10), sample((2:n-1), 1, rep(dbinom(1, n, chain[i,3]/n), n-1), replace=TRUE)), nrow =1, ncol=3)
+  p_move <- min((dgamma(proposal[,1], alpha, beta) * dgamma(proposal[,2], nu, phi) * dunif(proposal[,3], 1, n-1))/(dgamma(chain[i,1], alpha, beta) * dgamma(chain[i,2], nu, phi) * dunif(chain[i,3], 1, n-1)),
                 1)
-  chain[i + 1] <- ifelse(runif(1) < p_move,
-                         proposal,
-                         chain[i])
+  # Move up the chain
+  test_value <- runif(1)
+  chain[i + 1, 1] <- ifelse(test_value < p_move,
+                         proposal[,1],
+                         chain[i,1])
+  chain[i + 1, 2] <- ifelse(test_value < p_move,
+                         proposal[,2],
+                         chain[i,2])
+  chain[i + 1, 3] <- ifelse(test_value < p_move,
+                         proposal[,3],
+                         chain[i,3])
 }
-
-# Metro-Hast
-theta_0 <- 1.2
-tau <- .3
-it <- 50000
-chain <- rep(NA, it + 1)
-chain[1] <- theta_0
-for (i in 1:it) {
-  proposal <- rnorm(1, chain[i], tau)
-  p_move <- min(dgamma(proposal, 2, 3)/
-                  dgamma(chain[i], 2, 3),
-                1)
-  chain[i + 1] <- ifelse(runif(1) < p_move,
-                         proposal,
-                         chain[i])
-}
-
-
+colnames(chain) <- c("mu", "lambda", "m")
 ```
-
 
 ```{r Q2 burn_in and autocorrelation work, eval=FALSE}
 # Burn-in & Other Considerations
 burn_in <- 5000
 
-data.frame(chain, index = 1:(it + 1)) %>%
+viz1 <- data.frame(chain, index = 1:(it + 1)) %>%
   filter(index > burn_in) %>%
-  ggplot(aes(x = chain)) +
-  stat_function(fun = dgamma, args = list(2, 3)) +
+  ggplot(aes(x = mu)) +
+  stat_function(fun = dgamma, args = list(10, 4)) +
   geom_density(col = "steelblue") +
   theme_bw() +
-  labs(x = expression(theta))
+  labs(x = expression(mu))
+
+viz2 <- data.frame(chain, index = 1:(it + 1)) %>%
+  filter(index > burn_in) %>%
+  ggplot(aes(x = lambda)) +
+  stat_function(fun = dgamma, args = list(8, 2)) +
+  geom_density(col = "steelblue") +
+  theme_bw() +
+  labs(x = expression(lambda))
+
+viz3 <- data.frame(chain, index = 1:(it + 1)) %>%
+  filter(index > burn_in) %>%
+  ggplot(aes(x = m)) +
+  stat_function(fun = dunif, args = list(1, 59)) +
+  geom_density(col = "steelblue") +
+  theme_bw() +
+  labs(x = expression(m))
+
+viz1 + viz2 + viz3
+```
 
 
+```{r acceptance}
 # Acceptance Rate
 # Part 2
 (acceptance <- 1 - mean(duplicated(chain[-(1:burn_in)])))
@@ -335,28 +340,32 @@ p2 <- ggplot(df2, aes(x = x_0, y = x_1)) +
   theme_bw()
 
 p1 + p2
+```
 
+
+```{r Q2 Part 1}
 # Plot Comparison 
 # Part 1
-p4 <- ggplot(df2, aes(x = mu, y = lambda, color=m)) +
+p10 <- ggplot(data.frame(chain), aes(x = mu, y = lambda, color=m)) +
   geom_point(alpha=0.5) +
   labs(y = expression(lambda), x = expression(mu)) +
   theme_minimal()
 
-df3 <- subset(df2, m > 50 | m < 10,)
+chain2 <- chain[which(chain[,3] > 50
+| chain[,3] < 10), ]
   
-p5 <- ggplot(df3, aes(x = mu, y = lambda, color=m)) +
+p11 <- ggplot(data.frame(chain2), aes(x = mu, y = lambda, color=m)) +
   geom_point(alpha=0.5) +
   labs(y = expression(lambda), x = expression(mu)) +
   theme_minimal()
 
-p6 <- ggplot(df2, aes(x = mu, y = lambda, z = m)) + 
+p12 <- ggplot(data.frame(chain), aes(x = mu, y = lambda, z = m)) + 
   # geom_hex(fun = ~ quantile(m, 0.5)) +
   stat_summary_hex(fun = "quantile", fun.args = list(probs = 0.5)) + 
   labs(y = expression(lambda), x = expression(mu)) +
   theme_minimal()
 
-p4 + p5 + p6
+p10 + p11 + p12
 ```
 
 
@@ -373,9 +382,88 @@ In this part, you will apply to the same problem a third approach: rejection sam
 
 - Writing a function called `joint_post()` that takes as input values of the three parameters (and the data) and returns a value of the joint posterior density.
 
+```{r relevant functions, echo=FALSE}
+# The Likelihood
+likelihood <- function(theta) {
+    B0 <- theta[1]
+    B1 <- theta[2]
+    sigma <- theta[3]
+    y_fit <- B0 + B1 * x
+    logLik_vec <- dnorm(y, 
+                        mean = y_fit, 
+                        sd = sigma, 
+                        log = T)
+    sum(logLik_vec)
+}
+# Prior
+prior <- function(theta) {
+    B0 <- theta[1]
+    B1 <- theta[2]
+    sigma <- theta[3]
+    B0_prior <- dnorm(B0, sd = 5, log = T)
+    B1_prior <- dunif(B1, min = 0, max = 10, log = T)
+    sigma_prior <- dunif(sigma, min = 0, max = 30, log = T)
+    B0_prior + B1_prior + sigma_prior
+}
+# Posterior
+posterior <- function(theta) {
+   likelihood(theta) + prior(theta)
+}
+```
+
+# Metropolis Algorithm
+
+```{r 3-D testing}
+# Initialize Data/Parameters
+n <- 60
+m <- 38
+mu <- 2
+lambda <- 4
+y_mu <- rpois(m, lambda = mu)
+y_lambda <- rpois(n - m, lambda = lambda)
+y <- c(y_mu, y_lambda)
+alpha <- 10
+beta <- 4
+nu <- 8
+phi <- 2
+
+
+```
+
+```{r testing}
+B0 <- 0
+B1 <- 5
+sigma <- 10
+n <- 31
+x <- (-(n-1)/2):((n-1)/2)
+y <-  B0 + B1 * x + rnorm(n, mean = 0, sd = sigma)
+theta_0 <- c(0, 4, 10)
+chain[1, ] <- theta_0
+  proposal <- rnorm(3, mean = chain[1, ], 
+                    sd = c(0.5,0.1,0.3))
+  p_move <- exp(posterior(proposal) - posterior(chain[1, ]))
+```
+
+```{r Metropolis}
+it <- 50000
+chain <- matrix(rep(NA, (it + 1) * 3), ncol = 3)
+theta_0 <- c(0, 4, 10)
+chain[1, ] <- theta_0
+for (i in 1:it){
+  proposal <- rnorm(3, mean = chain[i, ], 
+                    sd = c(0.5,0.1,0.3))
+  p_move <- exp(posterior(proposal) - posterior(chain[i, ]))
+  if (runif(1) < p_move) {
+    chain[i + 1, ] <- proposal
+  } else {
+    chain[i + 1, ] <- chain[i, ]
+  }
+}
+```
+
 ```{r Q3 part a}
 joint_post <- function(mu, lambda, m, data){
-  joint_density <- dpois(data, lambda = mu) * dpois(data, lambda = lambda) * dunif(data, min = 0 , max = m)
+  joint_density <- posterior(mu) + posterior(lambda) + posterior(m)
   return(joint_density)
 }
 ```
