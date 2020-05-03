@@ -25,7 +25,7 @@ You're encouraged to start these exercise by copying into your problem set code 
     - The same scatterplot but where you only include samples with values of $m$ that are less than 10 or greater than 50.
     - A [hexplot](http://ggplot2.tidyverse.org/reference/stat_summary_2d.html) where each hex is filled with either the mean or median value of $m$.
 
-```{r Q1 part 1, cache=TRUE}
+```{r Q1 part 1, cache=TRUE, fig.height=12}
 # Set Seed
 set.seed(497)
 # Initialize Data/Parameters
@@ -72,6 +72,7 @@ df <- data.frame(post_samples) %>%
 p4 <- ggplot(df, aes(x = mu, y = lambda, color=m)) +
   geom_point(alpha=0.5) +
   labs(y = expression(lambda), x = expression(mu)) +
+  ggtitle("Joint Distribution of Mu, Lambda, No m Constraints") +
   theme_minimal()
 # p4
 # Part b 
@@ -80,6 +81,7 @@ df2 <- subset(df, m > 50 | m < 10,)
 p5 <- ggplot(df2, aes(x = mu, y = lambda, color=m)) +
   geom_point(alpha=0.5) +
   labs(y = expression(lambda), x = expression(mu)) +
+  ggtitle("Joint Distribution of Mu, Lambda, m Constrained") +
   theme_minimal()
 # Part c
 # A [hexplot](http://ggplot2.tidyverse.org/reference/stat_summary_2d.html) where each hex is filled with either the mean or median value of $m$.
@@ -87,9 +89,11 @@ p6 <- ggplot(df, aes(x = mu, y = lambda, z = m)) +
   # geom_hex(fun = ~ quantile(m, 0.5)) +
   stat_summary_hex(fun = "quantile", fun.args = list(probs = 0.5)) + 
   labs(y = expression(lambda), x = expression(mu)) +
+  ggtitle("Hexplot Using Median of m") +
   theme_minimal()
-p4 + p5 + p6
+p4 / p5 / p6
 ```
+
 
 #### Commentary
 
@@ -99,7 +103,7 @@ If $\mu$ or $\lambda$ is more extreme, or is a larger value, the other one tends
 
 2. Alter one of the prior distributions of the Poisson rate parameters so that they are much more flat. What is the effect on the joint posterior distribution?
 
-```{r Q1 part 2, cache=TRUE}
+```{r Q1 part 2, cache=TRUE, fig.height=12}
 # Set Seed
 set.seed(497)
 # Initialize Data/Parameters
@@ -148,6 +152,7 @@ df <- data.frame(post_samples) %>%
 p7 <- ggplot(df, aes(x = mu, y = lambda, color=m)) +
   geom_point(alpha=0.5) +
   labs(y = expression(lambda), x = expression(mu)) +
+  ggtitle("Joint Distribution of Flatter Mu, Lambda, No m Constraints") +
   theme_minimal()
 # p4
 # Part b 
@@ -156,6 +161,7 @@ df2 <- subset(df, m > 50 | m < 10,)
 p8 <- ggplot(df2, aes(x = mu, y = lambda, color=m)) +
   geom_point(alpha=0.5) +
   labs(y = expression(lambda), x = expression(mu)) +
+  ggtitle("Joint Distribution of Flatter Mu, Lambda, m Constrained") +
   theme_minimal()
 # Part c
 # A [hexplot](http://ggplot2.tidyverse.org/reference/stat_summary_2d.html) where each hex is filled with either the mean or median value of $m$.
@@ -163,8 +169,9 @@ p9 <- ggplot(df, aes(x = mu, y = lambda, z = m)) +
   # geom_hex(fun = ~ quantile(m, 0.5)) +
   stat_summary_hex(fun = "quantile", fun.args = list(probs = 0.5)) + 
   labs(y = expression(lambda), x = expression(mu)) +
+  ggtitle("Hexplot Using Median of m, Flatter Mu") +
   theme_minimal()
-p7 + p8 + p9
+p7 / p8 / p9
 ```
 
 #### Commentary
@@ -177,31 +184,9 @@ To validate the results from the Gibbs sampler, get a second estimate of the joi
 
 1. Generate the same 3 x 1 plot as you did for the Gibbs sampler. Do these tell the same story? (these plots should represent your final conclusions after considering questions 2 and 3 below).
 
-## Notes
-
-P.m.f. of Poisson: 
-
-For rate $\lambda$ and support $k \in Z^+$:
-
-$\frac{\lambda^k e^{-\lambda}}{k!}$
-
-## Parameters
-
-$f \sim Pois(\mu)$
-
-$g \sim Pois(\lambda)$
-
-$m \sim Unif(1, n-1)$
-
-Joint of $f(Y, \mu, \lambda, m)= \prod \limits_{i=1}^{m} \frac{\lambda^m e^{-\lambda}}{m!} \prod \limits_{j=m+1}^{n}\frac{\mu^{(n-m)} e^{-\mu}}{(n-m)!} \frac{1}{m} \frac{1}{n-m}$
-
-```{r Q2 part 1, eval=FALSE}
-
-```
-
 2. What is your acceptance rate? Tinker with the variance of the proposal distribution to bring it within the target range.
 
-```{r relevant functions, echo=FALSE}
+```{r relevant functions for later use, echo=FALSE}
 # The Likelihood
 likelihood <- function(theta) {
     B0 <- theta[1]
@@ -230,28 +215,17 @@ posterior <- function(theta) {
 }
 ```
 
-```{r Q2 part 2 new idea, eval=FALSE}
-library(patchwork)
-library(tidyverse)
-library(hexbin)
-
+```{r Q2 part 2 generate chain, cache=TRUE}
 # Set Seed
 set.seed(497)
 # Adapted Metro-Hast
 # Set Parameters
 n <- 60
-# m <- 38
-# mu <- 2
-# lambda <- 4
-# y_mu <- rpois(m, lambda = mu)
-# y_lambda <- rpois(n - m, lambda = lambda)
-# y <- c(y_mu, y_lambda)
 alpha <- 10
 beta <- 4
 nu <- 8
 phi <- 2
 # Create Chain
-# sample(1:(n - 1), size = 1, prob = p)
 chain <- matrix(NA, nrow = it+1, ncol = 3)
 # Set Initial Value
 theta_0 <- matrix(c(3,5,30), nrow = 1, ncol = 3)
@@ -262,7 +236,6 @@ val2 <- .2
 it <- 50000
 for (i in 1:it) {
   # Bound the proposals, otherwise infinite
-  # proposal <- matrix(c(min(rnorm(1, chain[i,1], val1),10), min(rnorm(1, chain[i,2], val2),10), rbinom(1, n, chain[i,3]/n)), nrow =1, ncol=3)
   proposal <- matrix(c(min(rnorm(1, chain[i,1], val1),10), min(rnorm(1, chain[i,2], val2),10), sample((2:n-1), 1, rep(dbinom(1, n, chain[i,3]/n), n-1), replace=TRUE)), nrow =1, ncol=3)
   p_move <- min((dgamma(proposal[,1], alpha, beta) * dgamma(proposal[,2], nu, phi) * dunif(proposal[,3], 1, n-1))/(dgamma(chain[i,1], alpha, beta) * dgamma(chain[i,2], nu, phi) * dunif(chain[i,3], 1, n-1)),
                 1)
@@ -281,16 +254,93 @@ for (i in 1:it) {
 colnames(chain) <- c("mu", "lambda", "m")
 ```
 
-```{r Q2 burn_in and autocorrelation work, eval=FALSE}
+```{r Q2 part 2 chain generation alternative, cache=TRUE}
+# Using Bray Notes
+# Set Seed
+set.seed(497)
+# Adapted Metro-Hast
+# Set Parameters
+B0 <- 0
+B1 <- 5
+sigma <- 10
+n <- 60
+alpha <- 10
+beta <- 4
+nu <- 8
+phi <- 2
+# Create x's, y's
+x <- (-(n-1)/2):((n-1)/2)
+y <-  B0 + B1 * x + rnorm(n, mean = 0, sd = sigma)
+# Metropolis Algorithm
+it <- 50000
+chain_alt <- matrix(rep(NA, (it + 1) * 3), ncol = 3)
+theta_0 <- matrix(c(3,5,30), nrow = 1, ncol = 3)
+chain_alt[1,] <- theta_0
+for (i in 1:it){
+  proposal <- c(max(rnorm(1, mean = chain_alt[i, 1], 
+                    sd = c(0.5)), 1), max(rnorm(1, mean = chain_alt[i, 2], 
+                    sd = c(0.2)), 1),  sample((1:n-1), 1, rep(dbinom(chain_alt[i,3], n-1, chain_alt[i,3]/(n-1)), replace=FALSE)))
+  p_move <- exp(posterior(proposal) - posterior(chain_alt[i, ]))
+  if (runif(1) < p_move) {
+    chain_alt[i + 1, ] <- proposal
+  } else {
+    chain_alt[i + 1, ] <- chain_alt[i, ]
+  }
+}
+```
+
+```{r Q2 Another Alternative, eval=FALSE}
+# Another Alternative
+# Not Functioning
+# Write Functions
+posterior <- function(theta){
+  mu <- theta[1]
+  lambda <- theta[2]
+  m <- theta[3]
+  m_alt <- n - m 
+  y_mu <- rpois(n = m, lambda = mu)
+  y_lambda <- rpois(n = m_alt, lambda = lambda)
+  (((mu^(sum(y_mu)))* exp(-m* mu))/(sum(factorial(y_mu)))) *
+  (((lambda^(sum(y_lambda)))* exp(-(m_alt) * lambda))/(sum(factorial(y_lambda)))) *  
+  (((beta)^(alpha))/(gamma(alpha)))*(mu^(alpha -1)) *exp(-beta*mu) *
+  (((phi)^(nu))/(gamma(nu)))*(lambda^(nu -1)) * exp(-phi*lambda) * 
+  (1/(n-1))
+}
+# Metropolis Algorithm
+n <- 60
+alpha <- 10
+beta <- 4
+nu <- 8
+phi <- 2
+# Simulation
+it <- 50000
+chain3 <- matrix(rep(NA, (it + 1) * 3), ncol = 3)
+theta_0 <-c(2,4, 35)
+chain3[1,] <- theta_0
+colnames(chain3) <- c("mu", "lambda", "m")
+for (i in 1:it){
+  m_proposal <-  max(sample((1:n-1), 1, rep(dbinom(chain3[i,3], n-1, chain3[i,3]/(n-1)), replace=TRUE)),2)
+   param_proposal <- rnorm(2, chain3[i,1:2], sd=sqrt(chain3[i,1:2]*0.01))
+   param_proposal[param_proposal<=0] <- 1e-10
+   proposal <- c(param_proposal, m_proposal)
+   p_move <- min(posterior(proposal)/posterior(chain3[i, ]),1)
+  ifelse(runif(1) < p_move, 
+    chain3[i + 1, ] <- proposal,
+    chain3[i + 1, ] <- chain3[i, ])
+}
+chain3_df <- as.data.frame(chain3)
+```
+
+```{r Q2 burn_in and autocorrelation work first chain, cache=TRUE, fig.height=12}
 # Burn-in & Other Considerations
 burn_in <- 5000
-
 viz1 <- data.frame(chain, index = 1:(it + 1)) %>%
   filter(index > burn_in) %>%
   ggplot(aes(x = mu)) +
   stat_function(fun = dgamma, args = list(10, 4)) +
   geom_density(col = "steelblue") +
   theme_bw() +
+  ggtitle("Burn-in on Mu using first chain") +
   labs(x = expression(mu))
 
 viz2 <- data.frame(chain, index = 1:(it + 1)) %>%
@@ -299,6 +349,7 @@ viz2 <- data.frame(chain, index = 1:(it + 1)) %>%
   stat_function(fun = dgamma, args = list(8, 2)) +
   geom_density(col = "steelblue") +
   theme_bw() +
+  ggtitle("Burn-in on Lambda using first chain") +
   labs(x = expression(lambda))
 
 viz3 <- data.frame(chain, index = 1:(it + 1)) %>%
@@ -307,18 +358,93 @@ viz3 <- data.frame(chain, index = 1:(it + 1)) %>%
   stat_function(fun = dunif, args = list(1, 59)) +
   geom_density(col = "steelblue") +
   theme_bw() +
+  ggtitle("Burn-in on m using first chain") +
   labs(x = expression(m))
 
-viz1 + viz2 + viz3
+viz1 / viz2 / viz3
 ```
 
+```{r Q2 burn_in and autocorrelation work alternative chain, cache=TRUE, fig.height=12}
+# Burn-in & Other Considerations
+burn_in <- 5000
+viz1 <- data.frame(chain_alt, index = 1:(it + 1)) %>%
+  filter(index > burn_in) %>%
+  ggplot(aes(x = mu)) +
+  stat_function(fun = dgamma, args = list(10, 4)) +
+  geom_density(col = "steelblue") +
+  theme_bw() +
+  ggtitle("Burn-in on Mu using chain_alt") +
+  labs(x = expression(mu))
 
-```{r acceptance}
+viz2 <- data.frame(chain_alt, index = 1:(it + 1)) %>%
+  filter(index > burn_in) %>%
+  ggplot(aes(x = lambda)) +
+  stat_function(fun = dgamma, args = list(8, 2)) +
+  geom_density(col = "steelblue") +
+  theme_bw() +
+  ggtitle("Burn-in on Lambda using chain_alt") +
+  labs(x = expression(lambda))
+
+viz3 <- data.frame(chain_alt, index = 1:(it + 1)) %>%
+  filter(index > burn_in) %>%
+  ggplot(aes(x = m)) +
+  stat_function(fun = dunif, args = list(1, 59)) +
+  geom_density(col = "steelblue") +
+  theme_bw() +
+  ggtitle("Burn-in on m using chain_alt") +
+  labs(x = expression(m))
+
+viz1 / viz2 / viz3
+```
+
+```{r acceptance, cache=TRUE}
 # Acceptance Rate
 # Part 2
+# Initial Chain
 (acceptance <- 1 - mean(duplicated(chain[-(1:burn_in)])))
+# Alternative Chain
+(acceptance_alt <- 1 - mean(duplicated(chain_alt[-(1:burn_in)])))
+```
 
+### Commentary
 
+Under the initial formulation, our acceptance rate is much higher than using the Metropolis algorithm in conjunction with the posterior/prior functions. Encouragingly, the initial formulation's acceptance rate is ~35%, which is around where we'd hope it to be (~30%). Some further adjustments could be made to change this via adjusting the initial chain values/standard deviation of the proposal distribution. 
+
+```{r Q2 Part 1, cache=TRUE, fig.height=12}
+# Plot Comparison 
+# Part 1
+p10 <- ggplot(data.frame(chain), aes(x = mu, y = lambda, color=m)) +
+  geom_point(alpha=0.5) +
+  labs(y = expression(lambda), x = expression(mu)) +
+  ggtitle("Joint Distribution of Mu, Lambda, Initial Chain") +
+  theme_minimal()
+
+chain2 <- chain[which(chain[,3] > 50
+| chain[,3] < 10), ]
+  
+p11 <- ggplot(data.frame(chain2), aes(x = mu, y = lambda, color=m)) +
+  geom_point(alpha=0.5) +
+  labs(y = expression(lambda), x = expression(mu)) +
+  ggtitle("Joint Distribution of Mu, Lambda, m Constrained, Initial Chain") +
+  theme_minimal()
+
+p12 <- ggplot(data.frame(chain), aes(x = mu, y = lambda, z = m)) + 
+  # geom_hex(fun = ~ quantile(m, 0.5)) +
+  stat_summary_hex(fun = "quantile", fun.args = list(probs = 0.5)) + 
+  labs(y = expression(lambda), x = expression(mu)) +
+  ggtitle("Hexplot Using Median of m") +
+  theme_minimal()
+
+p10 / p11 / p12
+```
+
+### Commentary
+
+Compared to the Gibbs Sampling method, the Metropolis algorithm doesn't appear to have values of $\mu$, $\lambda$ clustered around particular values of m. This is encouraging, as it validates our decimation to remove autocorrelation. However, it is important to note that without corrections to autocorrelation, we would anticipate the above graphs to be similar to their Gibbs counterparts, as the algorithm generates values that are autocorrelated (subject to the initial conditions but primarily based on the previous values in the chain). 
+
+3. To understand the Markov dependence in this chain (or in fact any form of dependence in index), a helpful tool is an [autocorrelation plot](https://en.wikipedia.org/wiki/Autocorrelation). Use the `autoplot()` function in `library(ggfortify)` to get a sense of the correlation in your chain ([see example](https://rh8liuqy.github.io/ACF_PACF_by_ggplot2.html) of a correlogram). How heavily do you need to thin the chain to diminish most of this dependence? Go ahead and do so to produce a final set of plots for question 1 above.
+
+```{r autocorrelation part 2, cache=TRUE, fig.height=12}
 # Autocorrelation 
 # Part 3
 df1 <- data.frame(x_0 = chain[1:(it-1)],
@@ -333,47 +459,15 @@ df2 <- data.frame(x_0 = chain_thinned[1:(length(chain_thinned)-1)],
 
 p1 <- ggplot(df1, aes(x = x_0, y = x_1)) +
   geom_point(alpha = .1) +
+  ggtitle("No Autocorrelation Adjustments, Initial Chain") +
   theme_bw()
 
 p2 <- ggplot(df2, aes(x = x_0, y = x_1)) +
   geom_point(alpha = .1) +
+  ggtitle("Autocorrelation Adjustments, Initial Chain") +
   theme_bw()
 
-p1 + p2
-```
-
-
-```{r Q2 Part 1}
-# Plot Comparison 
-# Part 1
-p10 <- ggplot(data.frame(chain), aes(x = mu, y = lambda, color=m)) +
-  geom_point(alpha=0.5) +
-  labs(y = expression(lambda), x = expression(mu)) +
-  theme_minimal()
-
-chain2 <- chain[which(chain[,3] > 50
-| chain[,3] < 10), ]
-  
-p11 <- ggplot(data.frame(chain2), aes(x = mu, y = lambda, color=m)) +
-  geom_point(alpha=0.5) +
-  labs(y = expression(lambda), x = expression(mu)) +
-  theme_minimal()
-
-p12 <- ggplot(data.frame(chain), aes(x = mu, y = lambda, z = m)) + 
-  # geom_hex(fun = ~ quantile(m, 0.5)) +
-  stat_summary_hex(fun = "quantile", fun.args = list(probs = 0.5)) + 
-  labs(y = expression(lambda), x = expression(mu)) +
-  theme_minimal()
-
-p10 + p11 + p12
-```
-
-
-
-3. To understand the Markov dependence in this chain (or in fact any form of dependence in index), a helpful tool is an [autocorrelation plot](https://en.wikipedia.org/wiki/Autocorrelation). Use the `autoplot()` function in `library(ggfortify)` to get a sense of the correlation in your chain ([see example](https://rh8liuqy.github.io/ACF_PACF_by_ggplot2.html) of a correlogram). How heavily do you need to thin the chain to diminish most of this dependence? Go ahead and do so to produce a final set of plots for question 1 above.
-
-```{r Q2 part 3}
-
+p1 / p2
 ```
 
 ### Part III: Rejection Sampling
@@ -382,8 +476,67 @@ In this part, you will apply to the same problem a third approach: rejection sam
 
 - Writing a function called `joint_post()` that takes as input values of the three parameters (and the data) and returns a value of the joint posterior density.
 
-```{r relevant functions, echo=FALSE}
-# The Likelihood
+```{r Q3 part a, echo=FALSE}
+# Gamma, distribution of rate parameters
+# Functions Considered, Discarded
+mu_dist_func <- function(x, alpha_1, beta_1){
+  mu_pdf <- alpha_1^beta_1 * x^(alpha_1-1) * exp(-beta_1 %*% x) / gamma(alpha_1)
+  return(mu_pdf)
+}
+lambda_dist_func <- function(x, alpha_2, beta_2){
+  lambda_pdf <- alpha_2^beta_2 * x^(alpha_2-1) * exp(-beta_2 %*% x) / gamma(alpha_2)
+  return(lambda_pdf)
+}
+# joint_post <- function(x, alpha_1, beta_1, alpha_2, beta_2, n){
+#   joint_density <- mu_func(x, alpha_1, beta_1) * lambda_func(x, alpha_2, beta_2) * m_func(n)
+#   return(joint_density)
+# }
+# Poisson, distribution of parameter probabilities
+mu_func <- function(x, rate_1) {
+  mu_value <- exp(-rate_1)*(rate_1^x)/(factorial(x))
+  return(mu_value)
+}
+
+lambda_func <- function(x, rate_2) {
+  lambda_value <- exp(-rate_2)*(rate_2^x)/(factorial(x))
+  return(lambda_value)
+}
+
+m_func <- function(n) {
+  pdf_m <- 1/(n - 1 - 1)
+  return(pdf_m)
+}
+
+joint <- function(x, rate_1, rate_2, n) {
+  joint_val <- mu_func(x, rate_1) * lambda_func(x, rate_2) * m_func(n) 
+  return(joint_val)
+}
+
+max(mu_func(0:100, 1:10))
+max(lambda_func(0:100, 1:10))
+max(m_func(60))
+
+max(mu_func(0:100, 1:10)) * max(lambda_func(0:100, 1:10)) * max(m_func(60))
+```
+
+- Formulating a 3D proposal distribution that you can take random samples from that covers the support of the parameters (or the support with the highest density).
+
+```{r Q3 using Bray Notes, cache=TRUE}
+# Using Bray Notes
+# Some Functions Considered
+# Set Seed
+set.seed(497)
+# Adapted Metro-Hast
+# Set Parameters
+n <- 60
+alpha <- 10
+beta <- 4
+nu <- 8
+phi <- 2
+# Create x's, y's
+x <- (-(n-1)/2):((n-1)/2)
+y <-  B0 + B1 * x + rnorm(n, mean = 0, sd = sigma)
+# Write Functions
 likelihood <- function(theta) {
     B0 <- theta[1]
     B1 <- theta[2]
@@ -395,7 +548,7 @@ likelihood <- function(theta) {
                         log = T)
     sum(logLik_vec)
 }
-# Prior
+
 prior <- function(theta) {
     B0 <- theta[1]
     B1 <- theta[2]
@@ -405,89 +558,149 @@ prior <- function(theta) {
     sigma_prior <- dunif(sigma, min = 0, max = 30, log = T)
     B0_prior + B1_prior + sigma_prior
 }
-# Posterior
+
 posterior <- function(theta) {
    likelihood(theta) + prior(theta)
 }
+
+joint_density <- function(mu, lambda, m) {
+  posterior(mu) + posterior(lambda) + posterior(m)
+}
 ```
 
-# Metropolis Algorithm
+```{r Q3 testing, cache=TRUE}
+# generate random numbers
+random_values <- matrix(NA, nrow= 500000, ncol=3)
+for(i in 1:500000){
+  random_values[i,] <- c(round(runif(1, min=0, max=10),1) , round(runif(1, min=0, max=10),1), sample(1:59, 1))
 
-```{r 3-D testing}
-# Initialize Data/Parameters
-n <- 60
-m <- 38
-mu <- 2
-lambda <- 4
-y_mu <- rpois(m, lambda = mu)
-y_lambda <- rpois(n - m, lambda = lambda)
-y <- c(y_mu, y_lambda)
+}
 alpha <- 10
 beta <- 4
 nu <- 8
 phi <- 2
-
-
-```
-
-```{r testing}
-B0 <- 0
-B1 <- 5
-sigma <- 10
-n <- 31
-x <- (-(n-1)/2):((n-1)/2)
-y <-  B0 + B1 * x + rnorm(n, mean = 0, sd = sigma)
-theta_0 <- c(0, 4, 10)
-chain[1, ] <- theta_0
-  proposal <- rnorm(3, mean = chain[1, ], 
-                    sd = c(0.5,0.1,0.3))
-  p_move <- exp(posterior(proposal) - posterior(chain[1, ]))
-```
-
-```{r Metropolis}
-it <- 50000
-chain <- matrix(rep(NA, (it + 1) * 3), ncol = 3)
-theta_0 <- c(0, 4, 10)
-chain[1, ] <- theta_0
-for (i in 1:it){
-  proposal <- rnorm(3, mean = chain[i, ], 
-                    sd = c(0.5,0.1,0.3))
-  p_move <- exp(posterior(proposal) - posterior(chain[i, ]))
-  if (runif(1) < p_move) {
-    chain[i + 1, ] <- proposal
-  } else {
-    chain[i + 1, ] <- chain[i, ]
-  }
+joint_post <- function(vec){
+  mu <- vec[1]
+  lambda <- vec[2]
+  m <- vec[3]
+  y_mu <- rpois(m, lambda = mu)
+  y_lambda <- rpois(n - m, lambda = lambda)
+  exp(-mu) * prod(mu^(y_mu)/factorial(y_mu)) *
+    exp(-lambda) * prod(lambda^(y_lambda)/factorial(y_lambda)) *
+    (beta^(alpha))/gamma(alpha) * mu^(alpha - 1) * exp(-beta*mu) *
+    (phi^(nu))/gamma(nu) * lambda^(nu - 1) * exp(-phi * lambda) *
+    (1/ (n-1))
 }
-```
 
-```{r Q3 part a}
-joint_post <- function(mu, lambda, m, data){
-  joint_density <- posterior(mu) + posterior(lambda) + posterior(m)
-  return(joint_density)
+joint_post_alt <- function(vec){
+  # Initial Parameters
+  n <- 60
+  alpha <- 10
+  beta <- 4
+  nu <- 8
+  phi <- 2
+  # Generate Data
+  y_mu <- dpois(vec[3], lambda = vec[1])
+  y_lambda <- dpois(n - vec[3], lambda = vec[2])
+  # sample mu
+  mu_j      <- dgamma(1, alpha + sum(y_mu), beta + vec[3])
+  # sample lambda
+  lambda_j  <- dgamma(1, nu + sum(y_lambda), phi + (n - vec[3]))
+  m_j <- dunif(1, 1, n-1)
+  k <- vec[3]
+  # Calculate Probability
+  posterior(mu_j) + posterior(lambda_j) * m_j * y_mu * y_lambda
 }
-```
 
-- Formulating a 3D proposal distribution that you can take random samples from that covers the support of the parameters (or the support with the highest density).
+joint_values <- rep(NA, 500000)
+for(i in 1:500000){
+  joint_values[i] <- joint_post_alt(random_values[i,])
+}
+max(joint_values)
 
+q_func <- function(vec){
+  dunif(vec[1], 0, 10) * dunif(vec[2], 0, 10) * dunif(vec[3], 1, 59)
+}
 
-```{r Q3 part b}
+U <- runif(1, 0, 1) # *runif(1, 0, 1)*runif(1, 0, 1)
+# Need to multiply by a constant
+# M <- 
 
+q_func(c(1,1,1)) > max(joint_values)
+
+vec_accepted <- random_values[U < (joint_post(random_values) / (q_func(random_values)))]
+length(vec_accepted)
 ```
 
 - Taking draws from the proposal distribution for your three parameters and retaining it with probability equal to the ratio of the proposal density at the point to the value of `joint_post()` at that point. Note that you will likely need to normalize either the proposal density or the joint density so that the proposal density is always greater than or equal to the joint density, ensuring acceptance probabilities less than or equal to 1.
 
-```{r Q3 part c}
-
-```
-
 - Repeat the previous step many many times until you have accepted a suitable number of draws from the joint posterior.
 
-```{r Q3 part d}
+```{r Q3 part d, cache=TRUE, fig.height=12}
+colnames(random_values) <- c("mu", "lambda", "m")
+viz1 <- data.frame(random_values, index = 1:500000) %>%
+  ggplot(aes(x = mu)) +
+  stat_function(fun = dunif, args = list(0, 10)) +
+  geom_density(col = "steelblue") +
+  theme_bw() +
+  ggtitle("Distribution of Randomly Generated mu") +
+  labs(x = expression(mu))
 
+viz2 <- data.frame(random_values, index = 1:500000) %>%
+  ggplot(aes(x = lambda)) +
+  stat_function(fun = dunif, args = list(0, 10)) +
+  geom_density(col = "steelblue") +
+  theme_bw() +
+  ggtitle("Distribution of Randomly Generated lambda") +
+  labs(x = expression(lambda))
+
+viz3 <- data.frame(random_values, index = 1:500000) %>%
+  ggplot(aes(x = m)) +
+  stat_function(fun = dunif, args = list(1, 59)) +
+  geom_density(col = "steelblue") +
+  theme_bw() +
+  ggtitle("Distribution of Randomly Generated m") +
+  labs(x = expression(m))
+
+viz1 / viz2 / viz3
+```
+
+```{r Q3 joint dist viz, eval=FALSE, fig.height=12}
+# Visuals
+# Part a
+p7 <- ggplot(accepted, aes(x = mu, y = lambda, color=m)) +
+  geom_point(alpha=0.5) +
+  labs(y = expression(lambda), x = expression(mu)) +
+  theme_minimal()
+# p4
+# Part b 
+# $m$ that are less than 10 or greater than 50.
+accepted2 <- subset(accepted, m > 50 | m < 10,)
+p8 <- ggplot(accepted2, aes(x = mu, y = lambda, color=m)) +
+  geom_point(alpha=0.5) +
+  labs(y = expression(lambda), x = expression(mu)) +
+  theme_minimal()
+# Part c
+# A [hexplot](http://ggplot2.tidyverse.org/reference/stat_summary_2d.html) where each hex is filled with either the mean or median value of $m$.
+p9 <- ggplot(accepted, aes(x = mu, y = lambda, z = m)) + 
+  # geom_hex(fun = ~ quantile(m, 0.5)) +
+  stat_summary_hex(fun = "quantile", fun.args = list(probs = 0.5)) + 
+  labs(y = expression(lambda), x = expression(mu)) +
+  theme_minimal()
+p7 / p8 / p9
 ```
 
 Implement such a rejection sampling scheme for the changepoint problem and create the same plots from part I with the original priors and the data from `set.seed(497)`. Is the structure in the new sample from the joint posterior the same as when we used a Gibbs Sampler (up to Monte Carlo variability)? What about the Metropolis Algorithm? What are the downsides, as you see it, to the rejection sampling approach? What about the upsides?
+
+### Commentary
+
+Though unfortunately I was unable to get working code for the Rejection Sampling method, please note the following observations---made as though the rejection sampling worked. We can at least be thankful that we generated the data correctly for the sample distribution. 
+
+Rejection sampling ensures no autocorrelation, but at the expense of lower efficiency (greater computation requirements). In-line with this, a lower efficiency comes with a lower acceptance rate for the Rejection Sampling method compared to Gibbs Sampling and the Metropolis Algorithm. 
+
+Conversely, Gibbs sampling and the Metropolis Algorithm are more efficient, but at the expense of autocorrelation, hence the usage of a burn-in period, thinning, and decimation. 
+
+Taken together, Rejection Sampling is the most flexible method considered in this problemset, but there are more efficient methods available--namely Gibbs Sampling and the Metropolis Algorithm. However, the more efficient methods come at the expense of data issues, namely autocorrelation, which then calls for additional processes to consider to remove the issues brought about by data issues, though once Mark Hopkins shares the paper he discussed, perhaps these aren't issues after all?  
 
 * * *
 
